@@ -8,7 +8,7 @@ window.SITE_CONTENT = {
     "address": "Madhu Heights green park, Bawadi Rd, Wagholi, Pune, Maharashtra 412207",
     "city": "Pune",
     "hours": "Open 24 x 7 · Doorstep delivery available",
-    "mapEmbed": "https://www.google.com/maps/place/Madhu+Heights/@18.593226,73.985979,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2c50062c94f13:0xcf24fa1f6d6826ca!8m2!3d18.593226!4d73.985979!16s%2Fg%2F11njbddzs6?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "mapEmbed": "https://maps.app.goo.gl/DKGebZQqXh8PXAxS7",
     "announcement": "Weekend special: 10% off on bookings of 3 days or more. Call us for details.",
     "announcementEnabled": true
   },
@@ -948,7 +948,7 @@ window.SITE_CONTENT = {
       ]
     }
   ],
-  "updatedAt": "2026-09-06T08:19:27.650Z",
+  "updatedAt": "2026-09-06T08:31:13.059Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
