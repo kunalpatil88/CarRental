@@ -49,7 +49,14 @@
     setMeta("description", seo.description); setMeta("keywords", seo.keywords);
     $("#brandName").textContent = s.name; $("#brandTagline").textContent = s.tagline;
     $("#footBrand").textContent = s.name; $("#footTagline").textContent = s.tagline;
-    $$(".brand__mark").forEach((m) => (m.innerHTML = icon("car")));
+    // logo: uploaded image or the default car mark
+    $$(".brand").forEach((b) => {
+      const mark = $(".brand__mark", b);
+      if (s.logo) { mark.classList.add("brand__mark--img"); mark.innerHTML = `<img class="brand__logo" src="${esc(s.logo)}" alt="${esc(s.name)}" style="--logo-h:${Number(s.logoHeight) || 40}px" />`; }
+      else { mark.classList.remove("brand__mark--img"); mark.innerHTML = icon("car"); }
+      b.classList.toggle("brand--logo-only", !!s.logo && s.logoShowText === false);
+    });
+    if (s.favicon) { let l = document.querySelector('link[rel="icon"]'); if (!l) { l = document.createElement("link"); l.rel = "icon"; document.head.appendChild(l); } l.href = s.favicon; l.removeAttribute("type"); }
 
     const hello = `Hi ${s.name}, I'd like to enquire about a self-drive car.`;
     ["#headerWa", "#mobileWa", "#fabWa", "#ctaWa", "#faqWa", "#heroSecondary"].forEach((id) => { const el = $(id); if (el) el.href = waLink(hello); });

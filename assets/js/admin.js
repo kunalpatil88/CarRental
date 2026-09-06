@@ -186,6 +186,7 @@
     site(root) {
       root.innerHTML =
         card("Business details", "Shown in the header, footer and contact section.", `<div class="grid grid--2">${F.text("site.name", "Business name")}${F.text("site.tagline", "Tagline", { help: "under the logo" })}${F.text("site.phone", "Phone number", { help: "as displayed, e.g. +91 98765 43210" })}${F.text("site.whatsapp", "WhatsApp number", { help: "digits only with country code, e.g. 919876543210" })}${F.text("site.email", "Email", { type: "email" })}${F.text("site.city", "City")}${F.area("site.address", "Address", { full: true, rows: 2 })}${F.text("site.hours", "Opening hours / note", { full: true })}${F.text("site.mapEmbed", "Google Maps embed URL", { full: true, help: "Google Maps → Share → Embed a map → copy the src URL. Leave empty to hide the map." })}</div>`) +
+        card("Logo & branding", "Upload a PNG with a transparent background. It is shown in the header and footer. Leave empty to use the default car icon.", `<div class="grid grid--2">${F.image("site.logo", "Logo image")}${F.text("site.logoHeight", "Logo height in the header (px)", { type: "number", help: "36 to 56 works well" })}<div style="align-self:end;padding-bottom:10px">${F.toggle("site.logoShowText", "Show business name next to the logo")}</div>${F.image("site.favicon", "Browser tab icon (favicon)", { help: "square PNG or SVG, at least 64×64. Optional." })}</div>`) +
         card("Announcement bar", "A slim bar above the header for offers or notices.", `<div class="grid">${F.toggle("site.announcementEnabled", "Show announcement bar")}${F.text("site.announcement", "Announcement text", { full: true })}</div>`) +
         `<div class="notice notice--info">${icon("share")}<div>Social media profiles, the Follow section and share buttons are managed under <a href="#social" data-go="social">Social media</a>.</div></div>`;
       $$("[data-go]", root).forEach((b) => (b.onclick = (e) => { e.preventDefault(); go(b.dataset.go); }));
@@ -429,7 +430,7 @@
         links: ["instagram", "facebook", "youtube"].map((k) => ({ platform: k, label: k[0].toUpperCase() + k.slice(1), url: old[k] || "", enabled: !!old[k] })),
         section: { enabled: false, eyebrow: "Follow us", title: "See the fleet in action", text: "", handle: "", ctaText: "Follow us", ctaLink: "", posts: [] } };
     }
-    if (c.site) delete c.site.social;
+    if (c.site) { delete c.site.social; if (c.site.logo == null) c.site.logo = ""; if (c.site.logoHeight == null) c.site.logoHeight = 40; if (c.site.logoShowText == null) c.site.logoShowText = true; if (c.site.favicon == null) c.site.favicon = ""; }
     if (!c.promos) c.promos = { enabled: true, interval: 5, showArrows: true, showDots: true, pauseOnHover: true, items: [] };
     c.promos.items = c.promos.items || [];
     c.social.links = c.social.links || []; c.social.section = c.social.section || {}; c.social.section.posts = c.social.section.posts || [];
