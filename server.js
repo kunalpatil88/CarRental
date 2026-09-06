@@ -181,7 +181,7 @@ async function api(req, res, url) {
     const buf = Buffer.from(m[2], "base64"); if (buf.length > 8 * 1024 * 1024) return fail(res, 400, "Image larger than 8 MB");
     const safeFolder = String(folder || "").replace(/[^a-z0-9-]/gi, "").slice(0, 40);
     const dir = safeFolder ? path.join(UPLOAD_DIR, safeFolder) : UPLOAD_DIR; ensureDir(dir);
-    const base = String(name || "image").replace(/\.[^.]+$/, "").replace(/[^a-z0-9-]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "image";
+    const base = String(name || "image").toLowerCase().replace(/\.[^.]+$/, "").replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "image";
     const file = `${Date.now().toString(36)}-${base}.${ext}`;
     fs.writeFileSync(path.join(dir, file), buf);
     const rel = ("assets/img/uploads/" + (safeFolder ? safeFolder + "/" : "") + file);

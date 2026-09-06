@@ -14,7 +14,8 @@
   const slugify = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "car";
   const DRAFT_KEY = "driveease_admin_draft";
 
-  const state = { mode: "static", token: sessionStorage.getItem("de_token") || "", content: null, saved: null, section: "dashboard", dirty: false, savedAt: null, defaultPassword: false };
+  const online = () => state.mode === "server" || state.mode === "vercel";
+  const state = { mode: "static", configError: "", token: sessionStorage.getItem("de_token") || "", content: null, saved: null, section: "dashboard", dirty: false, savedAt: null, defaultPassword: false };
 
   /* ---------- path helpers ---------- */
   const getPath = (obj, path) => path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), obj);
@@ -32,11 +33,11 @@
     return data;
   }
   async function detectMode() {
-    try { const r = await fetch("/api/health", { cache: "no-store" }); const d = await r.json(); if (d.ok) { state.mode = "server"; return; } } catch (e) { /* static */ }
+    try { const r = await fetch("/api/health", { cache: "no-store" }); const d = await r.json(); if (d.ok) { state.mode = d.mode === "vercel" ? "vercel" : "server"; state.configError = d.configError || ""; return; } } catch (e) { /* static */ }
     state.mode = "static";
   }
   async function loadContent() {
-    if (state.mode === "server") return api("GET", "/api/content");
+    if (online()) return api("GET", "/api/content");
     try { const r = await fetch("data/content.json?v=" + Date.now(), { cache: "no-store" }); if (r.ok) return await r.json(); } catch (e) { /* file:// */ }
     if (window.SITE_CONTENT) return clone(window.SITE_CONTENT);
     throw new Error("Could not load content.json");
@@ -54,11 +55,11 @@
 
   /* ---------- auth ---------- */
   async function signIn(pw) {
-    if (state.mode === "server") { const d = await api("POST", "/api/login", { password: pw }); state.token = d.token; state.defaultPassword = !!d.defaultPassword; sessionStorage.setItem("de_token", d.token); }
+    if (online()) { const d = await api("POST", "/api/login", { password: pw }); state.token = d.token; state.defaultPassword = !!d.defaultPassword; sessionStorage.setItem("de_token", d.token); }
     await boot();
   }
   function signOut(silent) {
-    if (state.mode === "server" && state.token && !silent) api("POST", "/api/logout").catch(() => {});
+    if (online() && state.token && !silent) api("POST", "/api/logout").catch(() => {});
     state.token = ""; sessionStorage.removeItem("de_token");
     $("#app").hidden = true; $("#login").hidden = false; $("#loginPw").value = "";
     if (silent) { $("#loginErr").textContent = "Your session expired. Please sign in again."; $("#loginErr").hidden = false; }
@@ -112,7 +113,7 @@
     image: (path, label, o = {}) => { const v = getPath(state.content, path); return `<div class="field field--full"><label>${esc(label)}${o.help ? ` <small>${esc(o.help)}</small>` : ""}</label>
       <div class="imgfield"><div class="imgfield__preview">${v ? `<img src="${esc(v)}" alt="" />` : icon("image")}</div>
       <div style="display:grid;gap:10px"><input data-path="${esc(path)}" value="${esc(v)}" placeholder="assets/img/…" />
-      <div class="imgfield__actions"><button type="button" class="btn btn--light btn--sm" data-lib-for="${esc(path)}">${icon("image")} Choose from library</button><button type="button" class="btn btn--light btn--sm" data-upload-for="${esc(path)}" ${state.mode !== "server" ? "disabled title='Uploads need the server (npm start)'" : ""}>${icon("upload")} Upload new</button></div></div></div></div>`; },
+      <div class="imgfield__actions"><button type="button" class="btn btn--light btn--sm" data-lib-for="${esc(path)}">${icon("image")} Choose from library</button><button type="button" class="btn btn--light btn--sm" data-upload-for="${esc(path)}" ${!online() ? "disabled title='Uploads need the server (npm start)'" : ""}>${icon("upload")} Upload new</button></div></div></div></div>`; },
     tags: (path, label, o = {}) => `<div class="field field--full"><label>${esc(label)} <small>one per line</small></label><textarea data-path="${esc(path)}" data-type="lines" rows="${o.rows || 4}">${esc((getPath(state.content, path) || []).join("\n"))}</textarea></div>`,
   };
   function repeat(path, opts) {
@@ -166,6 +167,7 @@
       const kpi = (ic, cls, v, l) => `<div class="kpi"><div class="kpi__icon ${cls}">${icon(ic)}</div><div><div class="kpi__value">${v}</div><div class="kpi__label">${esc(l)}</div></div></div>`;
       root.innerHTML = `
         ${state.mode === "static" ? `<div class="notice notice--warn">${icon("alert-triangle")}<div><b>Static mode: changes are not saved to the server.</b> Edit freely, then use <b>Export</b> to download content.json and replace the file in the <code>data</code> folder. Run <code>npm start</code> (or double-click start.bat) to enable one-click publishing and photo uploads.</div></div>` : ""}
+        ${state.mode === "vercel" ? `<div class="notice notice--info">${icon("info")}<div><b>Hosted on Vercel.</b> Publishing commits to GitHub and Vercel redeploys automatically. Changes and new photos appear on the live site about a minute after you publish.</div></div>` : ""}
         ${state.defaultPassword ? `<div class="notice notice--danger">${icon("lock")}<div><b>You are using the default password (admin123).</b> <a href="#security" data-go="security">Change it now</a> so nobody else can edit your site.</div></div>` : ""}
         <div class="kpis">${kpi("car", "", fleet.length, "Cars in fleet")}${kpi("check-circle", "green", fleet.filter((x) => x.available !== false && !x.hidden).length, "Available now")}${kpi("star", "amber", fleet.filter((x) => x.featured).length, "Marked popular")}${kpi("image", "blue", fleet.reduce((n, x) => n + (x.images || []).length, 0), "Photos online")}</div>
         ${card("Quick actions", "Jump straight to the things you edit most.", `<div class="quick">
@@ -246,6 +248,7 @@
       bindFleetRows(root);
     },
     backups(root) {
+      if (state.mode === "vercel") { root.innerHTML = `<div class="notice notice--info">${icon("info")}<div><b>On Vercel every publish is a Git commit.</b> Your full history is in the GitHub repository. To roll back, revert the commit on GitHub (or restore an older <code>data/content.json</code>) and Vercel redeploys it.</div></div>`; return; }
       if (state.mode !== "server") { root.innerHTML = `<div class="notice notice--warn">${icon("alert-triangle")}<div><b>Backups need the server.</b> Run <code>npm start</code> to keep the last 30 published versions automatically.</div></div>`; return; }
       root.innerHTML = card("Published versions", "A copy is kept every time you publish. Restoring replaces the live content immediately.", `<div id="backupList">Loading…</div>`);
       api("GET", "/api/backups").then((d) => {
@@ -255,6 +258,7 @@
       }).catch((e) => ($("#backupList").textContent = e.message));
     },
     security(root) {
+      if (state.mode === "vercel") { root.innerHTML = `<div class="notice notice--info">${icon("lock")}<div><b>On Vercel the password is the ADMIN_PASSWORD environment variable.</b> Change it in Vercel → Project → Settings → Environment Variables, then redeploy. Existing sessions are signed out automatically.</div></div>`; return; }
       if (state.mode !== "server") { root.innerHTML = `<div class="notice notice--warn">${icon("alert-triangle")}<div><b>Password protection needs the server.</b> Run <code>npm start</code> to enable sign-in and password changes.</div></div>`; return; }
       root.innerHTML = card("Change admin password", "Use at least 6 characters. You can also set the ADMIN_PASSWORD environment variable on the server.", `<form id="pwForm" class="grid grid--3"><div class="field"><label>Current password</label><input type="password" id="pwCur" autocomplete="current-password" required /></div><div class="field"><label>New password</label><input type="password" id="pwNew" autocomplete="new-password" required minlength="6" /></div><div class="field"><label>Confirm new password</label><input type="password" id="pwNew2" autocomplete="new-password" required /></div><div class="field--full"><button class="btn btn--dark" type="submit">${icon("key")} Update password</button></div></form>`);
       $("#pwForm").onsubmit = async (e) => { e.preventDefault(); if ($("#pwNew").value !== $("#pwNew2").value) return toast("New passwords do not match", "error"); try { await api("POST", "/api/password", { current: $("#pwCur").value, next: $("#pwNew").value }); state.defaultPassword = false; toast("Password updated", "success"); $("#pwForm").reset(); } catch (err) { toast(err.message, "error"); } };
@@ -302,7 +306,7 @@
     if (drawer.tab === "details") pane = `<section class="card"><div class="grid grid--2">${f("name", "Car name", { placeholder: "Maruti Suzuki Swift", full: true })}${f("brand", "Brand", { placeholder: "Maruti Suzuki" })}<div class="field"><label>Category</label><input list="catList" data-car="category" value="${esc(c.category)}" /><datalist id="catList">${cats.map((x) => `<option value="${esc(x)}">`).join("")}</datalist></div>${f("seats", "Seats", { type: "number" })}${sel("fuel", "Fuel", ["Petrol", "Diesel", "CNG", "Electric", "Hybrid"])}${sel("transmission", "Transmission", ["Manual", "Automatic"])}<div></div>${f("description", "Description", { area: true, full: true, rows: 3, help: "shown in the details popup" })}<div class="field--full" style="display:flex;gap:24px;flex-wrap:wrap">${tog("featured", "Mark as Popular (shown first)")}${tog("available", "Available for booking")}${tog("hidden", "Hide from website")}</div></div></section>`;
     if (drawer.tab === "pricing") pane = `<section class="card"><div class="grid grid--2">${f("pricePerDay", "Price per day (₹)", { type: "number" })}${f("kmPerDay", "Kilometres included per day", { type: "number" })}${f("extraKmCharge", "Extra km charge (₹ per km)", { type: "number" })}${f("deposit", "Refundable deposit (₹)", { type: "number" })}<div class="field field--full"><label>Features <small>one per line, shown as pills</small></label><textarea data-car="features" data-type="lines" rows="6">${esc((c.features || []).join("\n"))}</textarea></div></div></section>`;
     if (drawer.tab === "photos") pane = `<section class="card">
-      <div class="dropzone" id="dropzone">${icon("upload")}<b>${state.mode === "server" ? "Drop photos here or click to upload" : "Uploads need the server (npm start)"}</b>JPG, PNG or WebP · resized automatically to 1600px</div>
+      <div class="dropzone" id="dropzone">${icon("upload")}<b>${online() ? "Drop photos here or click to upload" : "Uploads need the server (npm start)"}</b>JPG, PNG or WebP · resized automatically to 1600px</div>
       <div class="progress" id="uploadProgress" style="margin-top:10px" hidden><div></div></div>
       <div style="display:flex;gap:8px;margin:14px 0;flex-wrap:wrap"><button type="button" class="btn btn--light btn--sm" id="libBtn">${icon("image")} Add from photo library</button><button type="button" class="btn btn--light btn--sm" id="pathBtn">${icon("plus")} Add by file path</button><span style="color:var(--muted);font-size:13px;align-self:center">The first photo with the star is the cover shown on the card.</span></div>
       <div class="imggrid" id="imgGrid">${(c.images || []).map((src, i) => `<div class="imgtile ${src === c.cover ? "is-cover" : ""}">${src === c.cover ? `<span class="imgtile__cover">Cover</span>` : ""}<img src="${esc(src.replace(/(\d{2})\.jpg$/, "$1-sm.jpg"))}" onerror="this.onerror=null;this.src='${esc(src)}'" alt="" /><div class="imgtile__bar"><button type="button" data-img-cover="${i}" title="Set as cover">${icon("star")}</button><button type="button" data-img-move="${i}|-1" title="Move left" ${i === 0 ? "disabled" : ""}>${icon("chevron-left")}</button><button type="button" data-img-move="${i}|1" title="Move right" ${i === c.images.length - 1 ? "disabled" : ""}>${icon("chevron-right")}</button><button type="button" class="danger" data-img-remove="${i}" title="Remove">${icon("trash")}</button></div></div>`).join("") || `<p style="color:var(--muted);grid-column:1/-1">No photos yet. Upload some or pick from the library.</p>`}</div></section>`;
@@ -313,7 +317,7 @@
     $$("[data-img-move]", body).forEach((b) => (b.onclick = () => { const [i, d] = b.dataset.imgMove.split("|").map(Number); [c.images[i], c.images[i + d]] = [c.images[i + d], c.images[i]]; renderDrawer(); }));
     $$("[data-img-remove]", body).forEach((b) => (b.onclick = () => { const removed = c.images.splice(+b.dataset.imgRemove, 1)[0]; if (c.cover === removed) c.cover = c.images[0] || ""; renderDrawer(); }));
     const dz = $("#dropzone");
-    if (dz && state.mode === "server") {
+    if (dz && online()) {
       dz.onclick = () => pickFiles(true, (files) => addUploads(files));
       dz.ondragover = (e) => { e.preventDefault(); dz.classList.add("is-over"); }; dz.ondragleave = () => dz.classList.remove("is-over");
       dz.ondrop = (e) => { e.preventDefault(); dz.classList.remove("is-over"); addUploads(Array.from(e.dataTransfer.files)); };
@@ -354,14 +358,14 @@
     });
   }
   async function uploadFiles(files, folder, onProgress) {
-    if (state.mode !== "server") { toast("Uploads need the server. Run npm start.", "error"); return []; }
+    if (!online()) { toast("Uploads need the server. Run npm start.", "error"); return []; }
     const out = []; let n = 0;
     for (const f of files) {
       if (!f.type.startsWith("image/")) { n++; continue; }
       try { const data = await resizeImage(f); const d = await api("POST", "/api/upload", { name: f.name, data, folder }); out.push(d.path); } catch (e) { toast(e.message, "error"); }
       n++; if (onProgress) onProgress(Math.round((n / files.length) * 100));
     }
-    if (out.length) toast(`${out.length} photo${out.length > 1 ? "s" : ""} uploaded`, "success");
+    if (out.length) toast(state.mode === "vercel" ? `${out.length} photo${out.length > 1 ? "s" : ""} committed to GitHub. They appear on the site after Vercel finishes deploying (about a minute).` : `${out.length} photo${out.length > 1 ? "s" : ""} uploaded`, "success");
     return out;
   }
 
@@ -369,7 +373,7 @@
   const lib = { all: [], selected: new Set(), single: false, cb: null };
   async function openLibrary(opts, cb) {
     lib.single = !!opts.single; lib.cb = cb; lib.selected = new Set();
-    if (state.mode === "server") { try { lib.all = (await api("GET", "/api/images")).images; } catch (e) { lib.all = []; } }
+    if (online()) { try { lib.all = (await api("GET", "/api/images")).images; } catch (e) { lib.all = []; } }
     else lib.all = Array.from(new Set(state.content.fleet.flatMap((x) => x.images || []).concat(state.content.hero.image ? [state.content.hero.image] : [])));
     lib.exclude = new Set(opts.exclude || []);
     $("#libSearch").value = ""; renderLib(); $("#libModal").classList.add("is-open");
@@ -405,7 +409,7 @@
   async function save() {
     const btn = $("#saveBtn"); btn.disabled = true;
     try {
-      if (state.mode === "server") { const d = await api("PUT", "/api/content", state.content); state.saved = clone(state.content); state.savedAt = d.updatedAt; markDirty(); $("#savedAt").textContent = "Published " + new Date(d.updatedAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }); toast("Changes published to the live site", "success"); }
+      if (online()) { const d = await api("PUT", "/api/content", state.content); state.saved = clone(state.content); state.savedAt = d.updatedAt; markDirty(); $("#savedAt").textContent = "Published " + new Date(d.updatedAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }); toast(state.mode === "vercel" ? "Published to GitHub. Vercel is deploying now, live in about a minute." : "Changes published to the live site", "success"); }
       else { exportJson(); toast("Static mode: content.json downloaded. Replace data/content.json to publish.", ""); }
     } catch (e) { toast(e.message, "error"); }
     btn.disabled = false;
@@ -436,12 +440,12 @@
     try { state.content = await loadContent(); } catch (e) { toast(e.message, "error"); return; }
     migrate(state.content);
     state.saved = clone(state.content);
-    if (state.mode === "server" && state.token) { try { const me = await api("GET", "/api/me"); state.defaultPassword = !!me.defaultPassword; } catch (e) { return; } }
+    if (online() && state.token) { try { const me = await api("GET", "/api/me"); state.defaultPassword = !!me.defaultPassword; } catch (e) { return; } }
     // restore draft?
     try { const raw = localStorage.getItem(DRAFT_KEY); if (raw) { const d = JSON.parse(raw); if (JSON.stringify(d.content) !== JSON.stringify(state.saved) && confirm(`You have unsaved edits from ${new Date(d.at).toLocaleString("en-IN")}. Restore them?`)) state.content = d.content; else localStorage.removeItem(DRAFT_KEY); } } catch (e) { /* ignore */ }
     $("#login").hidden = true; $("#app").hidden = false;
     $("#sbBrand").innerHTML = `${esc(state.content.site.name)}<small>Admin panel</small>`;
-    $("#sbMode").innerHTML = state.mode === "server" ? `<span class="dot"></span><span>Connected · one-click publish</span>` : `<span class="dot off"></span><span>Static mode · export to publish</span>`;
+    $("#sbMode").innerHTML = state.mode === "server" ? `<span class="dot"></span><span>Connected · one-click publish</span>` : state.mode === "vercel" ? `<span class="dot"></span><span>Vercel · publishes via GitHub</span>` : `<span class="dot off"></span><span>Static mode · export to publish</span>`;
     if (state.content.updatedAt) $("#savedAt").textContent = "Last published " + new Date(state.content.updatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
     renderNav(); hydrateIcons(document);
     const hash = location.hash.slice(1); go(SECTIONS.some((s) => s.id === hash) ? hash : "dashboard"); markDirty();
@@ -451,6 +455,7 @@
     await detectMode();
     const lm = $("#loginMode");
     if (state.mode === "server") { lm.innerHTML = `<span class="dot"></span><span>Server connected. Default password is <b>admin123</b> until you change it.</span>`; }
+    else if (state.mode === "vercel") { lm.innerHTML = state.configError ? `<span class="dot off"></span><span><b>Vercel setup incomplete.</b> ${esc(state.configError)}. Add them in Vercel → Project → Settings → Environment Variables, then redeploy.</span>` : `<span class="dot"></span><span>Hosted on Vercel. Sign in with the ADMIN_PASSWORD you set in Vercel. Changes are committed to GitHub and go live after a short deploy.</span>`; }
     else { lm.innerHTML = `<span class="dot off"></span><span>Static mode (no server). You can edit and export content.json, but nothing is password-protected.</span>`; $("#loginPw").placeholder = "No password needed in static mode"; $("#loginPw").disabled = true; $("#loginBtn").innerHTML = icon("edit") + " Open editor"; }
     $("#loginForm").onsubmit = async (e) => { e.preventDefault(); $("#loginErr").hidden = true; $("#loginBtn").disabled = true; try { await signIn($("#loginPw").value); } catch (err) { $("#loginErr").textContent = err.message; $("#loginErr").hidden = false; } $("#loginBtn").disabled = false; };
     $("#logoutBtn").onclick = () => { if (state.dirty && !confirm("You have unsaved changes. Sign out anyway?")) return; signOut(); };
@@ -459,7 +464,7 @@
     $("#menuBtn").onclick = () => $("#sidebar").classList.toggle("is-open");
     document.addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && !$("#app").hidden) { e.preventDefault(); save(); } });
     bindDrawer(); bindLibrary(); bindPreview();
-    if (state.mode === "server" && state.token) { try { await boot(); } catch (e) { signOut(true); } }
+    if (online() && state.token) { try { await boot(); } catch (e) { signOut(true); } }
   }
   document.addEventListener("DOMContentLoaded", init);
 })();

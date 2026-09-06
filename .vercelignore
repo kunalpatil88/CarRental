@@ -1,0 +1,9 @@
+# Never upload these to Vercel
+server.js
+start.bat
+admin.config.json
+data/backups
+README.md
+.gitignore
+.vercelignore
+node_modules

@@ -53,6 +53,29 @@ admin.config.json     hashed admin password (created on first run, never served)
 <car folders>         your original, untouched photos
 ```
 
+## Deploying to Vercel (recommended, free)
+
+The site is static and the admin talks to small serverless functions in `api/`.
+Because Vercel's file system is read-only, **publishing from the admin commits to
+your GitHub repo**, and Vercel redeploys automatically (about a minute).
+
+1. **GitHub token** — github.com → Settings → Developer settings → Personal access
+   tokens → *Fine-grained tokens* → Generate. Repository access: only `CarRental`.
+   Permissions → Repository → **Contents: Read and write**. Copy the token.
+2. **Import** — vercel.com → Add New → Project → Import `CarRental`. Framework
+   preset: **Other**. Leave build and output settings empty.
+3. **Environment variables** (same screen, before Deploy):
+
+   | Name | Value |
+   | --- | --- |
+   | `ADMIN_PASSWORD` | the password for `/admin.html` |
+   | `GITHUB_TOKEN` | the token from step 1 |
+   | `GITHUB_REPO` | `kunalpatil88/CarRental` |
+   | `GITHUB_BRANCH` | `main` |
+
+4. **Deploy.** Site: `https://<project>.vercel.app/` · Admin: `/admin.html`.
+5. Every later `git push` and every admin publish redeploys automatically.
+
 ## Deploying
 
 **Own server / VPS:** copy the folder, run `npm start` (use `pm2` or a Windows
