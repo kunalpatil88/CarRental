@@ -10,7 +10,11 @@ window.SITE_CONTENT = {
     "hours": "Open 24 x 7 · Doorstep delivery available",
     "mapEmbed": "https://maps.app.goo.gl/DKGebZQqXh8PXAxS7",
     "announcement": "Weekend special: 10% off on bookings of 3 days or more. Call us for details.",
-    "announcementEnabled": true
+    "announcementEnabled": true,
+    "logo": "assets/img/uploads/site/mtpka7q1-pngtree-sport-car-logo-vector-6398339.jpg",
+    "logoHeight": 40,
+    "logoShowText": true,
+    "favicon": ""
   },
   "seo": {
     "title": "DriveEase · Self Drive Car Rental in Pune | Hatchbacks, SUVs, Luxury",
@@ -948,7 +952,7 @@ window.SITE_CONTENT = {
       ]
     }
   ],
-  "updatedAt": "2026-09-06T08:37:11.133Z",
+  "updatedAt": "2026-09-06T08:40:29.568Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
