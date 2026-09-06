@@ -25,7 +25,7 @@ window.SITE_CONTENT = {
     "primaryCta": "Explore the fleet",
     "primaryLink": "#fleet",
     "secondaryCta": "Chat on WhatsApp",
-    "image": "assets/img/hero.jpg",
+    "image": "assets/img/uploads/site/mtpk468g-download.jpg",
     "badges": [
       "No hidden charges",
       "Doorstep delivery",
@@ -948,7 +948,7 @@ window.SITE_CONTENT = {
       ]
     }
   ],
-  "updatedAt": "2026-09-06T08:31:13.059Z",
+  "updatedAt": "2026-09-06T08:35:47.161Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
