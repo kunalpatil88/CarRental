@@ -37,6 +37,12 @@ svg { width: 18px; height: 18px; flex: none; }
 .login__mode .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 .login__mode .dot.off { background: var(--amber); }
 
+/* Dynamic branding (logo from content) */
+.mark--img { background: none !important; box-shadow: none; width: auto !important; height: 42px !important; max-width: 150px; border-radius: 0 !important; }
+.mark--img img { height: 100%; width: auto; max-width: 150px; object-fit: contain; display: block; }
+.brand-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+.login__brand > span, .sidebar__brand > span { min-width: 0; }
+
 /* ---------- App shell ---------- */
 .app { display: grid; grid-template-columns: 264px 1fr; min-height: 100%; }
 .sidebar { background: var(--sidebar); color: #cbd5e1; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; }

@@ -43,13 +43,26 @@
     throw new Error("Could not load content.json");
   }
 
+  /* ---------- branding (business name + logo from content) ---------- */
+  function applyBranding(c) {
+    const site = (c && c.site) || {}; const name = site.name || "Admin";
+    ["#loginBrand", "#sidebarBrand"].forEach((sel) => {
+      const box = $(sel); if (!box) return; const mark = $(".mark", box); const nm = $(".brand-name", box);
+      if (site.logo) { mark.classList.add("mark--img"); mark.innerHTML = `<img src="${esc(site.logo)}" alt="${esc(name)}" />`; }
+      else { mark.classList.remove("mark--img"); mark.innerHTML = icon("car"); }
+      if (nm) nm.textContent = name;
+    });
+    document.title = "Admin · " + name;
+    if (site.favicon) { let l = document.querySelector('link[rel="icon"]'); if (!l) { l = document.createElement("link"); l.rel = "icon"; document.head.appendChild(l); } l.href = site.favicon; l.removeAttribute("type"); }
+  }
+
   /* ---------- dirty / draft ---------- */
   function markDirty() {
     state.dirty = JSON.stringify(state.content) !== JSON.stringify(state.saved);
     $("#dirtyBadge").hidden = !state.dirty;
     try { if (state.dirty) localStorage.setItem(DRAFT_KEY, JSON.stringify({ at: Date.now(), content: state.content })); else localStorage.removeItem(DRAFT_KEY); } catch (e) { /* ignore */ }
     clearTimeout(markDirty._p); markDirty._p = setTimeout(pushPreview, 250);
-    refreshNavCounts();
+    refreshNavCounts(); applyBranding(state.content);
   }
   window.addEventListener("beforeunload", (e) => { if (state.dirty) { e.preventDefault(); e.returnValue = ""; } });
 
@@ -445,7 +458,7 @@
     // restore draft?
     try { const raw = localStorage.getItem(DRAFT_KEY); if (raw) { const d = JSON.parse(raw); if (JSON.stringify(d.content) !== JSON.stringify(state.saved) && confirm(`You have unsaved edits from ${new Date(d.at).toLocaleString("en-IN")}. Restore them?`)) state.content = d.content; else localStorage.removeItem(DRAFT_KEY); } } catch (e) { /* ignore */ }
     $("#login").hidden = true; $("#app").hidden = false;
-    $("#sbBrand").innerHTML = `${esc(state.content.site.name)}<small>Admin panel</small>`;
+    applyBranding(state.content);
     $("#sbMode").innerHTML = state.mode === "server" ? `<span class="dot"></span><span>Connected · one-click publish</span>` : state.mode === "vercel" ? `<span class="dot"></span><span>Vercel · publishes via GitHub</span>` : `<span class="dot off"></span><span>Static mode · export to publish</span>`;
     if (state.content.updatedAt) $("#savedAt").textContent = "Last published " + new Date(state.content.updatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
     renderNav(); hydrateIcons(document);
@@ -454,6 +467,7 @@
   async function init() {
     hydrateIcons(document);
     await detectMode();
+    loadContent().then(applyBranding).catch(() => {});
     const lm = $("#loginMode");
     if (state.mode === "server") { lm.innerHTML = `<span class="dot"></span><span>Server connected. Default password is <b>admin123</b> until you change it.</span>`; }
     else if (state.mode === "vercel") { lm.innerHTML = state.configError ? `<span class="dot off"></span><span><b>Vercel setup incomplete.</b> ${esc(state.configError)}. Add them in Vercel → Project → Settings → Environment Variables, then redeploy.</span>` : `<span class="dot"></span><span>Hosted on Vercel. Sign in with the ADMIN_PASSWORD you set in Vercel. Changes are committed to GitHub and go live after a short deploy.</span>`; }
