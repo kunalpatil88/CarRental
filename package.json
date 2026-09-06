@@ -1,0 +1,13 @@
+{
+  "name": "driveease-self-drive-cars",
+  "version": "1.0.0",
+  "description": "Self-drive car rental website with a built-in admin panel. No dependencies.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED"
+}

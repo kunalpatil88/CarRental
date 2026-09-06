@@ -1,0 +1,1096 @@
+{
+ "bmw": [
+  {
+   "file": "01.jpg",
+   "w": 1045,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 808,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1051,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "baleno": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 810,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1080,
+   "h": 813,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 720,
+   "h": 547,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 720,
+   "h": 541,
+   "orient": "landscape"
+  }
+ ],
+ "baleno-2": [
+  {
+   "file": "01.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  },
+  {
+   "file": "10.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "11.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  },
+  {
+   "file": "12.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "13.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  }
+ ],
+ "brezza": [
+  {
+   "file": "01.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "mini-cooper": [
+  {
+   "file": "01.jpg",
+   "w": 1080,
+   "h": 1057,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1079,
+   "h": 744,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1080,
+   "h": 751,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1080,
+   "h": 786,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1080,
+   "h": 775,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1080,
+   "h": 815,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1080,
+   "h": 809,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1080,
+   "h": 813,
+   "orient": "landscape"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1080,
+   "h": 815,
+   "orient": "landscape"
+  }
+ ],
+ "creta": [
+  {
+   "file": "01.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1053,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1080,
+   "h": 810,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1046,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1080,
+   "h": 811,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1045,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "dzire": [
+  {
+   "file": "01.jpg",
+   "w": 720,
+   "h": 541,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 720,
+   "h": 949,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 720,
+   "h": 539,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 720,
+   "h": 541,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 720,
+   "h": 948,
+   "orient": "portrait"
+  }
+ ],
+ "ertiga-diesel": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 816,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1080,
+   "h": 809,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1041,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "ecosport": [
+  {
+   "file": "01.jpg",
+   "w": 1080,
+   "h": 489,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1067,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1080,
+   "h": 486,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 856,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "ertiga-2022": [
+  {
+   "file": "01.jpg",
+   "w": 1080,
+   "h": 808,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 807,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1080,
+   "h": 807,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1080,
+   "h": 805,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1080,
+   "h": 803,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1080,
+   "h": 797,
+   "orient": "landscape"
+  }
+ ],
+ "ertiga-2022-b": [
+  {
+   "file": "01.jpg",
+   "w": 1080,
+   "h": 810,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 960,
+   "h": 1280,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1280,
+   "h": 960,
+   "orient": "landscape"
+  }
+ ],
+ "fortuner": [
+  {
+   "file": "01.jpg",
+   "w": 720,
+   "h": 539,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 720,
+   "h": 535,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 720,
+   "h": 939,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "10.jpg",
+   "w": 1080,
+   "h": 816,
+   "orient": "landscape"
+  },
+  {
+   "file": "11.jpg",
+   "w": 1080,
+   "h": 819,
+   "orient": "landscape"
+  },
+  {
+   "file": "12.jpg",
+   "w": 1080,
+   "h": 798,
+   "orient": "landscape"
+  }
+ ],
+ "kiger": [
+  {
+   "file": "01.jpg",
+   "w": 1051,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 811,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1080,
+   "h": 806,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1080,
+   "h": 797,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1051,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1080,
+   "h": 804,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1051,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "ertiga-2023": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "10.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "11.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "12.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "13.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "14.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "15.jpg",
+   "w": 1054,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "fortuner-2023": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  }
+ ],
+ "swift-petrol": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 810,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1041,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 768,
+   "h": 1024,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1024,
+   "h": 768,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 768,
+   "h": 1024,
+   "orient": "portrait"
+  },
+  {
+   "file": "08.jpg",
+   "w": 576,
+   "h": 1024,
+   "orient": "portrait"
+  }
+ ],
+ "nexon": [
+  {
+   "file": "01.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "10.jpg",
+   "w": 1049,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "11.jpg",
+   "w": 1079,
+   "h": 798,
+   "orient": "landscape"
+  },
+  {
+   "file": "12.jpg",
+   "w": 1072,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "13.jpg",
+   "w": 1079,
+   "h": 802,
+   "orient": "landscape"
+  },
+  {
+   "file": "14.jpg",
+   "w": 1080,
+   "h": 808,
+   "orient": "landscape"
+  },
+  {
+   "file": "15.jpg",
+   "w": 1046,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "swift-diesel": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1400,
+   "h": 1400,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 720,
+   "h": 536,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 720,
+   "h": 966,
+   "orient": "portrait"
+  },
+  {
+   "file": "07.jpg",
+   "w": 720,
+   "h": 958,
+   "orient": "portrait"
+  },
+  {
+   "file": "08.jpg",
+   "w": 720,
+   "h": 539,
+   "orient": "landscape"
+  },
+  {
+   "file": "09.jpg",
+   "w": 720,
+   "h": 963,
+   "orient": "portrait"
+  }
+ ],
+ "thar": [
+  {
+   "file": "01.jpg",
+   "w": 1024,
+   "h": 768,
+   "orient": "landscape"
+  },
+  {
+   "file": "02.jpg",
+   "w": 768,
+   "h": 1024,
+   "orient": "portrait"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1024,
+   "h": 768,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 768,
+   "h": 1024,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1024,
+   "h": 768,
+   "orient": "landscape"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1080,
+   "h": 1080,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "10.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "11.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "12.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "13.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "14.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "15.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "16.jpg",
+   "w": 1045,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "17.jpg",
+   "w": 1080,
+   "h": 812,
+   "orient": "landscape"
+  },
+  {
+   "file": "18.jpg",
+   "w": 1080,
+   "h": 818,
+   "orient": "landscape"
+  }
+ ],
+ "venue": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "06.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1400,
+   "h": 1050,
+   "orient": "landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ],
+ "wagonr": [
+  {
+   "file": "01.jpg",
+   "w": 1049,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 809,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1053,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "04.jpg",
+   "w": 1047,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "05.jpg",
+   "w": 1080,
+   "h": 816,
+   "orient": "landscape"
+  }
+ ],
+ "swift-diesel-amt": [
+  {
+   "file": "01.jpg",
+   "w": 1050,
+   "h": 1400,
+   "orient": "portrait"
+  },
+  {
+   "file": "02.jpg",
+   "w": 1080,
+   "h": 810,
+   "orient": "landscape"
+  },
+  {
+   "file": "03.jpg",
+   "w": 1046,
+   "h": 1400,
+   "orient": "portrait"
+  }
+ ]
+}

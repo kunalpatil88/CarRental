@@ -1,0 +1,1063 @@
+window.SITE_CONTENT = {
+  "site": {
+    "name": "DriveEase",
+    "tagline": "Self Drive Cars in Pune",
+    "phone": "+91 98765 43210",
+    "whatsapp": "919876543210",
+    "email": "hello@driveease.in",
+    "address": "Shop 12, Baner Road, Pune, Maharashtra 411045",
+    "city": "Pune",
+    "hours": "Open 24 x 7 · Doorstep delivery available",
+    "mapEmbed": "https://www.google.com/maps?q=Baner+Road+Pune&output=embed",
+    "announcement": "Weekend special: 10% off on bookings of 3 days or more. Call us for details.",
+    "announcementEnabled": true
+  },
+  "seo": {
+    "title": "DriveEase · Self Drive Car Rental in Pune | Hatchbacks, SUVs, Luxury",
+    "description": "Rent self-drive cars in Pune from ₹1,399/day. Swift, Baleno, Creta, Thar, Fortuner, BMW and more. Doorstep delivery, 24x7 support, no hidden charges.",
+    "keywords": "self drive car rental pune, car hire pune, thar on rent pune, fortuner on rent pune"
+  },
+  "hero": {
+    "eyebrow": "Pune's trusted self-drive fleet",
+    "title": "Your road trip starts",
+    "titleHighlight": "with the right car.",
+    "subtitle": "22+ well-maintained cars, from budget hatchbacks to the Thar, Fortuner and BMW. Transparent pricing, doorstep delivery and 24x7 roadside support.",
+    "primaryCta": "Explore the fleet",
+    "primaryLink": "#fleet",
+    "secondaryCta": "Chat on WhatsApp",
+    "image": "assets/img/hero.jpg",
+    "badges": [
+      "No hidden charges",
+      "Doorstep delivery",
+      "24x7 support",
+      "Sanitised cars"
+    ]
+  },
+  "stats": [
+    {
+      "value": "22+",
+      "label": "Cars in fleet"
+    },
+    {
+      "value": "5,000+",
+      "label": "Happy customers"
+    },
+    {
+      "value": "4.8★",
+      "label": "Google rating"
+    },
+    {
+      "value": "24x7",
+      "label": "Roadside assistance"
+    }
+  ],
+  "features": {
+    "eyebrow": "Why DriveEase",
+    "title": "Renting a car should be the easiest part of your trip",
+    "items": [
+      {
+        "icon": "shield",
+        "title": "Fully insured fleet",
+        "text": "Every car carries comprehensive insurance. Drive with peace of mind on every highway."
+      },
+      {
+        "icon": "tag",
+        "title": "Transparent pricing",
+        "text": "What you see is what you pay. No surge, no surprise fees, refundable security deposit."
+      },
+      {
+        "icon": "truck",
+        "title": "Doorstep delivery",
+        "text": "We deliver and pick up anywhere in Pune, including the airport and railway station."
+      },
+      {
+        "icon": "clock",
+        "title": "Flexible durations",
+        "text": "Rent by the day, week or month. Extend your trip with a single WhatsApp message."
+      },
+      {
+        "icon": "sparkles",
+        "title": "Clean & serviced",
+        "text": "Cars are deep-cleaned and sanitised before every handover, with regular servicing."
+      },
+      {
+        "icon": "headset",
+        "title": "24x7 human support",
+        "text": "A real person picks up the phone at 2 AM. Roadside assistance across Maharashtra."
+      }
+    ]
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "On the road in three simple steps",
+    "steps": [
+      {
+        "title": "Pick your car",
+        "text": "Browse the fleet, compare prices and choose the car that fits your trip."
+      },
+      {
+        "title": "Share your documents",
+        "text": "Send your driving licence and Aadhaar on WhatsApp. Verification takes under 10 minutes."
+      },
+      {
+        "title": "Collect or get it delivered",
+        "text": "Pick up from our Baner hub or get the car delivered to your doorstep. Pay the deposit and go."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Reviews",
+    "title": "Loved by travellers across Pune",
+    "items": [
+      {
+        "name": "Rohit Deshmukh",
+        "role": "Weekend trip to Mahabaleshwar",
+        "rating": 5,
+        "text": "Took the Thar for a weekend. Car was spotless, delivery was on time and the team was super responsive. Will rent again!"
+      },
+      {
+        "name": "Sneha Kulkarni",
+        "role": "Family holiday, Goa",
+        "rating": 5,
+        "text": "Ertiga 2023 was perfect for our family of six. Great mileage and zero hassle with documents. Highly recommended."
+      },
+      {
+        "name": "Aditya Patil",
+        "role": "Wedding, Nashik",
+        "rating": 5,
+        "text": "Booked the BMW for my sister's wedding. Immaculate condition and a very fair price compared to other rentals."
+      },
+      {
+        "name": "Priya Menon",
+        "role": "Office commute, monthly rental",
+        "rating": 4,
+        "text": "Monthly Swift rental for my Hinjewadi commute. Transparent billing, no surprises."
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions, answered",
+    "items": [
+      {
+        "q": "What documents do I need?",
+        "a": "A valid driving licence (minimum 1 year old), Aadhaar card and one address proof. You must be at least 21 years old."
+      },
+      {
+        "q": "Is there a kilometre limit?",
+        "a": "Each booking includes 300 km per day. Extra kilometres are charged at the rate listed on the car's page."
+      },
+      {
+        "q": "Is fuel included?",
+        "a": "No. Cars are handed over with a certain fuel level and should be returned at the same level. Fuel used is on you."
+      },
+      {
+        "q": "Is a security deposit required?",
+        "a": "Yes, a refundable deposit is collected at pickup and returned within 24 hours of the car's return after a quick inspection."
+      },
+      {
+        "q": "Can I take the car outside Maharashtra?",
+        "a": "Yes, interstate travel is allowed. Please inform us in advance so we can prepare the required permits."
+      },
+      {
+        "q": "What happens in case of a breakdown?",
+        "a": "Call our 24x7 helpline. We arrange roadside assistance and a replacement car wherever possible."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Ready to hit the road?",
+    "text": "Tell us your dates and the car you like. We'll confirm availability within minutes on WhatsApp."
+  },
+  "footer": {
+    "about": "DriveEase is a Pune-based self-drive car rental service with a fleet of 22+ hatchbacks, sedans, SUVs and luxury cars. Doorstep delivery across Pune and PCMC.",
+    "copyright": "© {year} DriveEase Self Drive Cars. All rights reserved."
+  },
+  "fleet": [
+    {
+      "id": "thar",
+      "name": "Mahindra Thar 4x4",
+      "brand": "Mahindra",
+      "category": "SUV",
+      "seats": 4,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "pricePerDay": 3999,
+      "kmPerDay": 300,
+      "extraKmCharge": 12,
+      "deposit": 10000,
+      "featured": true,
+      "available": true,
+      "description": "Hard-top 4x4 with all-terrain tyres. The weekend getaway favourite for Lonavala, Mahabaleshwar and beyond.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/thar/07.jpg",
+      "images": [
+        "assets/img/cars/thar/07.jpg",
+        "assets/img/cars/thar/01.jpg",
+        "assets/img/cars/thar/02.jpg",
+        "assets/img/cars/thar/03.jpg",
+        "assets/img/cars/thar/04.jpg",
+        "assets/img/cars/thar/05.jpg",
+        "assets/img/cars/thar/08.jpg",
+        "assets/img/cars/thar/09.jpg",
+        "assets/img/cars/thar/10.jpg",
+        "assets/img/cars/thar/11.jpg",
+        "assets/img/cars/thar/12.jpg",
+        "assets/img/cars/thar/13.jpg",
+        "assets/img/cars/thar/14.jpg",
+        "assets/img/cars/thar/15.jpg",
+        "assets/img/cars/thar/16.jpg",
+        "assets/img/cars/thar/17.jpg",
+        "assets/img/cars/thar/18.jpg"
+      ]
+    },
+    {
+      "id": "fortuner-2023",
+      "name": "Toyota Fortuner 2023",
+      "brand": "Toyota",
+      "category": "Luxury",
+      "seats": 7,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "pricePerDay": 6999,
+      "kmPerDay": 300,
+      "extraKmCharge": 20,
+      "deposit": 20000,
+      "featured": true,
+      "available": true,
+      "description": "Brand-new 2023 Fortuner with premium interiors, cruise control and a commanding road presence.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Sunroof",
+        "Leather Seats",
+        "Cruise Control"
+      ],
+      "cover": "assets/img/cars/fortuner-2023/07.jpg",
+      "images": [
+        "assets/img/cars/fortuner-2023/07.jpg",
+        "assets/img/cars/fortuner-2023/01.jpg",
+        "assets/img/cars/fortuner-2023/02.jpg",
+        "assets/img/cars/fortuner-2023/03.jpg",
+        "assets/img/cars/fortuner-2023/04.jpg",
+        "assets/img/cars/fortuner-2023/05.jpg",
+        "assets/img/cars/fortuner-2023/06.jpg",
+        "assets/img/cars/fortuner-2023/08.jpg"
+      ]
+    },
+    {
+      "id": "mini-cooper",
+      "name": "Mini Cooper Countryman S",
+      "brand": "Mini",
+      "category": "Luxury",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Automatic",
+      "pricePerDay": 6999,
+      "kmPerDay": 300,
+      "extraKmCharge": 25,
+      "deposit": 20000,
+      "featured": true,
+      "available": true,
+      "description": "Iconic British design with a punchy turbo engine. Perfect for weddings, shoots and city cruising.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Sunroof",
+        "Leather Seats",
+        "Cruise Control"
+      ],
+      "cover": "assets/img/cars/mini-cooper/02.jpg",
+      "images": [
+        "assets/img/cars/mini-cooper/02.jpg",
+        "assets/img/cars/mini-cooper/01.jpg",
+        "assets/img/cars/mini-cooper/03.jpg",
+        "assets/img/cars/mini-cooper/04.jpg",
+        "assets/img/cars/mini-cooper/05.jpg",
+        "assets/img/cars/mini-cooper/06.jpg",
+        "assets/img/cars/mini-cooper/07.jpg",
+        "assets/img/cars/mini-cooper/08.jpg",
+        "assets/img/cars/mini-cooper/09.jpg"
+      ]
+    },
+    {
+      "id": "bmw",
+      "name": "BMW 3 Series",
+      "brand": "BMW",
+      "category": "Luxury",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Automatic",
+      "pricePerDay": 7999,
+      "kmPerDay": 300,
+      "extraKmCharge": 25,
+      "deposit": 25000,
+      "featured": true,
+      "available": true,
+      "description": "Executive luxury sedan with leather seats and sunroof. Arrive in style.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Sunroof",
+        "Leather Seats",
+        "Cruise Control"
+      ],
+      "cover": "assets/img/cars/bmw/02.jpg",
+      "images": [
+        "assets/img/cars/bmw/02.jpg",
+        "assets/img/cars/bmw/01.jpg",
+        "assets/img/cars/bmw/03.jpg"
+      ]
+    },
+    {
+      "id": "creta",
+      "name": "Hyundai Creta",
+      "brand": "Hyundai",
+      "category": "SUV",
+      "seats": 5,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "pricePerDay": 2999,
+      "kmPerDay": 300,
+      "extraKmCharge": 10,
+      "deposit": 5000,
+      "featured": true,
+      "available": true,
+      "description": "Spacious mid-size SUV with touchscreen infotainment and excellent highway comfort.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/creta/01.jpg",
+      "images": [
+        "assets/img/cars/creta/01.jpg",
+        "assets/img/cars/creta/02.jpg",
+        "assets/img/cars/creta/03.jpg",
+        "assets/img/cars/creta/04.jpg",
+        "assets/img/cars/creta/05.jpg",
+        "assets/img/cars/creta/06.jpg",
+        "assets/img/cars/creta/07.jpg"
+      ]
+    },
+    {
+      "id": "ertiga-2023",
+      "name": "Maruti Suzuki Ertiga 2023",
+      "brand": "Maruti Suzuki",
+      "category": "MUV",
+      "seats": 7,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 3199,
+      "kmPerDay": 300,
+      "extraKmCharge": 10,
+      "deposit": 5000,
+      "featured": true,
+      "available": true,
+      "description": "Latest-generation Ertiga. 7 seats, great mileage and ideal for family trips.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/ertiga-2023/05.jpg",
+      "images": [
+        "assets/img/cars/ertiga-2023/05.jpg",
+        "assets/img/cars/ertiga-2023/01.jpg",
+        "assets/img/cars/ertiga-2023/02.jpg",
+        "assets/img/cars/ertiga-2023/03.jpg",
+        "assets/img/cars/ertiga-2023/04.jpg",
+        "assets/img/cars/ertiga-2023/06.jpg",
+        "assets/img/cars/ertiga-2023/07.jpg",
+        "assets/img/cars/ertiga-2023/08.jpg",
+        "assets/img/cars/ertiga-2023/09.jpg",
+        "assets/img/cars/ertiga-2023/10.jpg",
+        "assets/img/cars/ertiga-2023/11.jpg",
+        "assets/img/cars/ertiga-2023/12.jpg",
+        "assets/img/cars/ertiga-2023/13.jpg",
+        "assets/img/cars/ertiga-2023/14.jpg",
+        "assets/img/cars/ertiga-2023/15.jpg"
+      ]
+    },
+    {
+      "id": "fortuner",
+      "name": "Toyota Fortuner",
+      "brand": "Toyota",
+      "category": "Luxury",
+      "seats": 7,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "pricePerDay": 6499,
+      "kmPerDay": 300,
+      "extraKmCharge": 20,
+      "deposit": 20000,
+      "featured": false,
+      "available": true,
+      "description": "White Fortuner 4x2 automatic. Powerful, comfortable and reliable for long drives.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Sunroof",
+        "Leather Seats",
+        "Cruise Control"
+      ],
+      "cover": "assets/img/cars/fortuner/06.jpg",
+      "images": [
+        "assets/img/cars/fortuner/06.jpg",
+        "assets/img/cars/fortuner/01.jpg",
+        "assets/img/cars/fortuner/02.jpg",
+        "assets/img/cars/fortuner/03.jpg",
+        "assets/img/cars/fortuner/04.jpg",
+        "assets/img/cars/fortuner/05.jpg",
+        "assets/img/cars/fortuner/07.jpg",
+        "assets/img/cars/fortuner/08.jpg",
+        "assets/img/cars/fortuner/09.jpg",
+        "assets/img/cars/fortuner/10.jpg",
+        "assets/img/cars/fortuner/11.jpg",
+        "assets/img/cars/fortuner/12.jpg"
+      ]
+    },
+    {
+      "id": "nexon",
+      "name": "Tata Nexon",
+      "brand": "Tata",
+      "category": "SUV",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 2499,
+      "kmPerDay": 300,
+      "extraKmCharge": 9,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "5-star safety rated compact SUV with a sunroof and premium sound system.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/nexon/04.jpg",
+      "images": [
+        "assets/img/cars/nexon/04.jpg",
+        "assets/img/cars/nexon/01.jpg",
+        "assets/img/cars/nexon/02.jpg",
+        "assets/img/cars/nexon/03.jpg",
+        "assets/img/cars/nexon/05.jpg",
+        "assets/img/cars/nexon/06.jpg",
+        "assets/img/cars/nexon/07.jpg",
+        "assets/img/cars/nexon/08.jpg",
+        "assets/img/cars/nexon/09.jpg",
+        "assets/img/cars/nexon/10.jpg",
+        "assets/img/cars/nexon/11.jpg",
+        "assets/img/cars/nexon/12.jpg",
+        "assets/img/cars/nexon/13.jpg",
+        "assets/img/cars/nexon/14.jpg",
+        "assets/img/cars/nexon/15.jpg"
+      ]
+    },
+    {
+      "id": "brezza",
+      "name": "Maruti Suzuki Brezza",
+      "brand": "Maruti Suzuki",
+      "category": "SUV",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 2499,
+      "kmPerDay": 300,
+      "extraKmCharge": 9,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "Compact SUV with high ground clearance and low running costs.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/brezza/04.jpg",
+      "images": [
+        "assets/img/cars/brezza/04.jpg",
+        "assets/img/cars/brezza/01.jpg",
+        "assets/img/cars/brezza/02.jpg",
+        "assets/img/cars/brezza/03.jpg",
+        "assets/img/cars/brezza/05.jpg"
+      ]
+    },
+    {
+      "id": "venue",
+      "name": "Hyundai Venue",
+      "brand": "Hyundai",
+      "category": "SUV",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 2299,
+      "kmPerDay": 300,
+      "extraKmCharge": 9,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "Feature-rich compact SUV with connected car tech and a smooth ride.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/venue/07.jpg",
+      "images": [
+        "assets/img/cars/venue/07.jpg",
+        "assets/img/cars/venue/01.jpg",
+        "assets/img/cars/venue/02.jpg",
+        "assets/img/cars/venue/03.jpg",
+        "assets/img/cars/venue/04.jpg",
+        "assets/img/cars/venue/05.jpg",
+        "assets/img/cars/venue/06.jpg",
+        "assets/img/cars/venue/08.jpg"
+      ]
+    },
+    {
+      "id": "kiger",
+      "name": "Renault Kiger",
+      "brand": "Renault",
+      "category": "SUV",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 1999,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 4000,
+      "featured": false,
+      "available": true,
+      "description": "Stylish, fuel-efficient compact SUV with a roomy cabin.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/kiger/02.jpg",
+      "images": [
+        "assets/img/cars/kiger/02.jpg",
+        "assets/img/cars/kiger/01.jpg",
+        "assets/img/cars/kiger/03.jpg",
+        "assets/img/cars/kiger/04.jpg",
+        "assets/img/cars/kiger/05.jpg",
+        "assets/img/cars/kiger/06.jpg",
+        "assets/img/cars/kiger/07.jpg"
+      ]
+    },
+    {
+      "id": "ecosport",
+      "name": "Ford EcoSport",
+      "brand": "Ford",
+      "category": "SUV",
+      "seats": 5,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "pricePerDay": 2299,
+      "kmPerDay": 300,
+      "extraKmCharge": 9,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "Sturdy compact SUV with a torquey diesel engine and great highway manners.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/ecosport/03.jpg",
+      "images": [
+        "assets/img/cars/ecosport/03.jpg",
+        "assets/img/cars/ecosport/01.jpg",
+        "assets/img/cars/ecosport/02.jpg",
+        "assets/img/cars/ecosport/04.jpg"
+      ]
+    },
+    {
+      "id": "ertiga-2022",
+      "name": "Maruti Suzuki Ertiga 2022",
+      "brand": "Maruti Suzuki",
+      "category": "MUV",
+      "seats": 7,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 2999,
+      "kmPerDay": 300,
+      "extraKmCharge": 10,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "Silver 2022 Ertiga with 7 seats and ample boot space for luggage.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/ertiga-2022/05.jpg",
+      "images": [
+        "assets/img/cars/ertiga-2022/05.jpg",
+        "assets/img/cars/ertiga-2022/01.jpg",
+        "assets/img/cars/ertiga-2022/02.jpg",
+        "assets/img/cars/ertiga-2022/03.jpg",
+        "assets/img/cars/ertiga-2022/04.jpg",
+        "assets/img/cars/ertiga-2022/06.jpg"
+      ]
+    },
+    {
+      "id": "ertiga-2022-b",
+      "name": "Maruti Suzuki Ertiga 2022 (White)",
+      "brand": "Maruti Suzuki",
+      "category": "MUV",
+      "seats": 7,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 2999,
+      "kmPerDay": 300,
+      "extraKmCharge": 10,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "White 2022 Ertiga. Comfortable 7-seater for group outings and airport runs.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/ertiga-2022-b/01.jpg",
+      "images": [
+        "assets/img/cars/ertiga-2022-b/01.jpg",
+        "assets/img/cars/ertiga-2022-b/02.jpg",
+        "assets/img/cars/ertiga-2022-b/03.jpg",
+        "assets/img/cars/ertiga-2022-b/04.jpg",
+        "assets/img/cars/ertiga-2022-b/05.jpg",
+        "assets/img/cars/ertiga-2022-b/06.jpg"
+      ]
+    },
+    {
+      "id": "ertiga-diesel",
+      "name": "Maruti Suzuki Ertiga Diesel",
+      "brand": "Maruti Suzuki",
+      "category": "MUV",
+      "seats": 7,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "pricePerDay": 2799,
+      "kmPerDay": 300,
+      "extraKmCharge": 10,
+      "deposit": 5000,
+      "featured": false,
+      "available": true,
+      "description": "Diesel Ertiga with excellent mileage for long outstation trips.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/ertiga-diesel/02.jpg",
+      "images": [
+        "assets/img/cars/ertiga-diesel/02.jpg",
+        "assets/img/cars/ertiga-diesel/01.jpg",
+        "assets/img/cars/ertiga-diesel/03.jpg",
+        "assets/img/cars/ertiga-diesel/04.jpg"
+      ]
+    },
+    {
+      "id": "dzire",
+      "name": "Maruti Suzuki Dzire",
+      "brand": "Maruti Suzuki",
+      "category": "Sedan",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 1999,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 4000,
+      "featured": false,
+      "available": true,
+      "description": "India's favourite compact sedan. Comfortable, economical and easy to drive.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/dzire/03.jpg",
+      "images": [
+        "assets/img/cars/dzire/03.jpg",
+        "assets/img/cars/dzire/01.jpg",
+        "assets/img/cars/dzire/02.jpg",
+        "assets/img/cars/dzire/04.jpg",
+        "assets/img/cars/dzire/05.jpg"
+      ]
+    },
+    {
+      "id": "baleno",
+      "name": "Maruti Suzuki Baleno",
+      "brand": "Maruti Suzuki",
+      "category": "Hatchback",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 1799,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 3000,
+      "featured": false,
+      "available": true,
+      "description": "Premium hatchback with a spacious cabin and 20+ kmpl mileage.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/baleno/02.jpg",
+      "images": [
+        "assets/img/cars/baleno/02.jpg",
+        "assets/img/cars/baleno/01.jpg",
+        "assets/img/cars/baleno/03.jpg",
+        "assets/img/cars/baleno/04.jpg",
+        "assets/img/cars/baleno/05.jpg"
+      ]
+    },
+    {
+      "id": "baleno-2",
+      "name": "Maruti Suzuki Baleno (Grey)",
+      "brand": "Maruti Suzuki",
+      "category": "Hatchback",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 1799,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 3000,
+      "featured": false,
+      "available": true,
+      "description": "Grey Baleno with touchscreen, rear camera and automatic climate control.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/baleno-2/09.jpg",
+      "images": [
+        "assets/img/cars/baleno-2/09.jpg",
+        "assets/img/cars/baleno-2/01.jpg",
+        "assets/img/cars/baleno-2/02.jpg",
+        "assets/img/cars/baleno-2/03.jpg",
+        "assets/img/cars/baleno-2/04.jpg",
+        "assets/img/cars/baleno-2/05.jpg",
+        "assets/img/cars/baleno-2/06.jpg",
+        "assets/img/cars/baleno-2/07.jpg",
+        "assets/img/cars/baleno-2/08.jpg",
+        "assets/img/cars/baleno-2/10.jpg",
+        "assets/img/cars/baleno-2/11.jpg",
+        "assets/img/cars/baleno-2/12.jpg",
+        "assets/img/cars/baleno-2/13.jpg"
+      ]
+    },
+    {
+      "id": "swift-diesel-amt",
+      "name": "Maruti Suzuki Swift Diesel AMT",
+      "brand": "Maruti Suzuki",
+      "category": "Hatchback",
+      "seats": 5,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "pricePerDay": 1899,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 3000,
+      "featured": false,
+      "available": true,
+      "description": "Red Swift with clutch-free AMT gearbox. Zippy and effortless in city traffic.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/swift-diesel-amt/02.jpg",
+      "images": [
+        "assets/img/cars/swift-diesel-amt/02.jpg",
+        "assets/img/cars/swift-diesel-amt/01.jpg",
+        "assets/img/cars/swift-diesel-amt/03.jpg"
+      ]
+    },
+    {
+      "id": "swift-petrol",
+      "name": "Maruti Suzuki Swift Petrol",
+      "brand": "Maruti Suzuki",
+      "category": "Hatchback",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 1599,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 3000,
+      "featured": false,
+      "available": true,
+      "description": "Fun-to-drive petrol Swift. Compact, peppy and pocket-friendly.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/swift-petrol/02.jpg",
+      "images": [
+        "assets/img/cars/swift-petrol/02.jpg",
+        "assets/img/cars/swift-petrol/01.jpg",
+        "assets/img/cars/swift-petrol/03.jpg",
+        "assets/img/cars/swift-petrol/04.jpg",
+        "assets/img/cars/swift-petrol/05.jpg",
+        "assets/img/cars/swift-petrol/06.jpg",
+        "assets/img/cars/swift-petrol/07.jpg",
+        "assets/img/cars/swift-petrol/08.jpg"
+      ]
+    },
+    {
+      "id": "swift-diesel",
+      "name": "Maruti Suzuki Swift Diesel",
+      "brand": "Maruti Suzuki",
+      "category": "Hatchback",
+      "seats": 5,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "pricePerDay": 1699,
+      "kmPerDay": 300,
+      "extraKmCharge": 8,
+      "deposit": 3000,
+      "featured": false,
+      "available": true,
+      "description": "Diesel Swift with strong mileage for budget outstation trips.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/swift-diesel/08.jpg",
+      "images": [
+        "assets/img/cars/swift-diesel/08.jpg",
+        "assets/img/cars/swift-diesel/01.jpg",
+        "assets/img/cars/swift-diesel/02.jpg",
+        "assets/img/cars/swift-diesel/03.jpg",
+        "assets/img/cars/swift-diesel/04.jpg",
+        "assets/img/cars/swift-diesel/05.jpg",
+        "assets/img/cars/swift-diesel/06.jpg",
+        "assets/img/cars/swift-diesel/07.jpg",
+        "assets/img/cars/swift-diesel/09.jpg"
+      ]
+    },
+    {
+      "id": "wagonr",
+      "name": "Maruti Suzuki WagonR",
+      "brand": "Maruti Suzuki",
+      "category": "Hatchback",
+      "seats": 5,
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "pricePerDay": 1399,
+      "kmPerDay": 300,
+      "extraKmCharge": 7,
+      "deposit": 3000,
+      "featured": false,
+      "available": true,
+      "description": "Tall-boy hatchback with easy ingress, big boot and best-in-class economy.",
+      "features": [
+        "Air Conditioning",
+        "Music System",
+        "Power Steering",
+        "Airbags",
+        "Rear Camera",
+        "Bluetooth"
+      ],
+      "cover": "assets/img/cars/wagonr/02.jpg",
+      "images": [
+        "assets/img/cars/wagonr/02.jpg",
+        "assets/img/cars/wagonr/01.jpg",
+        "assets/img/cars/wagonr/03.jpg",
+        "assets/img/cars/wagonr/04.jpg",
+        "assets/img/cars/wagonr/05.jpg"
+      ]
+    }
+  ],
+  "updatedAt": "2026-09-06T06:56:41.070Z",
+  "social": {
+    "showInHeader": true,
+    "showInFooter": true,
+    "showInContact": true,
+    "shareButtons": true,
+    "links": [
+      {
+        "platform": "instagram",
+        "label": "Instagram",
+        "url": "https://instagram.com/",
+        "enabled": true
+      },
+      {
+        "platform": "facebook",
+        "label": "Facebook",
+        "url": "https://facebook.com/",
+        "enabled": true
+      },
+      {
+        "platform": "youtube",
+        "label": "YouTube",
+        "url": "https://youtube.com/@driveease",
+        "enabled": true
+      },
+      {
+        "platform": "google",
+        "label": "Google Reviews",
+        "url": "https://g.page/r/driveease/review",
+        "enabled": true
+      },
+      {
+        "platform": "x",
+        "label": "X (Twitter)",
+        "url": "",
+        "enabled": false
+      },
+      {
+        "platform": "linkedin",
+        "label": "LinkedIn",
+        "url": "",
+        "enabled": false
+      },
+      {
+        "platform": "threads",
+        "label": "Threads",
+        "url": "",
+        "enabled": false
+      },
+      {
+        "platform": "telegram",
+        "label": "Telegram",
+        "url": "",
+        "enabled": false
+      }
+    ],
+    "section": {
+      "enabled": true,
+      "eyebrow": "Follow us",
+      "title": "See the fleet in action",
+      "text": "Fresh photos, new arrivals and weekend offers, posted first on Instagram. Tag us in your road-trip stories and we will share them.",
+      "handle": "@driveease",
+      "ctaText": "Follow on Instagram",
+      "ctaLink": "https://instagram.com/driveease",
+      "posts": []
+    }
+  },
+  "promos": {
+    "enabled": true,
+    "interval": 5,
+    "showArrows": true,
+    "showDots": true,
+    "pauseOnHover": true,
+    "items": [
+      {
+        "image": "assets/img/promos/diwali-offer.jpg",
+        "title": "Diwali Special: 20% off all SUVs",
+        "text": "",
+        "link": "#fleet",
+        "enabled": true,
+        "startDate": "",
+        "endDate": "",
+        "caption": "",
+        "fit": "auto",
+        "ctaText": ""
+      },
+      {
+        "image": "assets/img/promos/weekend-getaway.jpg",
+        "title": "Weekend deal on the Thar",
+        "text": "",
+        "link": "#car-thar",
+        "enabled": true,
+        "startDate": "",
+        "endDate": "",
+        "caption": "",
+        "fit": "auto",
+        "ctaText": ""
+      },
+      {
+        "image": "assets/img/promos/monthly-rental.jpg",
+        "title": "Monthly rental plans",
+        "text": "",
+        "link": "#contact",
+        "enabled": true,
+        "startDate": "",
+        "endDate": "",
+        "caption": "",
+        "fit": "auto",
+        "ctaText": ""
+      }
+    ]
+  }
+};

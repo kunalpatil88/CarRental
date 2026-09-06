@@ -1,0 +1,37 @@
+# Secrets and runtime data
+admin.config.json
+data/backups/
+node_modules/
+
+# Photos uploaded through the admin panel (keep them out of git; they live on the server)
+assets/img/uploads/
+
+# Original, unoptimised photo folders (152 MB). The site uses the optimised copies in assets/img/cars.
+BMW/
+baleno/
+baleno 2/
+brezza/
+cooper/
+creta/
+dezire/
+disel ertiga/
+eco sport/
+ertiga 2022/
+ertiga 2022 + 2/
+fortuner/
+kigar/
+new disel amt/
+new ertiga/
+new fortuner/
+new petrol swift/
+nexon/
+swift diesel/
+thar/
+veneu/
+wagnore/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/

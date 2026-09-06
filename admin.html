@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · DriveEase</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/admin.css" />
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login" id="login">
+    <div class="login__card">
+      <div class="login__brand"><span class="mark" data-icon="car"></span><span>DriveEase<small>Admin panel</small></span></div>
+      <h1>Sign in</h1>
+      <p>Manage every section of your home page.</p>
+      <form id="loginForm">
+        <div class="login__err" id="loginErr" hidden></div>
+        <div class="field"><label for="loginPw">Password</label><input type="password" id="loginPw" autocomplete="current-password" placeholder="••••••••" autofocus /></div>
+        <button class="btn btn--primary btn--block" type="submit" id="loginBtn"><span data-icon="lock"></span> Sign in</button>
+      </form>
+      <div class="login__mode" id="loginMode"><span class="dot"></span><span>Checking server…</span></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app" id="app" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand"><span class="mark" data-icon="car"></span><span id="sbBrand">DriveEase<small>Admin panel</small></span></div>
+      <div class="sidebar__mode" id="sbMode"><span class="dot"></span><span>Connected to server</span></div>
+      <div class="sidebar__group">Overview</div>
+      <nav id="navMain"></nav>
+      <div class="sidebar__group">Home page content</div>
+      <nav id="navContent"></nav>
+      <div class="sidebar__group">System</div>
+      <nav id="navSystem"></nav>
+      <div class="sidebar__foot">
+        <a href="index.html" target="_blank" rel="noopener"><span data-icon="external-link"></span> Open live site</a>
+        <button type="button" id="logoutBtn"><span data-icon="log-out"></span> Sign out</button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0">
+          <button class="btn btn--light btn--icon menu-btn" id="menuBtn" aria-label="Menu"><span data-icon="menu"></span></button>
+          <div style="min-width:0"><h1 id="pageTitle">Dashboard</h1><div class="topbar__sub" id="pageSub"></div></div>
+        </div>
+        <div class="topbar__actions">
+          <span class="dirty" id="dirtyBadge" hidden>Unsaved changes</span>
+          <span class="saved" id="savedAt"></span>
+          <button class="btn btn--light" id="previewBtn"><span data-icon="eye"></span><span>Preview</span></button>
+          <button class="btn btn--light" id="exportBtn" title="Download content.json"><span data-icon="download"></span><span>Export</span></button>
+          <button class="btn btn--light" id="importBtn" title="Import content.json"><span data-icon="upload"></span><span>Import</span></button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden />
+          <button class="btn btn--primary" id="saveBtn"><span data-icon="save"></span><span>Publish changes</span></button>
+        </div>
+      </header>
+      <main class="content" id="content"></main>
+    </div>
+  </div>
+
+  <!-- CAR EDITOR DRAWER -->
+  <div class="drawer" id="drawer">
+    <div class="drawer__backdrop" data-drawer-close></div>
+    <div class="drawer__panel">
+      <div class="drawer__head">
+        <div><h2 id="drawerTitle">Edit car</h2><p id="drawerSub"></p></div>
+        <button class="btn btn--light btn--icon" data-drawer-close aria-label="Close"><span data-icon="x"></span></button>
+      </div>
+      <div class="drawer__body" id="drawerBody"></div>
+      <div class="drawer__foot">
+        <button class="btn btn--danger" id="drawerDelete"><span data-icon="trash"></span> Delete car</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn--light" data-drawer-close>Cancel</button>
+          <button class="btn btn--dark" id="drawerDone"><span data-icon="check"></span> Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE LIBRARY MODAL -->
+  <div class="modal" id="libModal">
+    <div class="modal__backdrop" data-lib-close></div>
+    <div class="modal__panel">
+      <div class="modal__head"><h3>Choose from photo library</h3><button class="btn btn--light btn--icon" data-lib-close aria-label="Close"><span data-icon="x"></span></button></div>
+      <div class="modal__body">
+        <div class="field" style="margin-bottom:14px"><input type="search" id="libSearch" placeholder="Filter by folder or file name…" /></div>
+        <div class="lib" id="libGrid"></div>
+      </div>
+      <div class="modal__foot"><span id="libCount" style="margin-right:auto;color:var(--muted);font-size:13px"></span><button class="btn btn--light" data-lib-close>Cancel</button><button class="btn btn--primary" id="libUse">Use selected</button></div>
+    </div>
+  </div>
+
+  <!-- PREVIEW MODAL -->
+  <div class="modal" id="previewModal">
+    <div class="modal__backdrop" data-preview-close></div>
+    <div class="modal__panel" style="width:min(1300px,100%);height:calc(100vh - 40px)">
+      <div class="modal__head"><h3>Live preview <span style="color:var(--muted);font-weight:500;font-size:13px">· shows your unsaved changes</span></h3>
+        <div style="display:flex;gap:8px"><button class="btn btn--light btn--sm" id="previewMobile">Mobile</button><button class="btn btn--light btn--sm" id="previewDesktop">Desktop</button><button class="btn btn--light btn--icon" data-preview-close aria-label="Close"><span data-icon="x"></span></button></div></div>
+      <div class="modal__body" style="padding:0;background:#e2e8f0;display:grid;place-items:start center;flex:1"><iframe id="previewFrame" title="Preview" style="width:100%;height:100%;border:0;background:#fff;transition:width .2s"></iframe></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
