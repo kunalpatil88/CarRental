@@ -1,14 +1,14 @@
 window.SITE_CONTENT = {
   "site": {
-    "name": "DriveEase",
+    "name": "Dp Self Drive Car Rental",
     "tagline": "Self Drive Cars in Pune",
-    "phone": "+91 98765 43210",
-    "whatsapp": "919876543210",
-    "email": "hello@driveease.in",
-    "address": "Shop 12, Baner Road, Pune, Maharashtra 411045",
+    "phone": "+91 9130012143",
+    "whatsapp": "9130013143",
+    "email": "dpselfdrivecars@gmail.com",
+    "address": "Madhu Heights green park, Bawadi Rd, Wagholi, Pune, Maharashtra 412207",
     "city": "Pune",
     "hours": "Open 24 x 7 · Doorstep delivery available",
-    "mapEmbed": "https://www.google.com/maps?q=Baner+Road+Pune&output=embed",
+    "mapEmbed": "https://www.google.com/maps/place/Madhu+Heights/@18.593226,73.985979,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2c50062c94f13:0xcf24fa1f6d6826ca!8m2!3d18.593226!4d73.985979!16s%2Fg%2F11njbddzs6?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "announcement": "Weekend special: 10% off on bookings of 3 days or more. Call us for details.",
     "announcementEnabled": true
   },
@@ -948,7 +948,7 @@ window.SITE_CONTENT = {
       ]
     }
   ],
-  "updatedAt": "2026-09-06T06:56:41.070Z",
+  "updatedAt": "2026-09-06T08:19:27.650Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
