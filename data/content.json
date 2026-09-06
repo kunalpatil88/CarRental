@@ -176,7 +176,7 @@
   },
   "footer": {
     "about": "DriveEase is a Pune-based self-drive car rental service with a fleet of 22+ hatchbacks, sedans, SUVs and luxury cars. Doorstep delivery across Pune and PCMC.",
-    "copyright": "© {year} DriveEase Self Drive Cars. All rights reserved."
+    "copyright": "© {year} DP Self Drive Cars. All rights reserved."
   },
   "fleet": [
     {
@@ -952,7 +952,7 @@
       ]
     }
   ],
-  "updatedAt": "2026-09-06T08:40:29.568Z",
+  "updatedAt": "2026-09-06T08:44:56.398Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
