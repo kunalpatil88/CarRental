@@ -25,7 +25,7 @@
     "primaryCta": "Explore the fleet",
     "primaryLink": "#fleet",
     "secondaryCta": "Chat on WhatsApp",
-    "image": "assets/img/uploads/site/mtpk468g-download.jpg",
+    "image": "assets/img/cars/mini-cooper/02.jpg",
     "badges": [
       "No hidden charges",
       "Doorstep delivery",
@@ -948,7 +948,7 @@
       ]
     }
   ],
-  "updatedAt": "2026-09-06T08:35:47.161Z",
+  "updatedAt": "2026-09-06T08:37:11.133Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
