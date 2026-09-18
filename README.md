@@ -60,19 +60,24 @@ admin.config.json     hashed admin password (created on first run, never served)
 ## Deploying to Cloudflare (live setup)
 
 The site runs as the Cloudflare Worker `carrental` ([wrangler.jsonc](wrangler.jsonc)). Every push to
-`main` redeploys it. The code, design and built-in photos are static files from this repo; everything
-the admin changes is stored in the D1 database `carrental-db`, so **Publish is live in seconds with no
-git push**:
+`main` redeploys it. The code and design are static files from this repo. Everything the admin changes
+is stored in Cloudflare (the D1 database `carrental-db` and the R2 bucket `carrental-photos`), so
+**Publish is live in seconds with no git push**:
 
 | What | Where |
 | --- | --- |
 | Cars, prices, all site text | D1 `content` (the live version + 30 backups) |
-| Photos uploaded in the admin | D1 `images` (max 1.9 MB each after resizing) |
+| All photos (car photos, posters, uploads) | R2 bucket `carrental-photos`, folders `cars/`, `promos/`, `uploads/` (max 8 MB each) |
 | Enquiries, visitor analytics | D1 `enquiries`, `analytics_*` |
 | Admin password | Secret `ADMIN_PASSWORD` for the first login; after a change in Admin → Security, a hash in D1 `settings` |
 
 - Until the admin publishes once, the site shows `data/content.json` from the repo. After that, edits
   to that file in git are ignored. To load a file into the live site, use Admin → **Import**, then **Publish**.
+- Photos can be managed in Admin → Library (upload, pick, delete) or in Cloudflare → R2 → `carrental-photos`
+  (browse, upload, delete). A photo deleted in either place stays deleted.
+- Photos added to `assets/img/` in git are copied into R2 by the Worker's cron trigger within a few minutes
+  of the deploy. Once copied, R2 is the source: replacing a file in git does not update it, so replace it in
+  the admin or R2 instead.
 - Keep a copy now and then with Admin → **Export**.
 - Forgot a changed password? Cloudflare → Storage & databases → D1 → `carrental-db` → Console:
   `DELETE FROM settings WHERE key = 'admin_password';` The `ADMIN_PASSWORD` secret works again.

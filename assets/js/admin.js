@@ -59,7 +59,7 @@
     return data;
   }
   async function detectMode() {
-    try { const r = await fetch("/api/health", { cache: "no-store" }); const d = await r.json(); if (d.ok) { state.mode = d.mode === "vercel" ? "vercel" : "server"; state.configError = d.configError || ""; state.enq.supported = !!d.enquiries; state.an.supported = !!d.analytics; return; } } catch (e) { /* static */ }
+    try { const r = await fetch("/api/health", { cache: "no-store" }); const d = await r.json(); if (d.ok) { state.mode = d.mode === "vercel" ? "vercel" : "server"; state.configError = d.configError || ""; state.enq.supported = !!d.enquiries; state.an.supported = !!d.analytics; state.photoStore = !!d.photos; return; } } catch (e) { /* static */ }
     state.mode = "static";
   }
   async function loadContent() {
@@ -865,7 +865,7 @@ ${site.name}`;
   const lib = { all: [], selected: new Set(), single: false, cb: null, exclude: new Set() };
   async function openLibrary(opts, cb) {
     lib.single = !!opts.single; lib.cb = cb; lib.selected = new Set(); lib.exclude = new Set(opts.exclude || []);
-    $("#libGrid").innerHTML = `<p class="empty">Loading photos…</p>`; $("#libSearch").value = ""; $("#libDlg").showModal();
+    $("#libGrid").innerHTML = `<p class="empty">Loading photos…</p>`; $("#libSearch").value = ""; $("#libDelete").hidden = !state.photoStore; $("#libDlg").showModal();
     if (online()) { try { lib.all = (await api("GET", "/api/images")).images; } catch (e) { lib.all = []; toast(e.message, "error"); } }
     else lib.all = Array.from(new Set(state.content.fleet.flatMap((x) => x.images || []).concat(state.content.hero.image ? [state.content.hero.image] : [])));
     renderLib();
@@ -876,13 +876,24 @@ ${site.name}`;
     $("#libGrid").innerHTML = Object.keys(groups).sort().map((g) => `<div class="lib__folder">${esc(g)} · ${groups[g].length}</div>` + groups[g].map((p) => `<button type="button" data-pick="${esc(p)}" class="${lib.selected.has(p) ? "is-selected" : ""}" aria-pressed="${lib.selected.has(p)}" aria-label="${esc(p.split("/").pop())}">${thumb(p)}</button>`).join("")).join("") || `<p class="empty">No photos found.</p>`;
     fixThumbs($("#libGrid"));
     $("#libCount").textContent = lib.selected.size ? `${lib.selected.size} selected` : lib.single ? "Pick one photo" : "Pick one or more";
-    $("#libUse").disabled = !lib.selected.size;
+    $("#libUse").disabled = $("#libDelete").disabled = !lib.selected.size;
     $$("[data-pick]", $("#libGrid")).forEach((b) => (b.onclick = () => { const p = b.dataset.pick; if (lib.single) { lib.selected = new Set([p]); } else if (lib.selected.has(p)) lib.selected.delete(p); else lib.selected.add(p); const top = $("#libGrid").scrollTop; renderLib(); $("#libGrid").scrollTop = top; }));
   }
   function bindLibrary() {
     $$("[data-lib-close]").forEach((el) => (el.onclick = () => $("#libDlg").close()));
     $("#libSearch").oninput = renderLib;
     $("#libUse").onclick = () => { const picked = Array.from(lib.selected); $("#libDlg").close(); if (lib.cb) lib.cb(picked); };
+    // Photos kept in Cloudflare R2 can be deleted for good (the thumbnail goes with it)
+    $("#libDelete").onclick = async () => {
+      const picked = Array.from(lib.selected), used = JSON.stringify([state.content, state.saved]);
+      const inUse = picked.filter((p) => used.includes(JSON.stringify(p)));
+      const n = picked.length, what = n === 1 ? "this photo" : `these ${n} photos`;
+      if (await ask({ title: `Delete ${what}?`, text: (inUse.length ? `${inUse.length === n ? (n === 1 ? "It is" : "They are") : inUse.length + " of them are"} still used on the site and will show as missing until you pick another photo. ` : "") + "This can't be undone.", buttons: [{ label: "Cancel", value: "" }, { label: "Delete", value: "ok", kind: "danger" }] }) !== "ok") return;
+      let done = 0;
+      for (const p of picked) { try { await api("DELETE", "/api/upload", { path: p }); lib.all = lib.all.filter((x) => x !== p); lib.selected.delete(p); done++; } catch (e) { toast(e.message, "error"); break; } }
+      if (done) toast(`${done} photo${done > 1 ? "s" : ""} deleted`, "success");
+      renderLib();
+    };
   }
 
   /* ============================================================

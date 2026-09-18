@@ -1,7 +1,8 @@
 // Cloudflare Workers deploy config. Cloudflare runs `npx wrangler deploy` on every push to main.
 // The site's code and built-in photos are static files from the repo root (minus .assetsignore).
-// Content, uploaded photos, enquiries and analytics live in the D1 database, so the admin's
-// Publish is live in seconds without a push. Paths in run_worker_first go through worker/index.js.
+// Content, enquiries and analytics live in the D1 database and photos in the R2 bucket, so the
+// admin's Publish is live in seconds without a push. Paths in run_worker_first go through worker/index.js.
+// The cron trigger copies the repo's photos into R2 a batch at a time; once all are there it does nothing.
 // Secret (set in the dashboard, not here): ADMIN_PASSWORD.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
@@ -15,7 +16,16 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*", "/car/*", "/data/content.json", "/data/content.js", "/assets/img/uploads/*"]
+    "run_worker_first": ["/api/*", "/car/*", "/data/content.json", "/data/content.js", "/assets/img/cars/*", "/assets/img/promos/*", "/assets/img/uploads/*"]
+  },
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "carrental-photos"
+    }
+  ],
+  "triggers": {
+    "crons": ["*/5 * * * *"]
   },
   "d1_databases": [
     {

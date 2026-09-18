@@ -1,7 +1,7 @@
 /* ============================================================
    D1 storage for the Cloudflare Worker (binding: DB)
    Everything the admin panel changes lives here, so publishing needs no git push:
-   content versions, uploaded photos, enquiries, visitor analytics, the admin password.
+   content versions, enquiries, visitor analytics, the admin password. Photos live in R2 (worker/photos.js).
    Tables are created on first use.
    ============================================================ */
 import analytics from "../lib/analytics.js";
@@ -14,6 +14,7 @@ const SCHEMA = [
   "CREATE TABLE IF NOT EXISTS analytics_seen (day TEXT NOT NULL, vid TEXT NOT NULL, PRIMARY KEY (day, vid))",
   "CREATE TABLE IF NOT EXISTS analytics_online (vid TEXT PRIMARY KEY, t INTEGER NOT NULL)",
   "CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+  "CREATE TABLE IF NOT EXISTS photo_sync (path TEXT PRIMARY KEY)",
   "CREATE TABLE IF NOT EXISTS login_attempts (ip TEXT PRIMARY KEY, count INTEGER NOT NULL, last INTEGER NOT NULL)",
 ];
 let ready = null;
@@ -59,12 +60,8 @@ export async function backupContent(db, name) {
   return r ? JSON.parse(r.json) : null;
 }
 
-/* ---------- uploaded photos (paths look like assets/img/uploads/<folder>/<file>) ---------- */
-export const MAX_IMAGE = 1900000; // D1 stores at most 2 MB in one value
+/* ---------- photos uploaded before the move to R2 (copied there by worker/photos.js, then removed) ---------- */
 export const getImage = (db, path) => db.prepare("SELECT type, data FROM images WHERE path = ?").bind(path).first();
-export const putImage = (db, path, type, bytes) =>
-  db.prepare("INSERT INTO images (path, type, data, size, created_at) VALUES (?, ?, ?, ?, ?)").bind(path, type, bytes, bytes.byteLength, new Date().toISOString()).run();
-export async function deleteImage(db, path) { return (await db.prepare("DELETE FROM images WHERE path = ?").bind(path).run()).meta.changes > 0; }
 export async function imagePaths(db) { return (await db.prepare("SELECT path FROM images ORDER BY created_at").all()).results.map((r) => r.path); }
 
 /* ---------- enquiries (same shape as data/enquiries.json) ---------- */

@@ -1,22 +1,24 @@
 /* ============================================================
    Cloudflare Worker (see wrangler.jsonc)
    The site's code, design and built-in photos are static files served by Cloudflare.
-   Everything the admin panel changes is kept in D1 (worker/store.js), so Publish is live
-   in seconds with no git push. This script handles:
-   - /api/*                    the same JSON API as server.js, so the admin runs in full "server" mode
-   - /data/content.json|.js    the latest published content (falls back to the file in the repo)
-   - /assets/img/uploads/*     photos uploaded from the admin (falls back to files in the repo)
-   - /car/<id>                 share page with the car's photo for WhatsApp thumbnails
+   Everything the admin panel changes is kept in D1 (worker/store.js) and photos in R2
+   (worker/photos.js), so Publish is live in seconds with no git push. This script handles:
+   - /api/*                        the same JSON API as server.js, so the admin runs in full "server" mode
+   - /data/content.json|.js        the latest published content (falls back to the file in the repo)
+   - /assets/img/(cars|promos|uploads)/*   photos from R2 (falls back to the repo until copied there)
+   - /car/<id>                     share page with the car's photo for WhatsApp thumbnails
+   Cron trigger: copies the repo's photos into R2 a batch at a time (see wrangler.jsonc).
    Secret: ADMIN_PASSWORD (first login). After a change in Admin → Security the D1 copy is used.
    ============================================================ */
 import { renderCarPage, findCar, shareImages } from "../lib/carpage.js";
 import enquiryLib from "../lib/enquiries.js";
-import STATIC_IMAGES from "./static-images.json";
+import * as photos from "./photos.js";
 import * as store from "./store.js";
 
 const SESSION_TTL = 12 * 60 * 60 * 1000;
 const MAX_JSON = 1900000;   // content.json (one D1 value holds at most 2 MB)
-const MAX_UPLOAD = 2700000; // a base64 photo just over store.MAX_IMAGE, so the size check below can explain itself
+const MAX_PHOTO = 8 * 1024 * 1024;
+const MAX_UPLOAD = 12 * 1024 * 1024; // a base64 photo just over MAX_PHOTO, so the size check below can explain itself
 const MAX_SMALL = 16 * 1024;
 const PBKDF2_ROUNDS = 100000; // the most Workers allows
 
@@ -97,11 +99,11 @@ async function contentText(env, origin) {
 }
 
 /* ---------- API ---------- */
-async function api(request, env, url) {
+async function api(request, env, url, ctx) {
   const db = env.DB, ip = request.headers.get("CF-Connecting-IP") || "?";
   const route = request.method + " " + url.pathname;
 
-  if (route === "GET /api/health") return ok({ mode: "server", version: 2, enquiries: true, analytics: true, host: "cloudflare", time: new Date().toISOString() });
+  if (route === "GET /api/health") return ok({ mode: "server", version: 2, enquiries: true, analytics: true, photos: await photos.photoStatus(env), host: "cloudflare", time: new Date().toISOString() });
 
   // Public: a visitor pressed "Book on WhatsApp" or sent the contact form
   if (route === "POST /api/enquiry") {
@@ -202,7 +204,10 @@ async function api(request, env, url) {
   if (route === "GET /api/analytics") return ok(await store.analyticsSummary(db, url.searchParams.get("days")));
   if (route === "DELETE /api/analytics") { await store.resetAnalytics(db); return ok(); }
 
-  if (route === "GET /api/images") return ok({ images: [...new Set([...STATIC_IMAGES, ...(await store.imagePaths(db))])] });
+  if (route === "GET /api/images") {
+    ctx.waitUntil(photos.syncPhotos(env).catch((e) => console.error("Photo sync:", e))); // keep copying while the admin is here
+    return ok({ images: await photos.listPhotos(env) });
+  }
 
   if (route === "POST /api/upload") {
     const { name, data, folder } = await readJson(request, MAX_UPLOAD);
@@ -210,35 +215,23 @@ async function api(request, env, url) {
     if (!m) return fail(400, "Unsupported image type (use JPG, PNG or WebP)");
     const ext = m[1].toLowerCase() === "jpeg" ? "jpg" : m[1].toLowerCase();
     let bytes; try { bytes = Uint8Array.from(atob(m[2]), (c) => c.charCodeAt(0)); } catch (e) { return fail(400, "The image data is damaged"); }
-    if (bytes.byteLength > store.MAX_IMAGE) return fail(400, "Image larger than 1.9 MB after resizing. Use a JPG photo instead of PNG, or a smaller image.");
+    if (bytes.byteLength > MAX_PHOTO) return fail(400, "Image larger than 8 MB");
     const safeFolder = String(folder || "").replace(/[^a-z0-9-]/gi, "").slice(0, 40);
     const base = String(name || "image").toLowerCase().replace(/\.[^.]+$/, "").replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "image";
     const rel = "assets/img/uploads/" + (safeFolder ? safeFolder + "/" : "") + `${Date.now().toString(36)}-${base}.${ext}`;
-    await store.putImage(db, rel, ext === "jpg" ? "image/jpeg" : "image/" + ext, bytes);
+    await photos.savePhoto(env, rel, bytes, ext === "jpg" ? "image/jpeg" : "image/" + ext);
     return ok({ path: rel, size: bytes.byteLength });
   }
 
   if (route === "DELETE /api/upload") {
     const { path: rel } = await readJson(request, MAX_SMALL);
-    if (typeof rel !== "string" || !rel.startsWith("assets/img/uploads/") || rel.includes("..")) return fail(400, "Only uploaded images can be deleted");
-    if (await store.deleteImage(db, rel)) { await caches.default.delete(new URL("/" + rel, url.origin)).catch(() => {}); return ok(); }
-    return STATIC_IMAGES.includes(rel) ? fail(400, "This photo is part of the site files in GitHub. Remove it from the project folder instead.") : ok();
+    return (await photos.deletePhoto(env, String(rel || ""))) ? ok() : fail(400, "Only car, poster and uploaded photos can be deleted");
   }
 
   return fail(404, "Unknown API route");
 }
 
-/* ---------- pages and files that come from D1 ---------- */
-async function uploadedImage(request, env, url, ctx) {
-  const cache = caches.default, key = new Request(url.origin + url.pathname);
-  const hit = await cache.match(key); if (hit) return hit;
-  const row = await store.getImage(env.DB, decodeURIComponent(url.pathname.slice(1)));
-  if (!row) return env.ASSETS.fetch(request); // uploaded before the move to D1: still a file in the repo
-  const res = new Response(new Uint8Array(row.data), { headers: { "Content-Type": row.type, "Cache-Control": "public, max-age=604800, stale-while-revalidate=86400", "X-Content-Type-Options": "nosniff" } });
-  ctx.waitUntil(cache.put(key, res.clone()));
-  return res;
-}
-
+/* ---------- pages that come from D1 ---------- */
 async function carPage(env, url) {
   try {
     const id = decodeURIComponent(url.pathname.slice("/car/".length)).replace(/[^\w-]/g, "");
@@ -247,7 +240,7 @@ async function carPage(env, url) {
       const content = JSON.parse(text);
       let { full, small } = shareImages(findCar(content, id));
       // WhatsApp drops large og:images, so prefer the "-sm.jpg" copy when it exists
-      if (small && !(await env.ASSETS.fetch(new URL("/" + small, url.origin), { method: "HEAD" })).ok) small = "";
+      if (small && !(await photos.photoExists(env, small))) small = "";
       const html = renderCarPage(content, id, url.origin, small || full);
       if (html) return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" } });
     }
@@ -260,7 +253,7 @@ export default {
     const url = new URL(request.url), p = url.pathname;
     try {
       await store.ensureSchema(env.DB);
-      if (p.startsWith("/api/")) return await api(request, env, url);
+      if (p.startsWith("/api/")) return await api(request, env, url, ctx);
       if (p === "/data/content.json" || p === "/data/content.js") {
         const text = await contentText(env, url.origin);
         if (!text) return env.ASSETS.fetch(request);
@@ -268,7 +261,7 @@ export default {
           ? new Response("window.SITE_CONTENT = " + text + ";\n", { headers: { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" } })
           : new Response(text, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-cache" } });
       }
-      if (p.startsWith("/assets/img/uploads/")) return await uploadedImage(request, env, url, ctx);
+      if (/^\/assets\/img\/(cars|promos|uploads)\//.test(p)) return await photos.servePhoto(request, env, url);
       if (p.startsWith("/car/")) return await carPage(env, url);
       return env.ASSETS.fetch(request);
     } catch (e) {
@@ -278,5 +271,10 @@ export default {
       if (!p.startsWith("/api/")) return env.ASSETS.fetch(request);
       return fail(500, e.message || "Server error");
     }
+  },
+  // Cron trigger: copy the next batch of the repo's photos into R2 (does nothing once all are there)
+  async scheduled(event, env, ctx) {
+    await store.ensureSchema(env.DB);
+    await photos.syncPhotos(env);
   },
 };
