@@ -9,6 +9,7 @@ node_modules
 worker
 api
 lib
+scripts
 server.js
 admin.config.json
 data/backups

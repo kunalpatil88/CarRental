@@ -57,7 +57,27 @@ admin.config.json     hashed admin password (created on first run, never served)
 <car folders>         your original, untouched photos
 ```
 
-## Deploying to Vercel (recommended, free)
+## Deploying to Cloudflare (live setup)
+
+The site runs as the Cloudflare Worker `carrental` ([wrangler.jsonc](wrangler.jsonc)). Every push to
+`main` redeploys it. The code, design and built-in photos are static files from this repo; everything
+the admin changes is stored in the D1 database `carrental-db`, so **Publish is live in seconds with no
+git push**:
+
+| What | Where |
+| --- | --- |
+| Cars, prices, all site text | D1 `content` (the live version + 30 backups) |
+| Photos uploaded in the admin | D1 `images` (max 1.9 MB each after resizing) |
+| Enquiries, visitor analytics | D1 `enquiries`, `analytics_*` |
+| Admin password | Secret `ADMIN_PASSWORD` for the first login; after a change in Admin → Security, a hash in D1 `settings` |
+
+- Until the admin publishes once, the site shows `data/content.json` from the repo. After that, edits
+  to that file in git are ignored. To load a file into the live site, use Admin → **Import**, then **Publish**.
+- Keep a copy now and then with Admin → **Export**.
+- Forgot a changed password? Cloudflare → Storage & databases → D1 → `carrental-db` → Console:
+  `DELETE FROM settings WHERE key = 'admin_password';` The `ADMIN_PASSWORD` secret works again.
+
+## Deploying to Vercel
 
 The site is static and the admin talks to small serverless functions in `api/`.
 Because Vercel's file system is read-only, **publishing from the admin commits to

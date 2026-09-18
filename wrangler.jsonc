@@ -1,14 +1,27 @@
 // Cloudflare Workers deploy config. Cloudflare runs `npx wrangler deploy` on every push to main.
-// The site is served as static files from the repo root; files listed in .assetsignore are never uploaded.
-// Only /car/* and /api/* run code first (worker/index.js); everything else is a plain static file.
+// The site's code and built-in photos are static files from the repo root (minus .assetsignore).
+// Content, uploaded photos, enquiries and analytics live in the D1 database, so the admin's
+// Publish is live in seconds without a push. Paths in run_worker_first go through worker/index.js.
+// Secret (set in the dashboard, not here): ADMIN_PASSWORD.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "carrental",
   "main": "worker/index.js",
   "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "build": {
+    "command": "node scripts/list-images.js"
+  },
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
-    "run_worker_first": ["/car/*", "/api/*"]
-  }
+    "run_worker_first": ["/api/*", "/car/*", "/data/content.json", "/data/content.js", "/assets/img/uploads/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "carrental-db",
+      "database_id": "91ad6de7-a09c-4644-8a52-27f314b38da6"
+    }
+  ]
 }
