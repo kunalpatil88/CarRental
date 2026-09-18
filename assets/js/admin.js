@@ -772,7 +772,7 @@ ${site.name}`;
     if (drawer.tab === "pricing") pane = `<section class="card"><div class="grid grid--2">${f("pricePerDay", "Price per day", { type: "number", prefix: "₹" })}${f("deposit", "Refundable deposit", { type: "number", prefix: "₹" })}${f("kmPerDay", "Km included per day", { type: "number" })}${f("extraKmCharge", "Extra km charge (per km)", { type: "number", prefix: "₹" })}</div></section>
       <section class="card"><div class="card__head"><div><h2>Long-rental prices</h2><p>Optional. The site shows the cheapest total for the visitor's dates.</p></div></div><div class="grid grid--2">${f("priceWeekly", "Price for 7 days", { type: "number", prefix: "₹", placeholder: c.pricePerDay ? String(Math.round(c.pricePerDay * 6)) : "" })}${f("priceMonthly", "Price for 30 days", { type: "number", prefix: "₹", placeholder: c.pricePerDay ? String(Math.round(c.pricePerDay * 22)) : "" })}</div><p class="hint" id="weeklyHint" style="margin-top:10px" hidden></p></section>`;
     if (drawer.tab === "photos") pane = `<section class="card">
-      <button type="button" class="dropzone" id="dropzone" ${online() ? "" : "disabled"}>${icon("upload")}<b>${online() ? "Drop photos here or tap to upload" : "Uploads need the server (npm start)"}</b><span>JPG, PNG or WebP · resized automatically</span></button>
+      <button type="button" class="dropzone" id="dropzone" ${online() ? "" : "disabled"}>${icon("upload")}<b>${online() ? "Drop photos here or tap to upload" : "Uploads need the server (npm start)"}</b><span>JPG, PNG or WebP · full quality (only photos over 2560 px are scaled down)</span></button>
       <div class="progress" id="uploadProgress" style="margin-top:10px" hidden><div></div></div>
       <div style="display:flex;gap:8px;margin:14px 0;flex-wrap:wrap;align-items:center"><button type="button" class="btn btn--soft btn--sm" id="libBtn">${icon("image")} Add from library</button><span class="hint">The photo marked Cover is shown on the car's card.</span></div>
       <div class="imggrid" id="imgGrid">${(c.images || []).map((src, i) => `<div class="imgtile ${src === c.cover ? "is-cover" : ""}">${src === c.cover ? `<span class="imgtile__cover">Cover</span>` : ""}${thumb(src)}<div class="imgtile__bar"><button type="button" data-img-cover="${i}" aria-label="Set as cover" title="Set as cover">${icon("star")}</button><button type="button" data-img-move="${i}|-1" aria-label="Move left" ${i === 0 ? "disabled" : ""}>${icon("chevron-left")}</button><button type="button" data-img-move="${i}|1" aria-label="Move right" ${i === c.images.length - 1 ? "disabled" : ""}>${icon("chevron-right")}</button><button type="button" class="danger" data-img-remove="${i}" aria-label="Remove photo">${icon("trash")}</button></div></div>`).join("") || `<p class="empty" style="grid-column:1/-1">No photos yet.</p>`}</div></section>`;
@@ -832,12 +832,22 @@ ${site.name}`;
      Uploads
      ============================================================ */
   function pickFiles(multiple, cb) { const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/jpeg,image/png,image/webp"; inp.multiple = multiple; inp.onchange = () => cb(Array.from(inp.files)); inp.click(); }
-  function resizeImage(file, max = 1600, quality = 0.84) {
+  /* Photos are uploaded as they are when they are already a sensible size, so nothing is lost.
+     Only very large ones (straight from a camera) are scaled down, to 2560 px at high quality:
+     still sharp on a full-width hero on a large or high-density screen. */
+  const KEEP_BYTES = 4 * 1024 * 1024;
+  function readAsDataUrl(file) {
+    return new Promise((resolve, reject) => { const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = () => reject(new Error("Could not read " + file.name)); r.readAsDataURL(file); });
+  }
+  function resizeImage(file, max = 2560, quality = 0.92) {
     return new Promise((resolve, reject) => {
       const img = new Image(); const url = URL.createObjectURL(file);
       img.onload = () => {
-        URL.revokeObjectURL(url); let { width: w, height: h } = img; const s = Math.min(1, max / Math.max(w, h)); w = Math.round(w * s); h = Math.round(h * s);
+        URL.revokeObjectURL(url); let { width: w, height: h } = img;
+        if (Math.max(w, h) <= max && file.size <= KEEP_BYTES) return resolve(readAsDataUrl(file));
+        const s = Math.min(1, max / Math.max(w, h)); w = Math.round(w * s); h = Math.round(h * s);
         const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const ctx = cv.getContext("2d");
+        ctx.imageSmoothingQuality = "high";
         const png = file.type === "image/png"; // keep transparency for logos
         ctx.drawImage(img, 0, 0, w, h); resolve(cv.toDataURL(png ? "image/png" : "image/jpeg", quality));
       };
@@ -850,7 +860,7 @@ ${site.name}`;
     const out = []; let n = 0; const imgs = files.filter((f) => /^image\/(jpeg|png|webp)$/.test(f.type));
     if (imgs.length < files.length) toast("Some files were skipped. Use JPG, PNG or WebP.", "error");
     for (const f of imgs) {
-      try { const data = await resizeImage(f, folder === "site" ? 1200 : 1600); const d = await api("POST", "/api/upload", { name: f.name, data, folder }); out.push(d.path); } catch (e) { toast(e.message, "error"); }
+      try { const data = await resizeImage(f); const d = await api("POST", "/api/upload", { name: f.name, data, folder }); out.push(d.path); } catch (e) { toast(e.message, "error"); }
       n++; if (onProgress) onProgress(Math.round((n / imgs.length) * 100));
     }
     if (out.length) toast(state.mode === "vercel" ? `${out.length} photo${out.length > 1 ? "s" : ""} uploaded. They appear on the site after the next deploy.` : `${out.length} photo${out.length > 1 ? "s" : ""} uploaded`, "success");
