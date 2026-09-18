@@ -1,115 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Admin</title>
   <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f5f5f7" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/admin.css" />
+  <script src="assets/js/admin-theme.js"></script>
 </head>
 <body>
 
   <!-- LOGIN -->
   <div class="login" id="login">
-    <div class="login__card">
-      <div class="login__brand" id="loginBrand"><span class="mark" data-icon="car"></span><span><span class="brand-name">Admin</span><small>Admin panel</small></span></div>
-      <h1>Sign in</h1>
-      <p>Manage every section of your home page.</p>
+    <div class="login__card glass glass--2">
+      <div class="brandline" id="loginBrand"><span class="brandline__mark" data-brand-mark></span><span><span class="brand-name">Admin</span><small>Control centre</small></span></div>
+      <h1>Welcome back</h1>
+      <p class="login__lead">Sign in to manage your website.</p>
       <form id="loginForm">
-        <div class="login__err" id="loginErr" hidden></div>
-        <div class="field"><label for="loginPw">Password</label><input type="password" id="loginPw" autocomplete="current-password" placeholder="••••••••" autofocus /></div>
-        <button class="btn btn--primary btn--block" type="submit" id="loginBtn"><span data-icon="lock"></span> Sign in</button>
+        <div class="login__err" id="loginErr" role="alert" hidden></div>
+        <div class="field"><label for="loginPw">Password</label>
+          <div class="pw"><input type="password" id="loginPw" autocomplete="current-password" placeholder="Enter your password" autofocus /><button type="button" class="pw__eye" id="pwEye" aria-label="Show password"><span data-icon="eye"></span></button></div>
+        </div>
+        <label class="check"><input type="checkbox" id="loginRemember" /><span>Keep me signed in on this device</span></label>
+        <button class="btn btn--primary btn--block btn--lg" type="submit" id="loginBtn"><span data-icon="lock"></span> Sign in</button>
       </form>
       <div class="login__mode" id="loginMode"><span class="dot"></span><span>Checking server…</span></div>
     </div>
+    <button type="button" class="icon-btn login__theme" data-admin-theme aria-label="Toggle dark mode"><span data-icon="moon"></span></button>
   </div>
 
   <!-- APP -->
   <div class="app" id="app" hidden>
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar__brand" id="sidebarBrand"><span class="mark" data-icon="car"></span><span id="sbBrand"><span class="brand-name">Admin</span><small>Admin panel</small></span></div>
-      <div class="sidebar__mode" id="sbMode"><span class="dot"></span><span>Connected to server</span></div>
-      <div class="sidebar__group">Overview</div>
-      <nav id="navMain"></nav>
-      <div class="sidebar__group">Home page content</div>
-      <nav id="navContent"></nav>
-      <div class="sidebar__group">System</div>
-      <nav id="navSystem"></nav>
+    <aside class="sidebar" id="sidebar" aria-label="Sections">
+      <div class="sidebar__top">
+        <div class="brandline" id="sidebarBrand"><span class="brandline__mark" data-brand-mark></span><span><span class="brand-name">Admin</span><small>Control centre</small></span></div>
+        <button type="button" class="icon-btn sidebar__close" id="sidebarClose" aria-label="Close menu"><span data-icon="x"></span></button>
+      </div>
+      <div class="search-box"><span data-icon="search"></span><input type="search" id="navSearch" placeholder="Search settings" aria-label="Search settings" /><kbd>Ctrl K</kbd></div>
+      <nav id="nav"></nav>
       <div class="sidebar__foot">
+        <div class="mode-pill" id="sbMode"><span class="dot"></span><span>Connected</span></div>
         <a href="index.html" target="_blank" rel="noopener"><span data-icon="external-link"></span> Open live site</a>
+        <button type="button" data-admin-theme><span data-icon="moon"></span> <span class="theme-label">Dark mode</span></button>
         <button type="button" id="logoutBtn"><span data-icon="log-out"></span> Sign out</button>
       </div>
     </aside>
+    <div class="sidebar-scrim" id="sidebarScrim"></div>
 
     <div class="main">
-      <header class="topbar">
-        <div style="display:flex;align-items:center;gap:12px;min-width:0">
-          <button class="btn btn--light btn--icon menu-btn" id="menuBtn" aria-label="Menu"><span data-icon="menu"></span></button>
-          <div style="min-width:0"><h1 id="pageTitle">Dashboard</h1><div class="topbar__sub" id="pageSub"></div></div>
-        </div>
+      <header class="topbar glass">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu"><span data-icon="menu"></span></button>
+        <div class="topbar__title"><h1 id="pageTitle">Dashboard</h1><div class="topbar__sub" id="pageSub"></div></div>
         <div class="topbar__actions">
-          <span class="dirty" id="dirtyBadge" hidden>Unsaved changes</span>
-          <span class="saved" id="savedAt"></span>
-          <button class="btn btn--light" id="previewBtn"><span data-icon="eye"></span><span>Preview</span></button>
-          <button class="btn btn--light" id="exportBtn" title="Download content.json"><span data-icon="download"></span><span>Export</span></button>
-          <button class="btn btn--light" id="importBtn" title="Import content.json"><span data-icon="upload"></span><span>Import</span></button>
-          <input type="file" id="importFile" accept="application/json,.json" hidden />
-          <button class="btn btn--primary" id="saveBtn"><span data-icon="save"></span><span>Publish changes</span></button>
+          <span class="status" id="status"></span>
+          <button class="btn btn--soft hide-sm" id="previewBtn"><span data-icon="eye"></span><span>Preview</span></button>
+          <div class="menu-wrap hide-sm">
+            <button class="icon-btn icon-btn--soft" id="moreBtn" aria-label="More actions" aria-haspopup="menu" aria-expanded="false"><span data-icon="more"></span></button>
+            <div class="popover glass glass--2" id="moreMenu" role="menu" hidden>
+              <button type="button" role="menuitem" id="exportBtn"><span data-icon="download"></span> Export content</button>
+              <button type="button" role="menuitem" id="importBtn"><span data-icon="upload"></span> Import content</button>
+              <button type="button" role="menuitem" id="discardBtn"><span data-icon="undo"></span> Discard unsaved changes</button>
+            </div>
+          </div>
+          <input type="file" id="importFile" accept="application/json,.json,.js" hidden />
+          <button class="btn btn--primary" id="saveBtn"><span data-icon="save"></span><span id="saveLabel">Publish</span></button>
         </div>
       </header>
-      <main class="content" id="content"></main>
+      <main class="content" id="content" tabindex="-1"></main>
     </div>
+
+    <!-- Mobile tab bar -->
+    <nav class="tabbar glass" id="tabbar" aria-label="Quick sections">
+      <button type="button" data-tab-go="dashboard"><span data-icon="home"></span><span>Home</span></button>
+      <button type="button" data-tab-go="fleet"><span data-icon="car"></span><span>Cars</span></button>
+      <button type="button" data-tab-go="enquiries"><span data-icon="inbox"></span><span>Enquiries</span><span class="tabbar__badge" id="tabEnqBadge" hidden></span></button>
+      <button type="button" id="tabPreview"><span data-icon="eye"></span><span>Preview</span></button>
+      <button type="button" id="tabMore"><span data-icon="grid"></span><span>More</span></button>
+    </nav>
   </div>
 
-  <!-- CAR EDITOR DRAWER -->
-  <div class="drawer" id="drawer">
+  <!-- CAR EDITOR -->
+  <div class="drawer" id="drawer" hidden>
     <div class="drawer__backdrop" data-drawer-close></div>
-    <div class="drawer__panel">
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
       <div class="drawer__head">
-        <div><h2 id="drawerTitle">Edit car</h2><p id="drawerSub"></p></div>
-        <button class="btn btn--light btn--icon" data-drawer-close aria-label="Close"><span data-icon="x"></span></button>
+        <button class="icon-btn" data-drawer-close aria-label="Close"><span data-icon="chevron-left"></span></button>
+        <div class="drawer__title"><h2 id="drawerTitle">Edit car</h2><p id="drawerSub"></p></div>
+        <button class="btn btn--primary btn--sm" id="drawerDone"><span data-icon="check"></span> Done</button>
       </div>
+      <div class="drawer__tabs" id="drawerTabs"></div>
       <div class="drawer__body" id="drawerBody"></div>
       <div class="drawer__foot">
         <button class="btn btn--danger" id="drawerDelete"><span data-icon="trash"></span> Delete car</button>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn--light" data-drawer-close>Cancel</button>
-          <button class="btn btn--dark" id="drawerDone"><span data-icon="check"></span> Done</button>
+        <div class="drawer__foot-r">
+          <button class="btn btn--soft" data-drawer-close>Cancel</button>
+          <button class="btn btn--primary" id="drawerDone2"><span data-icon="check"></span> Done</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- IMAGE LIBRARY MODAL -->
-  <div class="modal" id="libModal">
-    <div class="modal__backdrop" data-lib-close></div>
-    <div class="modal__panel">
-      <div class="modal__head"><h3>Choose from photo library</h3><button class="btn btn--light btn--icon" data-lib-close aria-label="Close"><span data-icon="x"></span></button></div>
-      <div class="modal__body">
-        <div class="field" style="margin-bottom:14px"><input type="search" id="libSearch" placeholder="Filter by folder or file name…" /></div>
-        <div class="lib" id="libGrid"></div>
+  <!-- AVAILABILITY SHEET -->
+  <dialog class="dlg" id="availDlg" aria-labelledby="availTitle">
+    <form method="dialog" class="dlg__panel glass glass--2" id="availForm">
+      <h3 id="availTitle">Availability</h3>
+      <p class="dlg__sub" id="availSub"></p>
+      <div class="seg-toggle" role="radiogroup" aria-label="Status">
+        <label><input type="radio" name="avail" value="1" /><span>Available</span></label>
+        <label><input type="radio" name="avail" value="0" /><span>Booked</span></label>
       </div>
-      <div class="modal__foot"><span id="libCount" style="margin-right:auto;color:var(--muted);font-size:13px"></span><button class="btn btn--light" data-lib-close>Cancel</button><button class="btn btn--primary" id="libUse">Use selected</button></div>
-    </div>
-  </div>
+      <div class="field" id="availUntilWrap"><label for="availUntil">Booked until <small>optional · the car shows as available again the day after</small></label><input type="date" id="availUntil" /></div>
+      <div class="quick-dates" id="availQuick"></div>
+      <div class="dlg__actions"><button class="btn btn--soft" value="cancel" type="submit">Cancel</button><button class="btn btn--primary" value="ok" type="submit" id="availSave">Save</button></div>
+    </form>
+  </dialog>
 
-  <!-- PREVIEW MODAL -->
-  <div class="modal" id="previewModal">
-    <div class="modal__backdrop" data-preview-close></div>
-    <div class="modal__panel" style="width:min(1300px,100%);height:calc(100vh - 40px)">
-      <div class="modal__head"><h3>Live preview <span style="color:var(--muted);font-weight:500;font-size:13px">· shows your unsaved changes</span></h3>
-        <div style="display:flex;gap:8px"><button class="btn btn--light btn--sm" id="previewMobile">Mobile</button><button class="btn btn--light btn--sm" id="previewDesktop">Desktop</button><button class="btn btn--light btn--icon" data-preview-close aria-label="Close"><span data-icon="x"></span></button></div></div>
-      <div class="modal__body" style="padding:0;background:#e2e8f0;display:grid;place-items:start center;flex:1"><iframe id="previewFrame" title="Preview" style="width:100%;height:100%;border:0;background:#fff;transition:width .2s"></iframe></div>
+  <!-- CONFIRM -->
+  <dialog class="dlg" id="confirmDlg" aria-labelledby="confirmTitle">
+    <form method="dialog" class="dlg__panel glass glass--2">
+      <h3 id="confirmTitle"></h3>
+      <p class="dlg__sub" id="confirmText"></p>
+      <div class="dlg__actions" id="confirmActions"></div>
+    </form>
+  </dialog>
+
+  <!-- IMAGE LIBRARY -->
+  <dialog class="dlg dlg--wide" id="libDlg" aria-labelledby="libTitle">
+    <div class="dlg__panel glass glass--2 lib-panel">
+      <div class="dlg__head"><h3 id="libTitle">Photo library</h3><button class="icon-btn" data-lib-close aria-label="Close"><span data-icon="x"></span></button></div>
+      <div class="search-box search-box--solid"><span data-icon="search"></span><input type="search" id="libSearch" placeholder="Filter by car or file name" /></div>
+      <div class="lib" id="libGrid"></div>
+      <div class="dlg__actions"><span id="libCount" class="lib__count"></span><button class="btn btn--soft" data-lib-close>Cancel</button><button class="btn btn--primary" id="libUse">Use selected</button></div>
     </div>
-  </div>
+  </dialog>
+
+  <!-- PREVIEW -->
+  <dialog class="dlg dlg--preview" id="previewDlg" aria-label="Live preview">
+    <div class="preview">
+      <div class="preview__bar glass">
+        <div class="preview__title"><b>Live preview</b><span>Shows unsaved changes</span></div>
+        <div class="seg-toggle seg-toggle--sm" role="group" aria-label="Device">
+          <label><input type="radio" name="pvDevice" value="desktop" checked /><span data-icon="layout"></span><span class="hide-sm">Desktop</span></label>
+          <label><input type="radio" name="pvDevice" value="mobile" /><span data-icon="phone"></span><span class="hide-sm">Mobile</span></label>
+        </div>
+        <div class="seg-toggle seg-toggle--sm" role="group" aria-label="Theme">
+          <label><input type="radio" name="pvTheme" value="light" checked /><span data-icon="sun"></span></label>
+          <label><input type="radio" name="pvTheme" value="dark" /><span data-icon="moon"></span></label>
+        </div>
+        <button class="icon-btn" data-preview-close aria-label="Close preview"><span data-icon="x"></span></button>
+      </div>
+      <div class="preview__stage"><iframe id="previewFrame" title="Site preview"></iframe></div>
+    </div>
+  </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="data/content.js"></script>
   <script src="assets/js/icons.js"></script>
   <script src="assets/js/admin.js"></script>
 </body>

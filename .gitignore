@@ -35,3 +35,10 @@ Thumbs.db
 desktop.ini
 .DS_Store
 .vscode/
+
+# Docker secrets
+.env
+
+# Customer enquiries (personal data: keep out of git)
+data/enquiries.json
+data/enquiries.json.tmp

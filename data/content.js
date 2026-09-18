@@ -1,6 +1,6 @@
 window.SITE_CONTENT = {
   "site": {
-    "name": "Dp Self Drive Car Rental",
+    "name": "DP Self Drive Cars & Rental",
     "tagline": "Self Drive Cars in Pune",
     "phone": "+91 9130012143",
     "whatsapp": "9130013143",
@@ -11,15 +11,16 @@ window.SITE_CONTENT = {
     "mapEmbed": "https://maps.app.goo.gl/DKGebZQqXh8PXAxS7",
     "announcement": "Weekend special: 10% off on bookings of 3 days or more. Call us for details.",
     "announcementEnabled": true,
-    "logo": "assets/img/uploads/site/mtpka7q1-pngtree-sport-car-logo-vector-6398339.jpg",
+    "logo": "",
     "logoHeight": 40,
     "logoShowText": true,
     "favicon": ""
   },
   "seo": {
-    "title": "DriveEase · Self Drive Car Rental in Pune | Hatchbacks, SUVs, Luxury",
+    "title": "DP Self Drive · Self Drive Car Rental in Pune | Hatchbacks, SUVs, Luxury",
     "description": "Rent self-drive cars in Pune from ₹1,399/day. Swift, Baleno, Creta, Thar, Fortuner, BMW and more. Doorstep delivery, 24x7 support, no hidden charges.",
-    "keywords": "self drive car rental pune, car hire pune, thar on rent pune, fortuner on rent pune"
+    "keywords": "self drive car rental pune, car hire pune, thar on rent pune, fortuner on rent pune",
+    "image": ""
   },
   "hero": {
     "eyebrow": "Pune's trusted self-drive fleet",
@@ -56,7 +57,7 @@ window.SITE_CONTENT = {
     }
   ],
   "features": {
-    "eyebrow": "Why DriveEase",
+    "eyebrow": "Why DP Self Drive",
     "title": "Renting a car should be the easiest part of your trip",
     "items": [
       {
@@ -105,7 +106,7 @@ window.SITE_CONTENT = {
       },
       {
         "title": "Collect or get it delivered",
-        "text": "Pick up from our Baner hub or get the car delivered to your doorstep. Pay the deposit and go."
+        "text": "Pick up from our Wagholi hub or get the car delivered to your doorstep. Pay the deposit and go."
       }
     ]
   },
@@ -175,8 +176,8 @@ window.SITE_CONTENT = {
     "text": "Tell us your dates and the car you like. We'll confirm availability within minutes on WhatsApp."
   },
   "footer": {
-    "about": "DriveEase is a Pune-based self-drive car rental service with a fleet of 22+ hatchbacks, sedans, SUVs and luxury cars. Doorstep delivery across Pune and PCMC.",
-    "copyright": "© {year} DriveEase Self Drive Cars. All rights reserved."
+    "about": "DP Self Drive is a Pune-based self-drive car rental service with a fleet of 22+ hatchbacks, sedans, SUVs and luxury cars. Doorstep delivery across Pune and PCMC.",
+    "copyright": "© {year} DP Self Drive Car Rental. All rights reserved."
   },
   "fleet": [
     {
@@ -221,7 +222,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/thar/16.jpg",
         "assets/img/cars/thar/17.jpg",
         "assets/img/cars/thar/18.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "fortuner-2023",
@@ -257,7 +261,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/fortuner-2023/05.jpg",
         "assets/img/cars/fortuner-2023/06.jpg",
         "assets/img/cars/fortuner-2023/08.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "mini-cooper",
@@ -294,7 +301,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/mini-cooper/07.jpg",
         "assets/img/cars/mini-cooper/08.jpg",
         "assets/img/cars/mini-cooper/09.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "bmw",
@@ -325,7 +335,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/bmw/02.jpg",
         "assets/img/cars/bmw/01.jpg",
         "assets/img/cars/bmw/03.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "creta",
@@ -359,7 +372,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/creta/05.jpg",
         "assets/img/cars/creta/06.jpg",
         "assets/img/cars/creta/07.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "ertiga-2023",
@@ -401,7 +417,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/ertiga-2023/13.jpg",
         "assets/img/cars/ertiga-2023/14.jpg",
         "assets/img/cars/ertiga-2023/15.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "fortuner",
@@ -441,7 +460,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/fortuner/10.jpg",
         "assets/img/cars/fortuner/11.jpg",
         "assets/img/cars/fortuner/12.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "nexon",
@@ -483,7 +505,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/nexon/13.jpg",
         "assets/img/cars/nexon/14.jpg",
         "assets/img/cars/nexon/15.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "brezza",
@@ -515,7 +540,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/brezza/02.jpg",
         "assets/img/cars/brezza/03.jpg",
         "assets/img/cars/brezza/05.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "venue",
@@ -550,7 +578,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/venue/05.jpg",
         "assets/img/cars/venue/06.jpg",
         "assets/img/cars/venue/08.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "kiger",
@@ -584,7 +615,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/kiger/05.jpg",
         "assets/img/cars/kiger/06.jpg",
         "assets/img/cars/kiger/07.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "ecosport",
@@ -615,7 +649,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/ecosport/01.jpg",
         "assets/img/cars/ecosport/02.jpg",
         "assets/img/cars/ecosport/04.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "ertiga-2022",
@@ -648,7 +685,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/ertiga-2022/03.jpg",
         "assets/img/cars/ertiga-2022/04.jpg",
         "assets/img/cars/ertiga-2022/06.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "ertiga-2022-b",
@@ -681,7 +721,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/ertiga-2022-b/04.jpg",
         "assets/img/cars/ertiga-2022-b/05.jpg",
         "assets/img/cars/ertiga-2022-b/06.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "ertiga-diesel",
@@ -712,7 +755,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/ertiga-diesel/01.jpg",
         "assets/img/cars/ertiga-diesel/03.jpg",
         "assets/img/cars/ertiga-diesel/04.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "dzire",
@@ -744,7 +790,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/dzire/02.jpg",
         "assets/img/cars/dzire/04.jpg",
         "assets/img/cars/dzire/05.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "baleno",
@@ -776,7 +825,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/baleno/03.jpg",
         "assets/img/cars/baleno/04.jpg",
         "assets/img/cars/baleno/05.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "baleno-2",
@@ -816,7 +868,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/baleno-2/11.jpg",
         "assets/img/cars/baleno-2/12.jpg",
         "assets/img/cars/baleno-2/13.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "swift-diesel-amt",
@@ -846,7 +901,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/swift-diesel-amt/02.jpg",
         "assets/img/cars/swift-diesel-amt/01.jpg",
         "assets/img/cars/swift-diesel-amt/03.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "swift-petrol",
@@ -881,7 +939,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/swift-petrol/06.jpg",
         "assets/img/cars/swift-petrol/07.jpg",
         "assets/img/cars/swift-petrol/08.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "swift-diesel",
@@ -917,7 +978,10 @@ window.SITE_CONTENT = {
         "assets/img/cars/swift-diesel/06.jpg",
         "assets/img/cars/swift-diesel/07.jpg",
         "assets/img/cars/swift-diesel/09.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     },
     {
       "id": "wagonr",
@@ -949,10 +1013,13 @@ window.SITE_CONTENT = {
         "assets/img/cars/wagonr/03.jpg",
         "assets/img/cars/wagonr/04.jpg",
         "assets/img/cars/wagonr/05.jpg"
-      ]
+      ],
+      "bookedUntil": "",
+      "priceWeekly": null,
+      "priceMonthly": null
     }
   ],
-  "updatedAt": "2026-09-06T08:40:29.568Z",
+  "updatedAt": "2026-09-18T08:25:07.838Z",
   "social": {
     "showInHeader": true,
     "showInFooter": true,
@@ -1009,13 +1076,13 @@ window.SITE_CONTENT = {
       }
     ],
     "section": {
-      "enabled": true,
+      "enabled": false,
       "eyebrow": "Follow us",
       "title": "See the fleet in action",
       "text": "Fresh photos, new arrivals and weekend offers, posted first on Instagram. Tag us in your road-trip stories and we will share them.",
-      "handle": "@driveease",
+      "handle": "",
       "ctaText": "Follow on Instagram",
-      "ctaLink": "https://instagram.com/driveease",
+      "ctaLink": "",
       "posts": []
     }
   },
@@ -1063,5 +1130,11 @@ window.SITE_CONTENT = {
         "ctaText": ""
       }
     ]
+  },
+  "schemaVersion": 2,
+  "theme": {
+    "mode": "auto",
+    "accent": "#231c15",
+    "allowToggle": true
   }
 };

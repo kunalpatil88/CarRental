@@ -1,0 +1,27 @@
+# Run on the server:  docker compose up -d --build
+# Needs a .env file next to this one containing:  TUNNEL_TOKEN=<token from Cloudflare Zero Trust>
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    environment:
+      - TRUST_CF=1
+    volumes:
+      - content:/app/data
+      - uploads:/app/assets/img/uploads
+      - config:/app/config
+    # No "ports:" on purpose. The site is reachable only through the Cloudflare tunnel.
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    depends_on:
+      - web
+
+volumes:
+  content:
+  uploads:
+  config:

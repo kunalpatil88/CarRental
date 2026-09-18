@@ -1,195 +1,212 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Self Drive Car Rental in Pune</title>
-  <meta name="description" content="Self-drive car rental in Pune. Hatchbacks, sedans, SUVs and luxury cars with doorstep delivery." />
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- Theme before first paint: visitor choice → site default → OS setting. Also restores the brand colour. -->
+  <script>(function(){var d=document.documentElement,t,m,a;try{t=localStorage.getItem("dp-theme");m=localStorage.getItem("dp-theme-default");a=localStorage.getItem("dp-accent")}catch(e){}if(t!=="light"&&t!=="dark")t=(m==="light"||m==="dark")?m:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");d.setAttribute("data-theme",t);if(a&&/^#[0-9a-f]{6}$/i.test(a))d.style.setProperty("--brand",a);try{if(navigator.connection&&navigator.connection.saveData||(navigator.deviceMemory&&navigator.deviceMemory<=2))d.classList.add("lite")}catch(e){}})();</script>
+  <title>DP Self Drive Car Rental in Pune | Hatchbacks, SUVs &amp; Luxury Cars</title>
+  <meta name="description" content="Rent self-drive cars in Pune from ₹1,399/day. Swift, Baleno, Creta, Thar, Fortuner, BMW and more. Doorstep delivery, 24x7 support, no hidden charges." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0b0c0f" media="(prefers-color-scheme: dark)" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="DP Self Drive" />
+  <meta property="og:title" content="DP Self Drive Car Rental in Pune" />
+  <meta property="og:description" content="Self-drive cars in Pune from ₹1,399/day. Doorstep delivery, 24x7 support, no hidden charges." />
+  <meta property="og:image" content="assets/img/cars/mini-cooper/02.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.svg" />
+  <link rel="preload" as="image" href="assets/img/cars/mini-cooper/02.jpg" imagesrcset="assets/img/cars/mini-cooper/02-sm.jpg 720w, assets/img/cars/mini-cooper/02.jpg 1400w" imagesizes="100vw" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 <body>
+  <a class="skip" href="#fleet">Skip to cars</a>
 
   <div id="announce" class="announce" hidden>
-    <span id="announceText"></span>
-    <button class="announce__close" id="announceClose" aria-label="Dismiss announcement">✕</button>
+    <div class="container announce__inner">
+      <span class="announce__dot" aria-hidden="true"></span>
+      <span id="announceText"></span>
+      <button class="announce__close" id="announceClose" type="button" aria-label="Dismiss announcement"><span data-icon="x"></span></button>
+    </div>
   </div>
 
   <header class="header" id="header">
-    <div class="container">
-      <a href="#top" class="brand" id="brand">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__text"><span class="brand__name" id="brandName">DriveEase</span><small id="brandTagline">Self Drive Cars</small></span>
+    <div class="header__bar glass">
+      <a href="#top" class="brand" aria-label="Home">
+        <span class="brand__mark" data-brand-mark></span>
+        <span class="brand__text"><span class="brand__name" data-brand-name>DP Self Drive</span><span class="brand__sub" data-brand-sub>Car Rental · Pune</span></span>
       </a>
       <nav class="nav" aria-label="Primary">
         <a href="#fleet" data-nav>Fleet</a>
         <a href="#why" data-nav>Why us</a>
-        <a href="#how" data-nav>How it works</a>
         <a href="#reviews" data-nav>Reviews</a>
         <a href="#faq" data-nav>FAQ</a>
         <a href="#contact" data-nav>Contact</a>
       </nav>
       <div class="header__actions">
-        <div class="header__social" id="headerSocial"></div>
-        <a class="btn btn--light btn--sm" id="headerCall" href="tel:"><span data-icon="phone"></span><span id="headerPhone"></span></a>
-        <a class="btn btn--wa btn--sm" id="headerWa" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span><span>WhatsApp</span></a>
-        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><span data-icon="menu"></span></button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Theme"><span class="theme-sun" data-icon="sun"></span><span class="theme-moon" data-icon="moon"></span></button>
+        <a class="btn btn--glass btn--sm header__call" id="headerCall" href="tel:"><span data-icon="phone"></span><span id="headerPhone" class="header__phone"></span></a>
+        <a class="btn btn--wa btn--sm header__wa" id="headerWa" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span><span>WhatsApp</span></a>
+        <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span data-icon="menu"></span></button>
       </div>
     </div>
   </header>
-  <div class="mobile-nav" id="mobileNav">
-    <a href="#fleet">Fleet</a>
-    <a href="#why">Why us</a>
-    <a href="#how">How it works</a>
-    <a href="#reviews">Reviews</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contact">Contact</a>
-    <div class="mobile-nav__cta">
-      <a class="btn btn--dark" id="mobileCall" href="tel:"><span data-icon="phone"></span> Call us</a>
-      <a class="btn btn--wa" id="mobileWa" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span> Chat on WhatsApp</a>
-    </div>
+
+  <div class="menu" id="menu" hidden>
+    <div class="menu__backdrop" data-menu-close></div>
+    <nav class="menu__panel glass glass--2" aria-label="Mobile">
+      <a href="#fleet"><span data-icon="car"></span>Our fleet</a>
+      <a href="#why"><span data-icon="sparkles"></span>Why choose us</a>
+      <a href="#reviews"><span data-icon="star"></span>Reviews</a>
+      <a href="#how"><span data-icon="list"></span>How it works</a>
+      <a href="#faq"><span data-icon="help-circle"></span>FAQ</a>
+      <a href="#contact"><span data-icon="map"></span>Contact &amp; location</a>
+      <div class="menu__social" id="menuSocial"></div>
+    </nav>
   </div>
 
   <main id="top">
     <!-- HERO -->
-    <section class="hero" id="hero">
-      <div class="hero__bg"><img id="heroImage" src="" alt="" /></div>
-      <div class="container">
-        <div class="hero__content">
-          <div class="hero__eyebrow"><span class="dot" data-icon="bolt"></span><span id="heroEyebrow"></span></div>
-          <h1 class="hero__title"><span id="heroTitle"></span><span id="heroHighlight" class="hl"></span></h1>
+    <section class="hero" id="hero" aria-labelledby="heroH">
+      <div class="hero__media">
+        <img id="heroImage" src="assets/img/cars/mini-cooper/02.jpg" srcset="assets/img/cars/mini-cooper/02-sm.jpg 720w, assets/img/cars/mini-cooper/02.jpg 1400w" sizes="100vw" alt="" fetchpriority="high" decoding="async" width="1400" height="1050" />
+      </div>
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <div class="hero__eyebrow"><span class="hero__eyebrow-dot" data-icon="bolt"></span><span id="heroEyebrow">Pune's trusted self-drive fleet</span></div>
+          <h1 class="hero__title" id="heroH"><span id="heroTitle">Your road trip starts</span> <span id="heroHighlight" class="hl">with the right car.</span></h1>
           <p class="hero__subtitle" id="heroSubtitle"></p>
           <div class="hero__cta">
-            <a class="btn btn--primary" id="heroPrimary" href="#fleet"><span id="heroPrimaryText"></span><span data-icon="arrow-right"></span></a>
-            <a class="btn btn--ghost" id="heroSecondary" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span><span id="heroSecondaryText"></span></a>
+            <a class="btn btn--primary btn--lg" id="heroPrimary" href="#fleet"><span id="heroPrimaryText">Explore the fleet</span><span data-icon="arrow-right"></span></a>
+            <a class="btn btn--glass-dark btn--lg" id="heroSecondary" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span><span id="heroSecondaryText">Chat on WhatsApp</span></a>
           </div>
           <ul class="hero__badges" id="heroBadges"></ul>
         </div>
-        <aside class="booking" aria-label="Quick booking">
-          <div class="booking__title">Find your car</div>
-          <div class="booking__sub">Pick dates to see the estimated total for every car.</div>
-          <form id="bookingForm" novalidate>
-            <div class="row">
-              <div class="field"><label for="bkPickup">Pickup date</label><input type="date" id="bkPickup" required /></div>
-              <div class="field"><label for="bkReturn">Return date</label><input type="date" id="bkReturn" required /></div>
-            </div>
-            <div class="field"><label for="bkType">Car type</label>
-              <select id="bkType"><option value="">Any car</option></select>
-            </div>
-            <button class="btn btn--primary btn--block" type="submit"><span data-icon="search"></span> Show available cars</button>
-            <div class="booking__hint">Free cancellation up to 24 hours before pickup · <strong>300 km/day included</strong></div>
-          </form>
-        </aside>
+
+        <form class="booking glass glass--2" id="bookingForm" novalidate aria-labelledby="bookingH">
+          <div class="booking__head">
+            <h2 class="booking__title" id="bookingH">Find your car</h2>
+            <p class="booking__sub">See the total for your dates, instantly.</p>
+          </div>
+          <div class="booking__fields">
+            <label class="pill-field"><span>Pickup</span><input type="date" id="bkPickup" required /></label>
+            <label class="pill-field"><span>Return</span><input type="date" id="bkReturn" required /></label>
+            <label class="pill-field pill-field--full"><span>Car type</span><select id="bkType"><option value="">Any car</option></select></label>
+          </div>
+          <button class="btn btn--primary btn--block btn--lg" type="submit"><span data-icon="search"></span> Show available cars</button>
+          <p class="booking__hint" id="bookingHint">Free cancellation up to 24 hours before pickup</p>
+        </form>
       </div>
     </section>
 
     <!-- STATS -->
-    <section class="stats"><div class="container"><div class="stats__grid" id="stats"></div></div></section>
+    <section class="stats" aria-label="At a glance"><div class="container"><div class="stats__bar glass" id="stats"></div></div></section>
 
-    <!-- OFFERS / POSTERS -->
-    <section class="promos" id="promos" hidden aria-label="Offers">
+    <!-- OFFERS -->
+    <section class="promos" id="promos" hidden aria-roledescription="carousel" aria-label="Offers">
       <div class="container">
         <div class="promos__frame">
           <div class="promos__track" id="promosTrack"></div>
-          <button class="promos__nav promos__nav--prev" id="promosPrev" aria-label="Previous offer"><span data-icon="chevron-left"></span></button>
-          <button class="promos__nav promos__nav--next" id="promosNext" aria-label="Next offer"><span data-icon="chevron-right"></span></button>
+          <button class="promos__nav promos__nav--prev glass" id="promosPrev" type="button" aria-label="Previous offer"><span data-icon="chevron-left"></span></button>
+          <button class="promos__nav promos__nav--next glass" id="promosNext" type="button" aria-label="Next offer"><span data-icon="chevron-right"></span></button>
           <div class="promos__dots" id="promosDots"></div>
         </div>
       </div>
     </section>
 
     <!-- FLEET -->
-    <section class="section" id="fleet">
+    <section class="section" id="fleet" aria-labelledby="fleetH">
       <div class="container">
         <div class="section-head reveal">
-          <div class="eyebrow">Our fleet</div>
-          <h2 class="section-title">Pick the car that fits your trip</h2>
-          <p class="section-text">Every car is serviced, insured and sanitised before handover. Prices include 300 km per day.</p>
+          <p class="eyebrow">Our fleet</p>
+          <h2 class="section-title" id="fleetH">Pick the car that fits your trip.</h2>
+          <p class="section-text" id="fleetText">Every car is serviced, insured and sanitised before handover.</p>
         </div>
-        <div class="fleet-toolbar reveal">
-          <div class="chips" id="fleetChips"></div>
-          <div class="fleet-controls">
-            <div class="control control--select"><select id="fltTrans" aria-label="Transmission"><option value="">Any gearbox</option><option>Manual</option><option>Automatic</option></select><span data-icon="chevron-down"></span></div>
-            <div class="control control--select"><select id="fltFuel" aria-label="Fuel"><option value="">Any fuel</option><option>Petrol</option><option>Diesel</option></select><span data-icon="chevron-down"></span></div>
-            <div class="control control--select"><select id="fltSort" aria-label="Sort"><option value="rec">Recommended</option><option value="asc">Price: low to high</option><option value="desc">Price: high to low</option><option value="seats">Most seats</option></select><span data-icon="chevron-down"></span></div>
-            <div class="control control--search"><input type="search" id="fltSearch" placeholder="Search cars…" aria-label="Search cars" /><span data-icon="search"></span></div>
+      </div>
+      <div class="filterbar" id="filterbar">
+        <div class="container">
+          <div class="filterbar__inner glass">
+            <div class="seg" id="fleetChips" role="tablist" aria-label="Car type"></div>
+            <div class="filterbar__end">
+              <button type="button" class="date-chip" id="dateChip" hidden><span data-icon="calendar"></span><span id="dateChipText"></span><span class="date-chip__x" data-icon="x"></span></button>
+              <button type="button" class="icon-btn filterbar__toggle" id="filtersBtn" aria-expanded="false" aria-controls="fleetControls" aria-label="More filters"><span data-icon="sliders"></span><span class="filterbar__badge" id="filtersBadge" hidden></span></button>
+            </div>
+          </div>
+          <div class="fleet-controls" id="fleetControls">
+            <label class="control"><span class="sr">Gearbox</span><select id="fltTrans"><option value="">Any gearbox</option><option>Manual</option><option>Automatic</option></select><span data-icon="chevron-down"></span></label>
+            <label class="control"><span class="sr">Fuel</span><select id="fltFuel"><option value="">Any fuel</option></select><span data-icon="chevron-down"></span></label>
+            <label class="control"><span class="sr">Sort</span><select id="fltSort"><option value="rec">Recommended</option><option value="asc">Price: low to high</option><option value="desc">Price: high to low</option><option value="seats">Most seats</option></select><span data-icon="chevron-down"></span></label>
+            <label class="control control--search"><span class="sr">Search</span><span data-icon="search"></span><input type="search" id="fltSearch" placeholder="Search cars" autocomplete="off" /></label>
           </div>
         </div>
-        <div class="fleet-note" id="fleetNote"><span id="fleetNoteText"></span><button type="button" id="fleetNoteClear">Clear dates</button></div>
-        <div class="fleet-grid" id="fleetGrid"></div>
+      </div>
+      <div class="container">
+        <p class="fleet-count" id="fleetCount" aria-live="polite"></p>
+        <div class="fleet-grid" id="fleetGrid">
+          <div class="car is-skeleton"></div><div class="car is-skeleton"></div><div class="car is-skeleton"></div>
+          <div class="car is-skeleton"></div><div class="car is-skeleton"></div><div class="car is-skeleton"></div>
+        </div>
       </div>
     </section>
 
     <!-- WHY US -->
-    <section class="section section--alt" id="why">
+    <section class="section section--alt" id="why" aria-labelledby="featTitle">
       <div class="container">
         <div class="section-head section-head--center reveal">
-          <div class="eyebrow" id="featEyebrow"></div>
+          <p class="eyebrow" id="featEyebrow"></p>
           <h2 class="section-title" id="featTitle"></h2>
         </div>
-        <div class="features-grid" id="features"></div>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="section" id="how">
-      <div class="container">
-        <div class="section-head reveal">
-          <div class="eyebrow" id="howEyebrow"></div>
-          <h2 class="section-title" id="howTitle"></h2>
-        </div>
-        <div class="steps" id="steps"></div>
-      </div>
-    </section>
-
-    <!-- CTA BAND -->
-    <section class="section--tight">
-      <div class="container">
-        <div class="cta-band reveal">
-          <div>
-            <h2 id="ctaTitle"></h2>
-            <p id="ctaText"></p>
-          </div>
-          <div class="cta-band__actions">
-            <a class="btn btn--primary" id="ctaCall" href="tel:"><span data-icon="phone"></span><span id="ctaPhone"></span></a>
-            <a class="btn btn--ghost" id="ctaWa" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span> WhatsApp</a>
-          </div>
-        </div>
+        <div class="features" id="features"></div>
       </div>
     </section>
 
     <!-- REVIEWS -->
-    <section class="section section--alt" id="reviews">
+    <section class="section" id="reviews" aria-labelledby="testiTitle">
       <div class="container">
-        <div class="section-head reveal">
-          <div class="eyebrow" id="testiEyebrow"></div>
-          <h2 class="section-title" id="testiTitle"></h2>
-        </div>
-        <div class="testi-wrap">
-          <div class="testi-track" id="testiTrack"></div>
-          <div class="testi-nav">
-            <button type="button" id="testiPrev" aria-label="Previous review"><span data-icon="chevron-left"></span></button>
-            <button type="button" id="testiNext" aria-label="Next review"><span data-icon="chevron-right"></span></button>
+        <div class="section-head section-head--row reveal">
+          <div>
+            <p class="eyebrow" id="testiEyebrow"></p>
+            <h2 class="section-title" id="testiTitle"></h2>
+          </div>
+          <div class="reviews__side">
+            <div class="rating" id="ratingSummary"></div>
+            <div class="carousel-nav">
+              <button type="button" class="icon-btn icon-btn--line" id="testiPrev" aria-label="Previous review"><span data-icon="chevron-left"></span></button>
+              <button type="button" class="icon-btn icon-btn--line" id="testiNext" aria-label="Next review"><span data-icon="chevron-right"></span></button>
+            </div>
           </div>
         </div>
       </div>
+      <div class="testi-track" id="testiTrack"></div>
     </section>
 
-    <!-- FOLLOW / SOCIAL -->
-    <section class="section follow" id="follow" hidden>
+    <!-- HOW IT WORKS -->
+    <section class="section section--alt" id="how" aria-labelledby="howTitle">
       <div class="container">
-        <div class="follow__head reveal">
+        <div class="section-head reveal">
+          <p class="eyebrow" id="howEyebrow"></p>
+          <h2 class="section-title" id="howTitle"></h2>
+        </div>
+        <ol class="steps" id="steps"></ol>
+      </div>
+    </section>
+
+    <!-- FOLLOW -->
+    <section class="section follow" id="follow" hidden aria-labelledby="followTitle">
+      <div class="container">
+        <div class="section-head section-head--row reveal">
           <div>
-            <div class="eyebrow" id="followEyebrow"></div>
+            <p class="eyebrow" id="followEyebrow"></p>
             <h2 class="section-title" id="followTitle"></h2>
             <p class="section-text" id="followText"></p>
           </div>
           <div class="follow__side">
-            <a class="follow__handle" id="followHandle" href="#" target="_blank" rel="noopener"></a>
             <div class="follow__links" id="followLinks"></div>
             <a class="btn btn--primary" id="followCta" href="#" target="_blank" rel="noopener"></a>
           </div>
@@ -199,47 +216,55 @@
     </section>
 
     <!-- FAQ -->
-    <section class="section" id="faq">
+    <section class="section" id="faq" aria-labelledby="faqTitle">
       <div class="container faq-layout">
-        <div class="section-head reveal" style="margin-bottom:0">
-          <div class="eyebrow" id="faqEyebrow"></div>
+        <div class="section-head faq__intro reveal">
+          <p class="eyebrow" id="faqEyebrow"></p>
           <h2 class="section-title" id="faqTitle"></h2>
           <p class="section-text">Still have a question? Message us on WhatsApp and we'll reply in minutes.</p>
-          <a class="btn btn--dark" id="faqWa" href="#" target="_blank" rel="noopener" style="margin-top:22px"><span data-icon="whatsapp"></span> Ask on WhatsApp</a>
+          <a class="btn btn--line" id="faqWa" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span> Ask on WhatsApp</a>
         </div>
         <div class="faq-list" id="faqList"></div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section class="section section--alt" id="contact">
-      <div class="container contact-layout">
-        <div>
-          <div class="section-head reveal" style="margin-bottom:0">
-            <div class="eyebrow" id="contactEyebrow"></div>
+    <section class="section section--alt" id="contact" aria-labelledby="contactTitle">
+      <div class="container">
+        <div class="cta reveal">
+          <div class="cta__copy">
+            <p class="eyebrow" id="contactEyebrow"></p>
             <h2 class="section-title" id="contactTitle"></h2>
             <p class="section-text" id="contactText"></p>
           </div>
-          <div class="contact-cards" id="contactCards"></div>
-          <div class="contact-social" id="contactSocial" hidden><span>Follow us</span><div class="footer__social" id="contactSocialLinks"></div></div>
-          <div class="map" id="map" hidden></div>
+          <div class="cta__actions">
+            <a class="btn btn--primary btn--lg" id="ctaCall" href="tel:"><span data-icon="phone"></span><span id="ctaPhone">Call us</span></a>
+            <a class="btn btn--wa btn--lg" id="ctaWa" href="#" target="_blank" rel="noopener"><span data-icon="whatsapp"></span> WhatsApp</a>
+          </div>
         </div>
-        <div class="contact-form reveal">
-          <h3 style="font-size:22px;margin-bottom:6px">Request a booking</h3>
-          <p style="color:var(--muted);font-size:14.5px;margin-bottom:20px">We'll confirm availability on WhatsApp.</p>
-          <form id="contactForm" novalidate>
-            <div class="row">
-              <div class="field"><label for="cfName">Your name</label><input id="cfName" required placeholder="Rahul Sharma" /></div>
-              <div class="field"><label for="cfPhone">Mobile number</label><input id="cfPhone" type="tel" required placeholder="98765 43210" /></div>
-            </div>
-            <div class="field"><label for="cfCar">Preferred car</label><select id="cfCar"><option value="">Not sure yet</option></select></div>
-            <div class="row">
-              <div class="field"><label for="cfPickup">Pickup date</label><input id="cfPickup" type="date" /></div>
-              <div class="field"><label for="cfReturn">Return date</label><input id="cfReturn" type="date" /></div>
-            </div>
-            <div class="field"><label for="cfMsg">Message</label><textarea id="cfMsg" placeholder="Pickup location, trip destination, anything else…"></textarea></div>
-            <button class="btn btn--wa btn--block" type="submit"><span data-icon="whatsapp"></span> Send on WhatsApp</button>
-          </form>
+        <div class="contact-layout">
+          <div class="contact-side">
+            <div class="contact-cards" id="contactCards"></div>
+            <div class="map" id="map" hidden></div>
+          </div>
+          <div class="contact-form card reveal">
+            <h3 class="card__title">Request a booking</h3>
+            <p class="card__sub">Send your details and we'll confirm availability on WhatsApp.</p>
+            <form id="contactForm" novalidate>
+              <div class="row">
+                <div class="field"><label for="cfName">Your name</label><input id="cfName" required autocomplete="name" placeholder="Rahul Sharma" /></div>
+                <div class="field"><label for="cfPhone">Mobile number</label><input id="cfPhone" type="tel" inputmode="tel" required autocomplete="tel" placeholder="98765 43210" /></div>
+              </div>
+              <div class="field"><label for="cfCar">Preferred car</label><select id="cfCar"><option value="">Not sure yet</option></select></div>
+              <div class="row">
+                <div class="field"><label for="cfPickup">Pickup date</label><input id="cfPickup" type="date" /></div>
+                <div class="field"><label for="cfReturn">Return date</label><input id="cfReturn" type="date" /></div>
+              </div>
+              <div class="field"><label for="cfMsg">Message <small>optional</small></label><textarea id="cfMsg" rows="3" placeholder="Pickup location, destination, anything else"></textarea></div>
+              <input type="text" id="cfWebsite" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <button class="btn btn--wa btn--block btn--lg" type="submit"><span data-icon="whatsapp"></span> Send on WhatsApp</button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -248,10 +273,10 @@
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
-        <div>
-          <a href="#top" class="brand"><span class="brand__mark" aria-hidden="true"></span><span class="brand__text"><span class="brand__name" id="footBrand">DriveEase</span><small id="footTagline"></small></span></a>
+        <div class="footer__brand">
+          <a href="#top" class="brand"><span class="brand__mark" data-brand-mark></span><span class="brand__text"><span class="brand__name" data-brand-name>DP Self Drive</span><span class="brand__sub" data-brand-sub>Car Rental · Pune</span></span></a>
           <p class="footer__about" id="footAbout"></p>
-          <div class="footer__social" id="footSocial"></div>
+          <div class="social" id="footSocial"></div>
         </div>
         <div>
           <h4>Explore</h4>
@@ -274,43 +299,48 @@
       </div>
       <div class="footer__bottom">
         <span id="footCopy"></span>
-        <span><a href="admin.html">Admin</a></span>
+        <div class="theme-switch" id="footTheme" role="group" aria-label="Colour theme"></div>
       </div>
     </div>
   </footer>
 
-  <a class="fab-wa" id="fabWa" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><span class="pulse"></span><span data-icon="whatsapp"></span><span>Chat with us</span></a>
-  <button class="to-top" id="toTop" aria-label="Back to top"><span data-icon="arrow-up"></span></button>
+  <!-- Mobile action dock -->
+  <nav class="dock glass" id="dock" aria-label="Quick actions">
+    <a href="tel:" id="dockCall"><span data-icon="phone"></span><span>Call</span></a>
+    <a href="#" id="dockWa" class="dock__primary" target="_blank" rel="noopener"><span data-icon="whatsapp"></span><span>Book on WhatsApp</span></a>
+    <a href="#fleet" id="dockCars"><span data-icon="car"></span><span>Cars</span></a>
+  </nav>
+  <button class="to-top glass" id="toTop" type="button" aria-label="Back to top"><span data-icon="arrow-up"></span></button>
 
-  <!-- Car detail modal -->
-  <div class="modal" id="carModal" role="dialog" aria-modal="true" aria-labelledby="detailName">
-    <div class="modal__backdrop" data-close></div>
-    <div class="modal__panel">
-      <button class="modal__close" data-close aria-label="Close"><span data-icon="x"></span></button>
-      <div class="gallery">
-        <div class="gallery__main">
-          <img id="galMain" src="" alt="" />
-          <button class="gallery__nav gallery__nav--prev" id="galPrev" aria-label="Previous photo"><span data-icon="chevron-left"></span></button>
-          <button class="gallery__nav gallery__nav--next" id="galNext" aria-label="Next photo"><span data-icon="chevron-right"></span></button>
+  <!-- Car detail sheet -->
+  <dialog class="sheet" id="carSheet" aria-labelledby="detailName">
+    <div class="sheet__panel">
+      <div class="sheet__grabber" id="sheetGrabber" aria-hidden="true"><span></span></div>
+      <button class="sheet__close icon-btn glass" type="button" data-close aria-label="Close"><span data-icon="x"></span></button>
+      <div class="sheet__scroll" id="sheetScroll">
+        <div class="gallery">
+          <div class="gallery__track" id="galTrack"></div>
+          <button class="gallery__nav gallery__nav--prev glass" id="galPrev" type="button" aria-label="Previous photo"><span data-icon="chevron-left"></span></button>
+          <button class="gallery__nav gallery__nav--next glass" id="galNext" type="button" aria-label="Next photo"><span data-icon="chevron-right"></span></button>
           <span class="gallery__counter" id="galCounter"></span>
+          <div class="gallery__thumbs" id="galThumbs"></div>
         </div>
-        <div class="gallery__thumbs" id="galThumbs"></div>
+        <div class="detail" id="detail"></div>
       </div>
-      <div class="detail" id="detail"></div>
+      <div class="sheet__footer glass" id="sheetFooter"></div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox__close" id="lbClose" aria-label="Close"><span data-icon="x"></span></button>
-    <button class="gallery__nav gallery__nav--prev" id="lbPrev" aria-label="Previous"><span data-icon="chevron-left"></span></button>
-    <img id="lbImg" src="" alt="" />
-    <button class="gallery__nav gallery__nav--next" id="lbNext" aria-label="Next"><span data-icon="chevron-right"></span></button>
-  </div>
+  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+    <button class="lightbox__close icon-btn" id="lbClose" type="button" aria-label="Close"><span data-icon="x"></span></button>
+    <button class="gallery__nav gallery__nav--prev" id="lbPrev" type="button" aria-label="Previous"><span data-icon="chevron-left"></span></button>
+    <img id="lbImg" src="data:," alt="" />
+    <button class="gallery__nav gallery__nav--next" id="lbNext" type="button" aria-label="Next"><span data-icon="chevron-right"></span></button>
+  </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="data/content.js"></script>
   <script src="assets/js/icons.js"></script>
   <script src="assets/js/site.js"></script>
 </body>
