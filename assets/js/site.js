@@ -364,6 +364,40 @@
     L.push("", "Kindly confirm availability and share the next steps.", "", "Thank you.");
     return L.join("\n");
   }
+  /* ---------- visitor analytics (Admin → Analytics) ----------
+     No cookies: a random visitor id in localStorage, plus the phone model from User-Agent Client Hints. */
+  const visits = (() => {
+    const off = isPreview || location.protocol === "file:" || navigator.webdriver;
+    let vid = "", isNew = false;
+    try { vid = localStorage.getItem("dp-vid") || ""; if (!vid) { vid = Math.random().toString(36).slice(2) + Date.now().toString(36); isNew = true; if (!off) localStorage.setItem("dp-vid", vid); } } catch (e) { /* private mode: the server falls back to a hash */ }
+    const send = (data) => {
+      if (off) return;
+      const body = JSON.stringify({ vid, ...data });
+      try { if (navigator.sendBeacon && navigator.sendBeacon("api/track", new Blob([body], { type: "application/json" }))) return; } catch (e) { /* fall through */ }
+      try { fetch("api/track", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json" }, body }).catch(() => {}); } catch (e) { /* offline */ }
+    };
+    async function view() {
+      let firstInVisit = false;
+      try { firstInVisit = !sessionStorage.getItem("dp-visit"); sessionStorage.setItem("dp-visit", "1"); } catch (e) { firstInVisit = true; }
+      let model = "";
+      try { if (navigator.userAgentData && navigator.userAgentData.mobile) model = (await Promise.race([navigator.userAgentData.getHighEntropyValues(["model"]), new Promise((r) => setTimeout(() => r({}), 800))])).model || ""; } catch (e) { /* not supported */ }
+      send({ t: "view", nv: isNew ? 1 : 0, s: firstInVisit ? 1 : 0, p: location.pathname, r: document.referrer, utm: params.get("utm_source") || params.get("src") || "", model, touch: navigator.maxTouchPoints || 0 });
+      if (params.has("src")) { params.delete("src"); history.replaceState(history.state, "", location.pathname + (params.toString() ? "?" + params : "") + location.hash); }
+      // "Online now": a tiny ping each minute while the tab is open and visible
+      setInterval(() => { if (!document.hidden) send({ t: "ping" }); }, 60000);
+    }
+    const event = (e, extra) => send({ t: "event", e, ...(extra || {}) });
+    // Outgoing taps, counted after the page's own handlers so a blocked WhatsApp button isn't counted
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest && e.target.closest("a[href]"); if (!a || e.defaultPrevented) return;
+      const h = a.getAttribute("href") || "";
+      if (/^https:\/\/wa\.me\/\d/.test(h)) event("whatsapp");
+      else if (/^tel:/i.test(h)) event("call");
+      else if (/^https:\/\/wa\.me\/\?|facebook\.com\/sharer|twitter\.com\/intent|x\.com\/intent|t\.me\/share/i.test(h)) event("share");
+      else if (/google\.[a-z.]+\/maps|maps\.google|goo\.gl\/maps|maps\.app/i.test(h)) event("directions");
+    });
+    return { view, event };
+  })();
   const newRef = () => { const d = new Date(); return `DP-${String(d.getFullYear()).slice(2)}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}-${Math.random().toString(36).slice(2, 6).toUpperCase().padEnd(4, "X")}`; };
   const visitor = {
     get() { try { return JSON.parse(store.get("dp-visitor") || "{}"); } catch (e) { return {}; } },
@@ -372,6 +406,7 @@
   /* Saved to the owner's enquiry log (Admin → Enquiries). Fire-and-forget: WhatsApp opens either way. */
   function recordEnquiry(data) {
     if (isPreview || location.protocol === "file:") return;
+    visits.event("enquiry");
     try { fetch("api/enquiry", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }).catch(() => {}); } catch (e) { /* offline */ }
   }
 
@@ -416,6 +451,7 @@
     const c = visibleFleet().find((x) => x.id === id); if (!c) return;
     opener = from || document.activeElement;
     sheet.car = c; sheet.idx = Math.max(0, (c.images || []).indexOf(c.cover));
+    if (!fromHistory) visits.event("car", { car: c.name });
     renderGallery(true); renderDetail(c);
     const d = dlg();
     if (!d.open) { d.classList.remove("is-closing"); d.showModal(); }
@@ -489,7 +525,7 @@
     }));
   }
   function shareBar(c) {
-    const url = location.origin + location.pathname + "#car-" + c.id, text = `${c.name} on rent, ${inr(c.pricePerDay)}/day at ${C.site.name}`;
+    const url = location.origin + location.pathname + "?src=share#car-" + c.id, text = `${c.name} on rent, ${inr(c.pricePerDay)}/day at ${C.site.name}`;
     return `<div class="share">Share
       <a href="https://wa.me/?text=${encodeURIComponent(text + " " + url)}" target="_blank" rel="noopener" aria-label="Share on WhatsApp">${icon("whatsapp")}</a>
       <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener" aria-label="Share on Facebook">${icon("facebook")}</a>
@@ -741,7 +777,7 @@
     try { C = await loadContent(); } catch (e) {
       $("#fleetGrid").innerHTML = `<div class="fleet-empty"><h3>We couldn't load the cars</h3><p>Please check your connection and refresh the page.</p></div>`; return;
     }
-    renderAll(); bindFleetControls(); bindSheet(); bindChrome();
+    renderAll(); bindFleetControls(); bindSheet(); bindChrome(); visits.view();
     const h = location.hash;
     if (h.startsWith("#car-")) { history.replaceState(null, "", location.pathname + location.search); openCar(h.slice(5)); }
     if (isPreview) {

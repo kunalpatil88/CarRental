@@ -42,3 +42,6 @@ desktop.ini
 # Customer enquiries (personal data: keep out of git)
 data/enquiries.json
 data/enquiries.json.tmp
+# Visitor analytics (daily totals, no personal data, but runtime data)
+data/analytics.json
+data/analytics.json.tmp

@@ -30,6 +30,7 @@ Works on a phone as well as a computer (bottom tab bar, full-screen car editor).
 | Hero, Stats, Why choose us, How it works, FAQ, Contact & footer | All text and images on the home page |
 | Business & contact | Name, phone, WhatsApp, email, address, hours, map (with checks for wrong numbers and map links) |
 | Logo & theme | Accent colour, default light/dark/auto look, visitor theme switch, optional custom logo and favicon |
+| Analytics | Daily visitors and page views, online now, mobile vs desktop, phone brands and models, countries and cities, where visitors come from (Google, Instagram, shared links…), cars viewed, WhatsApp and call taps, busiest hours. Stored as daily totals in `data/analytics.json`: no cookies, no IP addresses. Needs the Node server. For cities, turn on Cloudflare → Rules → Transform Rules → Managed Transforms → **Add visitor location headers** |
 | History | Restore any of the last 30 published versions |
 | Security | Change the admin password |
 

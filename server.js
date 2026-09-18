@@ -23,6 +23,8 @@ const ENQUIRIES_FILE = path.join(DATA_DIR, "enquiries.json");
 const enquiryLib = require("./lib/enquiries");
 const enquiries = enquiryLib.createStore(ENQUIRIES_FILE);
 const enquiryHits = new Map(); // ip -> { n, since }
+const analytics = require("./lib/analytics").createStore(path.join(DATA_DIR, "analytics.json"));
+const trackHits = new Map(); // ip -> { n, since }
 const { renderCarPage, findCar, shareImages } = require("./lib/carpage");
 // Public origin for absolute share links. Behind Cloudflare / a proxy the original scheme arrives in X-Forwarded-Proto.
 function siteOrigin(req) {
@@ -111,7 +113,7 @@ function auth(req) {
 }
 function tooManyAttempts(ip) { const a = attempts.get(ip); return a && a.count >= 8 && Date.now() - a.last < 10 * 60 * 1000; }
 // Forget expired sessions and stale rate-limit entries every 10 minutes
-setInterval(() => { const now = Date.now(); for (const [t, exp] of sessions) if (exp < now) sessions.delete(t); for (const [ip, a] of attempts) if (now - a.last > 10 * 60 * 1000) attempts.delete(ip); }, 10 * 60 * 1000).unref();
+setInterval(() => { const now = Date.now(); for (const [t, exp] of sessions) if (exp < now) sessions.delete(t); for (const [ip, a] of attempts) if (now - a.last > 10 * 60 * 1000) attempts.delete(ip); for (const [ip, h] of trackHits) if (now - h.since > 60 * 60 * 1000) trackHits.delete(ip); }, 10 * 60 * 1000).unref();
 function noteAttempt(ip, ok) { if (ok) { attempts.delete(ip); return; } const a = attempts.get(ip) || { count: 0 }; a.count++; a.last = Date.now(); attempts.set(ip, a); }
 
 /* ---------- helpers ---------- */
@@ -174,7 +176,7 @@ async function api(req, res, url) {
   const ip = (process.env.TRUST_CF && req.headers["cf-connecting-ip"]) || req.socket.remoteAddress || "?";
   const route = req.method + " " + url.pathname;
 
-  if (route === "GET /api/health") return ok(res, { mode: "server", version: 2, enquiries: true, time: new Date().toISOString() });
+  if (route === "GET /api/health") return ok(res, { mode: "server", version: 2, enquiries: true, analytics: true, time: new Date().toISOString() });
 
   // Public: a visitor pressed "Book on WhatsApp" or sent the contact form
   if (route === "POST /api/enquiry") {
@@ -189,6 +191,15 @@ async function api(req, res, url) {
     if (enquiries.all().some((e) => e.id === enquiry.id)) enquiry.id += "-" + crypto.randomBytes(2).toString("hex").toUpperCase();
     await enquiries.add(enquiry);
     return ok(res, { id: enquiry.id });
+  }
+
+  // Public: page views and clicks from the site (Admin → Analytics). Always answers 204 so it never slows the page.
+  if (route === "POST /api/track") {
+    const hit = trackHits.get(ip) || { n: 0, since: Date.now() };
+    if (Date.now() - hit.since > 60 * 60 * 1000) { hit.n = 0; hit.since = Date.now(); }
+    trackHits.set(ip, hit);
+    if (++hit.n <= 600) { try { analytics.track(await readJson(req, 4 * 1024), req.headers); } catch (e) { /* bad beacon */ } }
+    res.writeHead(204, { "Cache-Control": "no-store" }); return res.end();
   }
 
   if (route === "POST /api/login") {
@@ -272,6 +283,9 @@ async function api(req, res, url) {
     const { id } = await readJson(req);
     return enquiries.remove(String(id || "")) ? ok(res) : fail(res, 404, "Enquiry not found");
   }
+
+  if (route === "GET /api/analytics") return ok(res, analytics.summary(url.searchParams.get("days")));
+  if (route === "DELETE /api/analytics") { analytics.reset(); return ok(res); }
 
   if (route === "GET /api/images") {
     const images = [...listImages(path.join(ROOT, "assets", "img", "promos"), "assets/img/promos"), ...listImages(path.join(ROOT, "assets", "img", "cars"), "assets/img/cars"), ...listImages(UPLOAD_DIR, "assets/img/uploads")];
@@ -362,6 +376,8 @@ const server = http.createServer(async (req, res) => {
     return fail(res, 500, e.message || "Server error");
   }
 });
+// Analytics are written every few seconds; save the last ones when the server stops.
+for (const sig of ["SIGINT", "SIGTERM"]) process.on(sig, () => { analytics.flush(); process.exit(0); });
 server.headersTimeout = 20000;
 server.requestTimeout = 60000;
 server.listen(PORT, HOST, () => {

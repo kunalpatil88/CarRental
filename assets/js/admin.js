@@ -24,7 +24,7 @@
   const DRAFT_KEY = "dp_admin_draft";
   const TOKEN_KEY = "dp_admin_token";
 
-  const state = { enq: { list: [], counts: {}, supported: false, filter: { q: "", status: "", from: "", to: "" } }, mode: "static", configError: "", token: store.get(TOKEN_KEY) || store.get(TOKEN_KEY, false) || "", content: null, saved: null, section: "dashboard", dirty: false, changed: [], defaultPassword: false, publishing: false };
+  const state = { an: { days: 7, data: null, supported: false }, enq: { list: [], counts: {}, supported: false, filter: { q: "", status: "", from: "", to: "" } }, mode: "static", configError: "", token: store.get(TOKEN_KEY) || store.get(TOKEN_KEY, false) || "", content: null, saved: null, section: "dashboard", dirty: false, changed: [], defaultPassword: false, publishing: false };
   const online = () => state.mode === "server" || state.mode === "vercel";
 
   /* ---------- path helpers ---------- */
@@ -59,7 +59,7 @@
     return data;
   }
   async function detectMode() {
-    try { const r = await fetch("/api/health", { cache: "no-store" }); const d = await r.json(); if (d.ok) { state.mode = d.mode === "vercel" ? "vercel" : "server"; state.configError = d.configError || ""; state.enq.supported = !!d.enquiries; return; } } catch (e) { /* static */ }
+    try { const r = await fetch("/api/health", { cache: "no-store" }); const d = await r.json(); if (d.ok) { state.mode = d.mode === "vercel" ? "vercel" : "server"; state.configError = d.configError || ""; state.enq.supported = !!d.enquiries; state.an.supported = !!d.analytics; return; } } catch (e) { /* static */ }
     state.mode = "static";
   }
   async function loadContent() {
@@ -160,6 +160,7 @@
   const SECTIONS = [
     { id: "dashboard", group: "Overview", label: "Dashboard", icon: "home", sub: "Today at a glance" },
     { id: "enquiries", group: "Overview", label: "Enquiries", icon: "inbox", sub: "Booking requests from the website", count: () => state.enq.counts.new || "", keys: "enquiry leads bookings requests customers excel download export" },
+    { id: "analytics", group: "Overview", label: "Analytics", icon: "bar-chart", sub: "Visitors, devices and where they come from", keys: "traffic visitors views stats mobile desktop device phone model brand country city location source google instagram whatsapp clicks" },
     { id: "fleet", group: "Fleet", label: "Cars & availability", icon: "car", sub: "Add cars, set prices, mark booked", count: () => (state.content.fleet || []).length, keys: "car fleet photos price booked available" },
     { id: "promos", group: "Marketing", label: "Offers & posters", icon: "tag", sub: "Rotating posters under the hero", count: () => livePromos().length, keys: "poster banner discount festival" },
     { id: "announcement", group: "Marketing", label: "Announcement bar", icon: "megaphone", sub: "Slim notice at the very top of the site", keys: "notice offer banner top" },
@@ -395,6 +396,21 @@
       load();
     },
 
+    analytics(root) {
+      if (!state.an.supported) {
+        root.innerHTML = `<div class="notice notice--${state.mode === "vercel" ? "info" : "warn"}">${icon("info")}<div><b>${state.mode === "vercel" ? "Analytics can't be saved on Vercel" : "Analytics need the server"}</b>${state.mode === "vercel" ? "Vercel can't save files, so visits aren't counted. Host the site with the Node server (npm start, a VPS, or the included Docker setup) to see daily traffic here." : "Run <code>npm start</code> (or double-click start.bat). Every visit to the website is then counted here."}</div></div>`;
+        return;
+      }
+      const RANGES = [[1, "Today"], [7, "7 days"], [30, "30 days"], [90, "90 days"], [365, "1 year"]];
+      root.innerHTML = `<div class="toolbar an-toolbar"><div class="seg-toggle" role="radiogroup" aria-label="Date range">${RANGES.map(([v, l]) => `<label><input type="radio" name="anDays" value="${v}" ${state.an.days === v ? "checked" : ""} /><span>${l}</span></label>`).join("")}</div>
+        <button type="button" class="btn btn--soft" id="anRefresh">${icon("refresh")} Refresh</button></div>
+        <div id="anBody" class="an-body"><p class="empty">Loading…</p></div>`;
+      $$('[name="anDays"]', root).forEach((r) => (r.onchange = () => { state.an.days = +r.value; loadAnalytics(); }));
+      $("#anRefresh").onclick = () => loadAnalytics();
+      if (state.an.data && state.an.data.days === state.an.days) renderAnalytics();
+      loadAnalytics(true);
+    },
+
     announcement(root) {
       root.innerHTML = card("Announcement bar", "A slim bar above the header for offers or notices. Visitors can dismiss it.", `<div class="grid">${F.toggle("site.announcementEnabled", "Show the announcement bar")}${F.text("site.announcement", "Announcement text", { full: true, max: 90, placeholder: "Weekend special: 10% off on 3+ day bookings" })}</div>`);
     },
@@ -541,6 +557,84 @@
       markDirty(); rerender();
       toast(off ? `${car.name} marked booked${car.bookedUntil ? " until " + fmtDate(car.bookedUntil) : ""}. Publish to update the site.` : `${car.name} is available. Publish to update the site.`, "success");
     }, { once: true });
+  }
+
+  /* ============================================================
+     Analytics
+     ============================================================ */
+  const num = (n) => Number(n || 0).toLocaleString("en-IN");
+  const hourLabel = (h) => (h % 12 || 12) + (h < 12 ? "am" : "pm");
+  const hourTip = (v, h) => `<b>${hourLabel(h)}–${hourLabel((h + 1) % 24)}</b>${num(v)} page view${v === 1 ? "" : "s"}`;
+  async function loadAnalytics(quiet) {
+    if (!state.an.supported || !state.token) return;
+    const days = state.an.days;
+    try { const d = await api("GET", "/api/analytics?days=" + days); if (days !== state.an.days) return; state.an.data = d; if (state.section === "analytics") renderAnalytics(); }
+    catch (e) { if (!quiet && e.status !== 401) toast(e.message, "error"); }
+  }
+  function renderAnalytics() {
+    const box = $("#anBody"), d = state.an.data; if (!box || !d) return;
+    const t = d.totals, p = d.prev, L = d.lists, span = d.days === 1 ? "yesterday" : `previous ${d.days} days`;
+    const delta = (a, b) => { if (!b) return a ? `<span class="kpi__delta">none in the ${span}</span>` : ""; const c = Math.round(((a - b) / b) * 100); return `<span class="kpi__delta ${c > 0 ? "is-up" : c < 0 ? "is-down" : ""}">${c > 0 ? "▲ " : c < 0 ? "▼ " : ""}${Math.abs(c)}% vs ${span}</span>`; };
+    const kpi = (ic, cls, v, label, sub) => `<div class="kpi"><span class="kpi__icon ${cls}">${icon(ic)}</span><span><span class="kpi__value">${num(v)}</span><span class="kpi__label" style="display:block">${esc(label)}</span>${sub || ""}</span></div>`;
+    const act = Object.fromEntries(L.act), dev = Object.fromEntries(L.dev);
+    const wa = act["WhatsApp clicks"] || 0, calls = act["Call clicks"] || 0, enq = act["Booking enquiries sent"] || 0, mobile = (dev.Mobile || 0) + (dev.Tablet || 0);
+    // "Today" shows hours; longer ranges show one bar per day
+    const hourly = d.days === 1;
+    const bars = hourly ? d.hours.map((v, h) => ({ v, label: hourLabel(h), tip: hourTip(v, h) }))
+      : d.series.map((x) => ({ v: x.u, label: fmtDate(x.d), today: x.d === today(), tip: `<b>${new Date(x.d + "T00:00").toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })}</b>${num(x.u)} visitor${x.u === 1 ? "" : "s"} · ${num(x.v)} views · ${num(x.s)} visits` }));
+    const conv = t.u ? Math.round((enq / t.u) * 1000) / 10 : 0;
+    const cityHelp = d.location.city ? "" : `<p class="hint">To see cities: Cloudflare dashboard → your domain → Rules → Transform Rules → Managed Transforms → turn on <b>Add visitor location headers</b>.</p>`;
+    box.innerHTML = `
+      <div class="kpis">${kpi("users", "", t.u, "Visitors", delta(t.u, p.u))}${kpi("eye", "green", t.v, "Page views", delta(t.v, p.v))}${kpi("phone", "amber", wa + calls, "WhatsApp & call taps", `<span class="kpi__delta">${num(wa)} WhatsApp · ${num(calls)} calls</span>`)}${kpi("bolt", "red", d.online, "Online now", `<span class="kpi__delta">active in the last 5 min</span>`)}</div>
+      ${card(hourly ? "Today by hour" : "Daily visitors", hourly ? "Page views in each hour (India time). Hover or tap a bar." : "Unique visitors per day. Hover or tap a bar for views and visits.", barChart(bars, hourly ? 3 : Math.max(1, Math.ceil(bars.length / 7))))}
+      <div class="an-grid">
+        ${card("Mobile or desktop", t.u ? `${Math.round((mobile / t.u) * 100)}% of visitors are on a phone or tablet` : "", anList(L.dev, t.u, { icons: { Mobile: "phone", Tablet: "phone", Desktop: "layout" } }))}
+        ${card("Where visitors come from", "Counted once per visit", anList(L.src, t.s))}
+        ${card("Phone brands", "Visitors on phones and tablets", anList(L.brand, mobile))}
+        ${card("Phone models", "Android phones share the model; iPhones only say “iPhone”.", anList(L.model, mobile))}
+        ${card("Countries", "", anList(L.country, t.u) + (d.location.country ? "" : `<p class="hint">Countries appear when the site runs behind Cloudflare, as the Docker setup does.</p>`))}
+        ${card("Cities", "", anList(L.city, t.u) + cityHelp)}
+        ${card("Cars people looked at", "Times each car's details were opened", anList(L.car, L.car.reduce((a, x) => a + x[1], 0), { max: 10 }))}
+        ${card("What visitors did", t.u ? `${conv}% of visitors sent a booking enquiry` : "", anList(L.act, 0))}
+        ${card("Browsers", "", anList(L.br, t.u))}
+        ${card("Operating systems", "", anList(L.os, t.u))}
+      </div>
+      ${hourly ? "" : card("Busiest hours", "Page views by hour of day in this period (India time). The times to reply fastest on WhatsApp.", barChart(d.hours.map((v, h) => ({ v, label: hourLabel(h), tip: hourTip(v, h) })), 3))}
+      <div class="an-foot"><p class="hint">${t.n ? `${num(t.n)} of ${num(t.u)} visitors came for the first time. ` : ""}Counting since ${d.since ? new Date(d.since + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "today"}. No cookies or IP addresses are stored, and admin and preview visits aren't counted.</p>
+        <button type="button" class="btn btn--ghost btn--sm" id="anReset">${icon("trash")} Clear analytics</button></div>`;
+    bindCharts(box);
+    $("#anReset").onclick = async () => {
+      if (await ask({ title: "Clear all analytics?", text: "Every visitor count, device and source is deleted and counting starts again from now. This can't be undone.", buttons: [{ label: "Cancel", value: "" }, { label: "Clear", value: "ok", kind: "danger" }] }) !== "ok") return;
+      try { await api("DELETE", "/api/analytics"); toast("Analytics cleared", "success"); loadAnalytics(); } catch (e) { toast(e.message, "error"); }
+    };
+  }
+  function niceStep(max) { const raw = max / 2, p = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / p; return Math.max(1, (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p); }
+  function barChart(bars, every) {
+    const max = Math.max(1, ...bars.map((b) => b.v)), top = Math.ceil(max / niceStep(max)) * niceStep(max);
+    const grid = [top, top / 2, 0].map((g) => `<div class="an-chart__grid" style="bottom:${(g / top) * 100}%"><span>${num(g)}</span></div>`).join("");
+    return `<div class="an-chart" style="--n:${bars.length}"><div class="an-chart__plot">${grid}<div class="an-chart__bars">${bars.map((b) => `<div class="an-bar ${b.today ? "is-today" : ""}" tabindex="0" data-tip="${esc(b.tip)}" aria-label="${esc(b.tip.replace(/<[^>]+>/g, " "))}"><i style="height:${b.v ? Math.max(1.5, (b.v / top) * 100) : 0}%"></i></div>`).join("")}</div><div class="an-tip" role="status" hidden></div></div>
+      <div class="an-chart__x">${bars.map((b, i) => `<span>${i % every === 0 ? esc(b.label) : ""}</span>`).join("")}</div></div>`;
+  }
+  function bindCharts(root) {
+    $$(".an-chart__plot", root).forEach((plot) => {
+      const tip = $(".an-tip", plot);
+      const clear = () => $$(".an-bar.is-hover", plot).forEach((x) => x.classList.remove("is-hover"));
+      const show = (bar) => {
+        tip.innerHTML = bar.dataset.tip; tip.hidden = false; clear(); bar.classList.add("is-hover");
+        const r = plot.getBoundingClientRect(), b = bar.getBoundingClientRect(), w = tip.offsetWidth;
+        tip.style.left = Math.min(Math.max(b.left + b.width / 2 - r.left, w / 2), r.width - w / 2) + "px";
+      };
+      const hide = () => { tip.hidden = true; clear(); };
+      $$(".an-bar", plot).forEach((bar) => { bar.onpointerenter = () => show(bar); bar.onfocus = () => show(bar); bar.onclick = () => show(bar); bar.onblur = hide; });
+      plot.onpointerleave = (e) => { if (e.pointerType === "mouse") hide(); };
+    });
+  }
+  /* Ranked list with a share bar. total = what the percentages are of (0 = counts only). */
+  function anList(rows, total, o) {
+    o = o || {}; if (!rows.length) return `<p class="empty">Nothing yet for this period.</p>`;
+    const max = rows[0][1] || 1, limit = o.max || 8;
+    const row = ([k, n]) => `<li class="an-row"><span class="an-row__label" title="${esc(k)}">${o.icons && o.icons[k] ? icon(o.icons[k]) : ""}<span>${esc(k)}</span></span><span class="an-row__n">${num(n)}${total ? `<small>${Math.round((n / total) * 100)}%</small>` : ""}</span><span class="an-row__bar"><i style="width:${(n / max) * 100}%"></i></span></li>`;
+    return `<ul class="an-list">${rows.slice(0, limit).map(row).join("")}</ul>${rows.length > limit ? `<details class="an-more"><summary>Show all ${rows.length}</summary><ul class="an-list">${rows.slice(limit).map(row).join("")}</ul></details>` : ""}`;
   }
 
   /* ============================================================
@@ -932,6 +1026,7 @@ ${site.name}`;
     clearInterval(boot._poll);
     boot._poll = setInterval(async () => {
       if (document.hidden || $("#app").hidden) return;
+      if (state.section === "analytics") loadAnalytics(true);
       const before = state.enq.counts.all || 0; await loadEnquiries(true);
       if ((state.enq.counts.all || 0) > before) {
         toast("New enquiry received", "success");
