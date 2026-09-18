@@ -1,0 +1,14 @@
+// Cloudflare Workers deploy config. Cloudflare runs `npx wrangler deploy` on every push to main.
+// The site is served as static files from the repo root; files listed in .assetsignore are never uploaded.
+// Only /car/* and /api/* run code first (worker/index.js); everything else is a plain static file.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "carrental",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/car/*", "/api/*"]
+  }
+}

@@ -1,0 +1,30 @@
+# Files Cloudflare must NOT upload as public website files (same syntax as .gitignore).
+
+# Build tools (wrangler installs itself here during the build; the 126 MB file broke the deploy)
+node_modules
+.wrangler
+.git
+
+# Server code, secrets and runtime data
+worker
+api
+lib
+server.js
+admin.config.json
+data/backups
+data/enquiries.json
+data/analytics.json
+.env
+
+# Config and docs
+wrangler.jsonc
+package.json
+package-lock.json
+README.md
+vercel.json
+.vercelignore
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+start.bat
