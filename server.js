@@ -44,7 +44,7 @@ const MIME = {
   ".woff2": "font/woff2", ".woff": "font/woff", ".mp4": "video/mp4",
 };
 /* Only these paths are ever served. Everything else (config, backups, server code, original photo folders) stays private. */
-const ALLOWED = [/^\/(index|admin)\.html$/, /^\/robots\.txt$/, /^\/data\/content\.(json|js)$/, /^\/assets\/(css|js|img)\/[\w\-./ ]+\.(css|js|jpe?g|png|webp|gif|svg|ico|woff2?)$/i];
+const ALLOWED = [/^\/(index|admin|connect)\.html$/, /^\/robots\.txt$/, /^\/data\/content\.(json|js)$/, /^\/assets\/(css|js|img)\/[\w\-./ ]+\.(css|js|jpe?g|png|webp|gif|svg|ico|woff2?)$/i];
 
 /* Security headers. The CSP allows the one inline theme script in index.html by its hash. */
 function inlineScriptHashes(file) {
@@ -324,6 +324,7 @@ function serveStatic(req, res, url) {
   try { p = path.posix.normalize(decodeURIComponent(url.pathname)); } catch (e) { return send(res, 400, "Bad request", { "Content-Type": "text/plain" }); }
   if (p === "/" || p === "/index") p = "/index.html";
   if (p === "/admin" || p === "/admin/") p = "/admin.html";
+  if (p === "/connect" || p === "/connect/") p = "/connect.html";
   const carMatch = p.match(/^\/car\/([\w-]+)\/?$/);
   if (carMatch) {
     let html = null;
