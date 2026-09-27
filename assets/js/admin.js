@@ -364,12 +364,12 @@
       root.innerHTML = `<div class="toolbar"><div class="search-box"><span data-icon="search"></span><input type="search" id="fleetSearch" placeholder="Search cars" value="${esc(f.q)}" /></div><button class="btn btn--primary" id="addCarBtn">${icon("plus")} Add car</button></div>
         <div class="chipset">${chip("", "All", counts.all)}${chip("available", "Available", counts.available)}${chip("booked", "Booked", counts.booked)}${chip("hidden", "Hidden", counts.hidden)}</div>
         <div class="fleet-list" id="fleetList">${fleet.map((x, i) => fleetRow(x, i)).join("")}</div>
-        <p class="hint">Cars show on the site in this order, with Popular cars first and booked cars last. Tap the status to mark a car booked until a date.</p>`;
+        <p class="hint">Drag a car to change the order (on a phone, press and hold a car, then drag). Cars show on the site in this order, with Popular cars first and booked cars last. Tap the status to mark a car booked until a date.</p>`;
       $("#addCarBtn").onclick = () => openCarEditor(null);
       const apply = () => { $$("#fleetList .fleet-row").forEach((r) => { const x = fleet[+r.dataset.i]; const st = x.hidden ? "hidden" : isBooked(x) ? "booked" : "available"; r.hidden = !(r.dataset.search.includes(f.q) && (!f.status || f.status === st)); }); $$("#fleetList [data-car-move]").forEach((b) => (b.disabled = b.disabled || !!(f.q || f.status))); };
       $("#fleetSearch").oninput = (e) => { f.q = e.target.value.trim().toLowerCase(); apply(); };
       $$("[data-status]", root).forEach((b) => (b.onclick = () => { f.status = b.dataset.status; rerender(); }));
-      apply(); bindFleetRows(root);
+      apply(); bindFleetRows(root); enableFleetDrag($("#fleetList"), () => !!(f.q || f.status));
     },
 
     enquiries(root) {
@@ -535,6 +535,83 @@
     $$("[data-car-hide]", root).forEach((b) => (b.onclick = () => { const c = fleet[+b.dataset.carHide]; c.hidden = !c.hidden; markDirty(); rerender(); toast(c.hidden ? `${c.name} hidden from the site` : `${c.name} is visible again`); }));
     $$("[data-car-dup]", root).forEach((b) => (b.onclick = () => { const i = +b.dataset.carDup; const c = clone(fleet[i]); c.name += " (copy)"; c.id = uniqueId(slugify(c.name)); fleet.splice(i + 1, 0, c); markDirty(); rerender(); toast("Car duplicated"); }));
     bindAvailButtons(root);
+  }
+  /* Drag to reorder the fleet: mouse drags straight away (not from buttons), touch needs a long press so the page still scrolls */
+  function enableFleetDrag(list, filtered) {
+    const LONG_PRESS = 380, SLOP = 8;
+    let d = null; // { row, startX, startY, grabY, timer, active, touch, y, raf }
+    const rows = () => $$(".fleet-row", list).filter((r) => !r.hidden);
+    // Positions from layout (offsetTop, the list is position: relative), so rows sliding into place don't cause flip-flopping
+    const naturalTop = (r) => list.getBoundingClientRect().top + r.offsetTop;
+    function begin() {
+      if (filtered()) { toast("Clear the search and filter to reorder cars"); d = null; return; }
+      d.active = true; d.grabY = d.startY - d.row.getBoundingClientRect().top;
+      d.row.classList.add("is-dragging"); list.classList.add("is-sorting"); document.documentElement.classList.add("is-dragging");
+      if (d.touch && navigator.vibrate) navigator.vibrate(25);
+      tick();
+    }
+    function move(y) {
+      d.y = y; if (!d.active) return;
+      const all = rows(), i = all.indexOf(d.row), prev = all[i - 1], next = all[i + 1];
+      const mid = (r) => naturalTop(r) + r.offsetHeight / 2;
+      const top = y - d.grabY, bottom = top + d.row.offsetHeight;
+      const slide = (fn) => { // the other cars glide to their new places
+        const others = all.filter((r) => r !== d.row), before = others.map((r) => r.offsetTop);
+        fn();
+        others.forEach((r, k) => { const dy = before[k] - r.offsetTop; if (!dy) return; r.style.transition = "none"; r.style.transform = `translateY(${dy}px)`; r.offsetHeight; r.style.transition = "transform .2s ease"; r.style.transform = ""; });
+      };
+      if (prev && top < mid(prev)) slide(() => list.insertBefore(d.row, prev));
+      else if (next && bottom > mid(next)) slide(() => list.insertBefore(d.row, next.nextSibling));
+      d.row.style.transform = `translateY(${top - naturalTop(d.row)}px)`;
+    }
+    // Scroll the page while the car is held near the top or bottom edge
+    function tick() {
+      if (!d || !d.active) return;
+      const edge = 90, vh = innerHeight, bottomEdge = vh - (innerWidth <= 900 ? 170 : 40);
+      const v = d.y < edge ? -Math.ceil((edge - d.y) / 6) : d.y > bottomEdge - edge ? Math.ceil((d.y - (bottomEdge - edge)) / 6) : 0;
+      if (v) { scrollBy(0, v); move(d.y); }
+      d.raf = requestAnimationFrame(tick);
+    }
+    function end() {
+      removeEventListener("pointermove", onPointerMove); removeEventListener("pointerup", end); removeEventListener("pointercancel", end);
+      if (!d) return;
+      clearTimeout(d.timer); cancelAnimationFrame(d.raf);
+      const was = d; d = null;
+      if (!was.active) return;
+      was.row.classList.remove("is-dragging"); list.classList.remove("is-sorting"); document.documentElement.classList.remove("is-dragging");
+      was.row.style.transform = "";
+      // Swallow the click that may follow the drop, so the car's editor doesn't open
+      const swallow = (e) => { e.stopPropagation(); e.preventDefault(); };
+      addEventListener("click", swallow, { capture: true, once: true });
+      setTimeout(() => removeEventListener("click", swallow, true), 400);
+      const fleet = state.content.fleet, order = $$(".fleet-row", list).map((r) => +r.dataset.i);
+      if (order.every((v, i) => v === i)) return;
+      state.content.fleet = order.map((i) => fleet[i]);
+      markDirty(); rerender(); toast("Order changed. Publish to update the site.", "success");
+    }
+    function start(e, x, y, touch) {
+      const row = e.target.closest(".fleet-row"); if (!row || d) return;
+      if (!touch && e.target.closest("button, a, input, select, textarea")) return;
+      d = { row, startX: x, startY: y, y, touch, active: false };
+      if (touch) d.timer = setTimeout(() => d && begin(), LONG_PRESS);
+      else { addEventListener("pointermove", onPointerMove); addEventListener("pointerup", end); addEventListener("pointercancel", end); }
+    }
+    function onPointerMove(e) { if (!d) return; check(e.clientX, e.clientY); if (d && d.active) { e.preventDefault(); move(e.clientY); } }
+    function check(x, y) {
+      if (!d || d.active) return;
+      const far = Math.abs(x - d.startX) > SLOP || Math.abs(y - d.startY) > SLOP;
+      if (!far) return;
+      if (d.touch) { clearTimeout(d.timer); d = null; } // moved before the long press: it's a scroll
+      else begin();
+    }
+    // Mouse / pen
+    list.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch" || e.button !== 0) return; start(e, e.clientX, e.clientY, false); });
+    // Touch: long press, then drag
+    list.addEventListener("touchstart", (e) => { if (e.touches.length !== 1) return end(); const t = e.touches[0]; start(e, t.clientX, t.clientY, true); }, { passive: true });
+    list.addEventListener("touchmove", (e) => { if (!d) return; const t = e.touches[0]; check(t.clientX, t.clientY); if (d && d.active) { e.preventDefault(); move(t.clientY); } }, { passive: false });
+    list.addEventListener("touchend", () => end());
+    list.addEventListener("touchcancel", () => end());
+    list.addEventListener("contextmenu", (e) => { if (d) e.preventDefault(); });
   }
   function bindAvailButtons(root) { $$("[data-avail]", root).forEach((b) => (b.onclick = () => openAvailability(+b.dataset.avail))); }
   function uniqueId(base) { const ids = new Set(state.content.fleet.map((x) => x.id)); let id = base, n = 2; while (ids.has(id)) id = `${base}-${n++}`; return id; }

@@ -309,7 +309,12 @@ button.kpi:active { transform: scale(.98); }
 .chip { min-height: 34px; padding: 0 14px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--surface); font-size: 13.5px; font-weight: 600; color: var(--text-2); }
 .chip.is-active { background: var(--text); color: var(--bg); border-color: var(--text); }
 .chip .n { opacity: .55; font-weight: 500; margin-left: 4px; }
-.fleet-list { display: grid; gap: 8px; }
+.fleet-list { display: grid; gap: 8px; position: relative; }
+/* Drag to reorder (mouse drag, or long press on touch) */
+.fleet-row { cursor: grab; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.fleet-row button { cursor: pointer; }
+.fleet-row.is-dragging { position: relative; z-index: 5; scale: 1.02; box-shadow: var(--shadow); border-color: var(--accent); cursor: grabbing; }
+html.is-dragging, html.is-dragging * { cursor: grabbing !important; }
 .fleet-row { display: grid; grid-template-columns: 34px 92px minmax(0, 1fr) auto auto auto; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px 12px 10px 10px; transition: box-shadow .2s, opacity .2s; }
 .fleet-row:hover { box-shadow: var(--shadow-sm); }
 .fleet-row.is-hidden { opacity: .6; }
