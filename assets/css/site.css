@@ -443,7 +443,9 @@ html.lite .header.on-hero .header__bar { background: rgba(18, 20, 26, .9); }
 }
 @media (hover: hover) { .car:hover { transform: translateY(-4px); box-shadow: var(--shadow); } .car:hover .car__media img { transform: scale(1.04); } }
 .car__media { position: relative; aspect-ratio: 16 / 10; background: var(--surface-3); overflow: hidden; border: 0; padding: 0; width: 100%; display: block; }
-.car__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+/* Photos are a mix of portrait and landscape: show the whole car, with a blurred copy of the photo filling the sides */
+.car__media img { position: relative; width: 100%; height: 100%; object-fit: contain; transition: transform .7s var(--ease); }
+.car__bg { position: absolute; inset: -20px; background: center / cover no-repeat; filter: blur(18px) brightness(.85); transform: scale(1.1); }
 .car__tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
 .tag { padding: 5px 10px; border-radius: var(--r-pill); font-size: 12px; font-weight: 600; background: rgba(0, 0, 0, .55); color: #fff; line-height: 1.2; }
 .tag--accent { background: var(--accent); color: var(--accent-ink); }
@@ -466,6 +468,7 @@ html.lite .header.on-hero .header__bar { background: rgba(18, 20, 26, .9); }
 .price__note { display: block; margin-top: 5px; font-size: 12.5px; color: var(--text-3); }
 .car__actions { display: flex; gap: 8px; flex: none; }
 .car.is-unavailable .car__media img { filter: grayscale(.85) brightness(.9); }
+.car.is-unavailable .car__bg { filter: blur(18px) grayscale(.85) brightness(.75); }
 .car.is-skeleton { min-height: 420px; background: linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%) 0 0 / 300% 100%; animation: shimmer 1.4s linear infinite; }
 @keyframes shimmer { to { background-position: -150% 0; } }
 .fleet-grid.is-swapping .car { animation: cardIn .45s var(--ease) both; }

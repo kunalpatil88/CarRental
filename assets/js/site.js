@@ -53,6 +53,8 @@
   const socialAnchor = (l) => `<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener" aria-label="${esc(l.label || l.platform)}" title="${esc(l.label || l.platform)}">${socialIcon(l)}</a>`;
 
   /* ---------- fleet helpers ---------- */
+  // Refundable deposit: a bike (two-wheeler) or the cash amount, unless the car is set to cash only
+  const depositText = (c) => { const amt = num(c.deposit, 0); return c.depositBike === false ? (amt ? inr(amt) : "") : amt ? `Bike or ${inr(amt)}` : "Bike"; };
   const visibleFleet = () => (C.fleet || []).filter((c) => c && c.hidden !== true);
   const isBooked = (c) => c.available === false && (!c.bookedUntil || c.bookedUntil >= today());
   const nextFree = (c) => (isBooked(c) && c.bookedUntil ? addDays(c.bookedUntil, 1) : "");
@@ -315,7 +317,7 @@
     const photos = (c.images || []).length;
     return `<article class="car ${booked ? "is-unavailable" : ""}" data-id="${esc(c.id)}">
       <button type="button" class="car__media" data-open="${esc(c.id)}" aria-label="View ${esc(c.name)} photos and details">
-        ${cover ? `<img src="${esc(small(cover))}" data-full="${esc(cover)}" alt="${esc(c.name)}" loading="${i < 3 ? "eager" : "lazy"}" decoding="async" width="720" height="450" />` : ""}
+        ${cover ? `<span class="car__bg" style="background-image:url(${esc(small(cover))})" aria-hidden="true"></span><img src="${esc(small(cover))}" data-full="${esc(cover)}" alt="${esc(c.name)}" loading="${i < 3 ? "eager" : "lazy"}" decoding="async" width="720" height="450" />` : ""}
         <span class="car__tags">${c.featured ? `<span class="tag tag--accent">Popular</span>` : ""}${booked ? `<span class="tag tag--muted">${free ? "Free from " + esc(fmtDate(free)) : "Booked"}</span>` : ""}<span class="tag">${esc(c.transmission)}</span></span>
         ${photos > 1 ? `<span class="car__photos">${icon("camera")}${photos}</span>` : ""}
       </button>
@@ -355,7 +357,7 @@
     if (d) L.push(`*Duration:* ${plural(d, "day")}`);
     if (car && d) {
       L.push(`*Estimated rent:* ${inr(tripPrice(car, d))}`);
-      L.push(`_${inr(car.pricePerDay)}/day · ${num(car.kmPerDay, 300)} km/day included${num(car.deposit, 0) ? ` · Refundable deposit ${inr(car.deposit)}` : ""}_`);
+      L.push(`_${inr(car.pricePerDay)}/day · ${num(car.kmPerDay, 300)} km/day included${num(car.extraHourCharge, 0) ? ` · Extra hour ${inr(car.extraHourCharge)}` : ""}${depositText(car) ? ` · Refundable deposit ${depositText(car)}` : ""}_`);
     } else if (car) L.push(`*Rate:* ${inr(car.pricePerDay)}/day`);
     L.push("");
     if (name) L.push(`*Name:* ${name}`);
@@ -468,7 +470,9 @@
     const rows = [["Rental per day", inr(c.pricePerDay), true]];
     if (num(c.priceWeekly, 0)) rows.push(["Weekly (7 days)", inr(c.priceWeekly)]);
     if (num(c.priceMonthly, 0)) rows.push(["Monthly (30 days)", inr(c.priceMonthly)]);
-    rows.push(["Kilometres included", `${num(c.kmPerDay, 300)} km / day`], ["Extra km charge", `${inr(c.extraKmCharge)} / km`], ["Refundable deposit", inr(c.deposit)]);
+    rows.push(["Kilometres included", `${num(c.kmPerDay, 300)} km / day`], ["Extra km charge", `${inr(c.extraKmCharge)} / km`]);
+    if (num(c.extraHourCharge, 0)) rows.push(["Extra hour charge", `${inr(c.extraHourCharge)} / hour`]);
+    if (depositText(c)) rows.push(["Refundable deposit", depositText(c)]);
     $("#detail").innerHTML = `
       <div><p class="detail__cat">${esc(c.category)} · ${esc(c.brand)}</p><h2 class="detail__name" id="detailName">${esc(c.name)}</h2>${c.description ? `<p class="detail__desc">${esc(c.description)}</p>` : ""}</div>
       ${booked ? `<div class="notice notice--warn">${free ? `Booked right now. Available again from ${esc(fmtDate(free, true))}.` : "This car is currently booked. Message us for the next available date."}</div>` : ""}
@@ -766,6 +770,7 @@
      ============================================================ */
   function renderAll() {
     if (!Array.isArray(C.fleet)) C.fleet = [];
+    C.fleet.forEach((c) => { if (c && c.fuel === "CNG") c.fuel = "Petrol + CNG"; });
     C.site = C.site || {}; C.hero = C.hero || {};
     applyBrandTheme(); renderGlobal(); renderHero(); renderStats(); renderPromos(); renderChips(); renderFleet(!firstRender);
     renderFeatures(); renderSteps(); renderTestimonials(); renderFollow(); renderFaq(); renderContact();
