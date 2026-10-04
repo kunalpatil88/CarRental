@@ -235,7 +235,7 @@
   /* ============================================================
      Running bar: highlights and Popular cars scrolling slowly under the stats (Admin → Running bar)
      ============================================================ */
-  const TICKER_DEFAULT = { enabled: true, speed: "slow", showPopularCars: true, showCharges: true, items: [
+  const TICKER_DEFAULT = { enabled: true, speed: "slow", showPopularCars: true, items: [
     { icon: "sparkles", text: "Every car deep-cleaned & sanitised before each trip" },
     { icon: "shield", text: "Fully insured, regularly serviced cars" },
     { icon: "truck", text: "Doorstep delivery across Pune" },
@@ -250,20 +250,11 @@
   function renderTicker() {
     const t = Object.assign({}, TICKER_DEFAULT, C.ticker), el = $("#ticker"), vp = $("#tickerViewport");
     // Messages in groups: one starting with "Or …" stays next to the message before it
-    const groups = []; let kmGroup = -1;
+    const groups = [];
     (t.items || []).filter((it) => it && String(it.text || "").trim()).forEach((it) => {
       const text = String(it.text).trim(), h = `<span class="ticker__item">${icon(it.icon || "check-circle")}${esc(text)}</span>`;
       if (/^or /i.test(text) && groups.length) groups[groups.length - 1].push(h); else groups.push([h]);
-      if (text.toLowerCase().split(/[^a-z0-9]+/).includes("km")) kmGroup = groups.length - 1;
     });
-    // Extra km / extra hour charges, worked out from the car prices ("from" the lowest when cars differ), placed after the km message
-    if (t.showCharges !== false) {
-      const charge = (key) => { const v = visibleFleet().map((c) => num(c[key], 0)).filter(Boolean); return v.length ? (v.every((x) => x === v[0]) ? "" : "from ") + inr(Math.min(...v)) : ""; };
-      const km = charge("extraKmCharge"), hr = charge("extraHourCharge"), charges = [];
-      if (km) charges.push(`<span class="ticker__item">${icon("road")}Extra km <b class="ticker__price">${km}/km</b></span>`);
-      if (hr) charges.push(`<span class="ticker__item">${icon("clock")}Extra hour <b class="ticker__price">${hr}/hour</b></span>`);
-      if (charges.length) groups.splice(kmGroup < 0 ? groups.length : kmGroup + 1, 0, charges);
-    }
     const cars = t.showPopularCars === false ? [] : visibleFleet().filter((c) => c.featured && !isBooked(c)).map((c) => `<button type="button" class="ticker__item ticker__car" data-open="${esc(c.id)}">${icon("car")}<b>${esc(c.name)}</b>${c.fuel ? `<span>${esc(c.fuel)}</span>` : ""}<span class="ticker__price">${inr(c.pricePerDay)}/day</span></button>`);
     // A Popular car after every two message groups
     const items = [];

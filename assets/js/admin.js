@@ -456,7 +456,7 @@
     },
     ticker(root) {
       root.innerHTML =
-        card("Running bar", "A slim strip under the stats that scrolls slowly and pauses when touched. Visitors can tap a car in it to open that car.", `<div class="grid grid--2"><div class="field--full">${F.toggle("ticker.enabled", "Show the running bar")}</div>${F.select("ticker.speed", "Speed", [{ value: "slow", label: "Slow" }, { value: "normal", label: "Normal" }, { value: "fast", label: "Fast" }])}<div class="switches field--full">${F.toggle("ticker.showPopularCars", "Include Popular cars with their price")}${F.toggle("ticker.showCharges", "Include extra km and extra hour charges")}</div></div><p class="hint" style="margin-top:12px">Charges are worked out from your cars' prices (Cars → Pricing), shown as “from” the lowest when cars differ.${(state.content.fleet || []).some((c) => +c.extraHourCharge > 0) ? "" : " <b>No car has an extra hour charge yet</b>, so that one stays hidden until you set it."}</p>`) +
+        card("Running bar", "A slim strip under the stats that scrolls slowly and pauses when touched. Visitors can tap a car in it to open that car.", `<div class="grid grid--2"><div class="field--full">${F.toggle("ticker.enabled", "Show the running bar")}</div>${F.select("ticker.speed", "Speed", [{ value: "slow", label: "Slow" }, { value: "normal", label: "Normal" }, { value: "fast", label: "Fast" }])}<div style="align-self:end;padding-bottom:8px">${F.toggle("ticker.showPopularCars", "Include Popular cars with their price")}</div></div>`) +
         card("Messages", "Short lines work best. Available Popular cars are added between them automatically.", repeat("ticker.items", { addLabel: "Add message", item: (p, it) => `<div class="grid grid--2"><div class="field"><label>Icon</label><div style="display:flex;gap:10px;align-items:center"><span class="kpi__icon">${icon(it.icon) || icon("check-circle")}</span><select data-path="${p}.icon" data-rerender="1" style="flex:1">${ICON_OPTS.map((o) => `<option ${o === it.icon ? "selected" : ""}>${o}</option>`).join("")}</select></div></div>${F.text(p + ".text", "Text", { max: 70 })}</div>` }));
     },
     features(root) {
@@ -1065,7 +1065,7 @@ ${site.name}`;
     c.howItWorks = c.howItWorks || {}; c.howItWorks.steps = c.howItWorks.steps || [];
     c.contact = c.contact || {}; c.footer = c.footer || {};
     // Same defaults as TICKER_DEFAULT in site.js, so the bar shows before it is first published
-    c.ticker = Object.assign({ enabled: true, speed: "slow", showPopularCars: true, showCharges: true, items: [
+    c.ticker = Object.assign({ enabled: true, speed: "slow", showPopularCars: true, items: [
       { icon: "sparkles", text: "Every car deep-cleaned & sanitised before each trip" },
       { icon: "shield", text: "Fully insured, regularly serviced cars" },
       { icon: "truck", text: "Doorstep delivery across Pune" },

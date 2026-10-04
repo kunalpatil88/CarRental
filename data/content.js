@@ -60,7 +60,6 @@ window.SITE_CONTENT = {
     "enabled": true,
     "speed": "slow",
     "showPopularCars": true,
-    "showCharges": true,
     "items": [
       {
         "icon": "sparkles",
