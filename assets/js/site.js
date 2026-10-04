@@ -233,7 +233,7 @@
   }
 
   /* ============================================================
-     Running bar: highlights and Popular cars scrolling slowly under the stats (Admin → Running bar)
+     Running bar: highlights and Popular cars scrolling slowly in the hero (Admin → Running bar)
      ============================================================ */
   const TICKER_DEFAULT = { enabled: true, speed: "slow", showPopularCars: true, items: [
     { icon: "sparkles", text: "Every car deep-cleaned & sanitised before each trip" },

@@ -163,7 +163,7 @@
     { id: "analytics", group: "Overview", label: "Analytics", icon: "bar-chart", sub: "Visitors, devices and where they come from", keys: "traffic visitors views stats mobile desktop device phone model brand country city location source google instagram whatsapp clicks" },
     { id: "fleet", group: "Fleet", label: "Cars & availability", icon: "car", sub: "Add cars, set prices, mark booked", count: () => (state.content.fleet || []).length, keys: "car fleet photos price booked available" },
     { id: "promos", group: "Marketing", label: "Offers & posters", icon: "tag", sub: "Rotating posters under the hero", count: () => livePromos().length, keys: "poster banner discount festival" },
-    { id: "ticker", group: "Marketing", label: "Running bar", icon: "bolt", sub: "Highlights and Popular cars scrolling under the stats", keys: "ticker marquee scrolling moving highlights clean sanitised popular strip" },
+    { id: "ticker", group: "Marketing", label: "Running bar", icon: "bolt", sub: "Highlights and Popular cars scrolling in the top banner", keys: "ticker marquee scrolling moving highlights clean sanitised popular strip" },
     { id: "announcement", group: "Marketing", label: "Announcement bar", icon: "megaphone", sub: "Slim notice at the very top of the site", keys: "notice offer banner top" },
     { id: "testimonials", group: "Marketing", label: "Reviews", icon: "message-circle", sub: "Customer testimonials", count: () => (state.content.testimonials.items || []).length, keys: "testimonial rating stars" },
     { id: "social", group: "Marketing", label: "Social media", icon: "share", sub: "Profile links, follow section, share buttons", keys: "instagram facebook youtube google" },
@@ -456,7 +456,7 @@
     },
     ticker(root) {
       root.innerHTML =
-        card("Running bar", "A slim strip under the stats that scrolls slowly and pauses when touched. Visitors can tap a car in it to open that car.", `<div class="grid grid--2"><div class="field--full">${F.toggle("ticker.enabled", "Show the running bar")}</div>${F.select("ticker.speed", "Speed", [{ value: "slow", label: "Slow" }, { value: "normal", label: "Normal" }, { value: "fast", label: "Fast" }])}<div style="align-self:end;padding-bottom:8px">${F.toggle("ticker.showPopularCars", "Include Popular cars with their price")}</div></div>`) +
+        card("Running bar", "A slim strip in the top banner, under the trust badges. It scrolls slowly and pauses when touched. Visitors can tap a car in it to open that car.", `<div class="grid grid--2"><div class="field--full">${F.toggle("ticker.enabled", "Show the running bar")}</div>${F.select("ticker.speed", "Speed", [{ value: "slow", label: "Slow" }, { value: "normal", label: "Normal" }, { value: "fast", label: "Fast" }])}<div style="align-self:end;padding-bottom:8px">${F.toggle("ticker.showPopularCars", "Include Popular cars with their price")}</div></div>`) +
         card("Messages", "Short lines work best. Available Popular cars are added between them automatically.", repeat("ticker.items", { addLabel: "Add message", item: (p, it) => `<div class="grid grid--2"><div class="field"><label>Icon</label><div style="display:flex;gap:10px;align-items:center"><span class="kpi__icon">${icon(it.icon) || icon("check-circle")}</span><select data-path="${p}.icon" data-rerender="1" style="flex:1">${ICON_OPTS.map((o) => `<option ${o === it.icon ? "selected" : ""}>${o}</option>`).join("")}</select></div></div>${F.text(p + ".text", "Text", { max: 70 })}</div>` }));
     },
     features(root) {
