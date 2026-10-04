@@ -372,6 +372,28 @@ html.lite .header.on-hero .header__bar { background: rgba(18, 20, 26, .9); }
 .stat__label { color: var(--text-3); font-size: 14px; margin-top: 4px; font-weight: 500; }
 
 /* ---------- Offers ---------- */
+/* ---------- Running bar: highlights and Popular cars scrolling slowly under the stats ---------- */
+.ticker { position: relative; z-index: 1; margin-top: 16px; }
+.ticker__frame { --glass-bg: var(--glass-bg-strong); border-radius: var(--r-pill); padding: 0; overflow: hidden; }
+.ticker__viewport { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.ticker__track { display: flex; width: max-content; animation: ticker 40s linear infinite; }
+.ticker__group { display: flex; flex: none; }
+.ticker__item { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; font: inherit; font-size: 14px; font-weight: 500; color: var(--text-2); white-space: nowrap; background: none; border: 0; }
+.ticker__item::after { content: ""; position: absolute; right: -2px; top: 50%; width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: var(--line-2); }
+.ticker__item svg { width: 17px; height: 17px; flex: none; color: var(--accent); }
+.ticker__car { cursor: pointer; }
+.ticker__car b { color: var(--text); font-weight: 650; }
+.ticker__price { color: var(--accent-text); font-weight: 650; }
+.ticker__car:hover b, .ticker__car:focus-visible b { text-decoration: underline; text-underline-offset: 3px; }
+@keyframes ticker { to { transform: translate3d(-50%, 0, 0); } }
+@media (hover: hover) { .ticker__frame:hover .ticker__track { animation-play-state: paused; } }
+.ticker.is-paused .ticker__track { animation-play-state: paused; }
+@media (max-width: 640px) { .ticker { margin-top: 12px; } .ticker__item { padding: 11px 18px; font-size: 13px; } }
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track { animation: none; }
+  .ticker__viewport { overflow-x: auto; scrollbar-width: none; }
+  .ticker__group[aria-hidden] { display: none; }
+}
 .promos { padding-top: clamp(40px, 6vw, 72px); }
 .promos__frame { position: relative; }
 .promos__track { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; border-radius: var(--r-xl); }
@@ -627,7 +649,7 @@ dialog { color: inherit; }
 @keyframes sheetOut { to { opacity: 0; transform: translateY(12px) scale(.98); } }
 .sheet__panel {
   position: relative; background: var(--surface); border-radius: var(--r-xl); overflow: hidden; display: grid;
-  grid-template-rows: minmax(0, 1fr) auto; max-height: calc(100dvh - 48px); box-shadow: var(--glass-2-shadow); border: 1px solid var(--line);
+  grid-template-rows: minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr); /* without this the footer's one-line text widens the sheet past a phone's screen */ max-height: calc(100dvh - 48px); box-shadow: var(--glass-2-shadow); border: 1px solid var(--line);
 }
 .sheet__scroll { overflow-y: auto; overscroll-behavior: contain; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
 .sheet__grabber { display: none; }
@@ -672,6 +694,14 @@ dialog { color: inherit; }
 .price-table span { color: var(--text-3); }
 .price-table b { font-weight: 600; }
 .price-table .is-main b { font-size: 19px; font-family: var(--font-display); letter-spacing: -.02em; }
+/* Refundable deposit: cash amount and bike as two option chips */
+.price-table .is-rich { align-items: center; flex-wrap: wrap; row-gap: 10px; }
+.price-table .is-rich > span:first-child { flex: none; }
+.price-table .dep-hint { display: block; font-size: 12.5px; color: var(--text-3); opacity: .8; margin-top: 2px; }
+.price-table .dep-opts { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-left: auto; } /* drops to its own line when narrow */
+.price-table .dep-opt { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line-2); color: var(--text); font-size: 14.5px; white-space: nowrap; }
+.price-table .dep-opt svg { width: 17px; height: 17px; color: var(--accent); }
+.price-table .dep-or { font-size: 13px; color: var(--text-3); }
 .feature-pills { display: flex; flex-wrap: wrap; gap: 6px; }
 .feature-pills li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--r-pill); background: var(--surface-2); font-size: 13.5px; font-weight: 500; }
 .feature-pills svg { width: 14px; height: 14px; color: var(--success); }
@@ -759,6 +789,7 @@ dialog { color: inherit; }
 
   /* Bottom sheet */
   .sheet { width: 100%; max-height: none; margin: auto 0 0; }
+  .sheet__total small { white-space: normal; line-height: 1.3; }
   .sheet__panel { border-radius: 26px 26px 0 0; max-height: 94dvh; border-bottom: 0; }
   .sheet[open] { animation: sheetUp .42s var(--ease-sheet); }
   .sheet.is-closing { animation: sheetDown .28s var(--ease) forwards; }
@@ -837,3 +868,6 @@ dialog { color: inherit; }
 
 /* Preview inside the admin iframe */
 .is-preview .dock, .is-preview .to-top, .is-preview .announce__close { display: none; }
+
+/* Narrow phones: "Book" + WhatsApp icon in the car sheet, so the trip dates beside it stay on one line */
+@media (max-width: 460px) { .sheet__wa-long { display: none; } }

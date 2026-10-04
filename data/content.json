@@ -56,6 +56,46 @@
       "label": "Roadside assistance"
     }
   ],
+  "ticker": {
+    "enabled": true,
+    "speed": "slow",
+    "showPopularCars": true,
+    "showCharges": true,
+    "items": [
+      {
+        "icon": "sparkles",
+        "text": "Every car deep-cleaned & sanitised before each trip"
+      },
+      {
+        "icon": "shield",
+        "text": "Fully insured, regularly serviced cars"
+      },
+      {
+        "icon": "truck",
+        "text": "Doorstep delivery across Pune"
+      },
+      {
+        "icon": "road",
+        "text": "300 km per day included"
+      },
+      {
+        "icon": "key",
+        "text": "Refundable deposit ₹10,000"
+      },
+      {
+        "icon": "bike",
+        "text": "Or keep your bike as deposit"
+      },
+      {
+        "icon": "headset",
+        "text": "24x7 roadside support"
+      },
+      {
+        "icon": "tag",
+        "text": "No hidden charges"
+      }
+    ]
+  },
   "features": {
     "eyebrow": "Why DP Self Drive",
     "title": "Renting a car should be the easiest part of your trip",

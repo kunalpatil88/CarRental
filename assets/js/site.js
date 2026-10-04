@@ -54,7 +54,7 @@
 
   /* ---------- fleet helpers ---------- */
   // Refundable deposit: a bike (two-wheeler) or the cash amount, unless the car is set to cash only
-  const depositText = (c) => { const amt = num(c.deposit, 0); return c.depositBike === false ? (amt ? inr(amt) : "") : amt ? `Bike or ${inr(amt)}` : "Bike"; };
+  const depositText = (c) => { const amt = num(c.deposit, 0); return c.depositBike === false ? (amt ? inr(amt) : "") : amt ? `${inr(amt)} or bike` : "Bike"; };
   const visibleFleet = () => (C.fleet || []).filter((c) => c && c.hidden !== true);
   const isBooked = (c) => c.available === false && (!c.bookedUntil || c.bookedUntil >= today());
   const nextFree = (c) => (isBooked(c) && c.bookedUntil ? addDays(c.bookedUntil, 1) : "");
@@ -230,6 +230,64 @@
     $(".stats").hidden = !st.length;
     $("#stats").innerHTML = st.map((s) => `<div class="stat"><div class="stat__value">${esc(s.value)}</div><div class="stat__label">${esc(s.label)}</div></div>`).join("");
     $("#stats").style.gridTemplateColumns = st.length && st.length < 4 && innerWidth > 960 ? `repeat(${st.length}, 1fr)` : "";
+  }
+
+  /* ============================================================
+     Running bar: highlights and Popular cars scrolling slowly under the stats (Admin → Running bar)
+     ============================================================ */
+  const TICKER_DEFAULT = { enabled: true, speed: "slow", showPopularCars: true, showCharges: true, items: [
+    { icon: "sparkles", text: "Every car deep-cleaned & sanitised before each trip" },
+    { icon: "shield", text: "Fully insured, regularly serviced cars" },
+    { icon: "truck", text: "Doorstep delivery across Pune" },
+    { icon: "road", text: "300 km per day included" },
+    { icon: "key", text: "Refundable deposit ₹10,000" },
+    { icon: "bike", text: "Or keep your bike as deposit" },
+    { icon: "headset", text: "24x7 roadside support" },
+    { icon: "tag", text: "No hidden charges" },
+  ] };
+  const TICKER_SPEED = { slow: 30, normal: 50, fast: 80 }; // pixels per second
+  let tickerBound = false;
+  function renderTicker() {
+    const t = Object.assign({}, TICKER_DEFAULT, C.ticker), el = $("#ticker"), vp = $("#tickerViewport");
+    // Messages in groups: one starting with "Or …" stays next to the message before it
+    const groups = []; let kmGroup = -1;
+    (t.items || []).filter((it) => it && String(it.text || "").trim()).forEach((it) => {
+      const text = String(it.text).trim(), h = `<span class="ticker__item">${icon(it.icon || "check-circle")}${esc(text)}</span>`;
+      if (/^or /i.test(text) && groups.length) groups[groups.length - 1].push(h); else groups.push([h]);
+      if (text.toLowerCase().split(/[^a-z0-9]+/).includes("km")) kmGroup = groups.length - 1;
+    });
+    // Extra km / extra hour charges, worked out from the car prices ("from" the lowest when cars differ), placed after the km message
+    if (t.showCharges !== false) {
+      const charge = (key) => { const v = visibleFleet().map((c) => num(c[key], 0)).filter(Boolean); return v.length ? (v.every((x) => x === v[0]) ? "" : "from ") + inr(Math.min(...v)) : ""; };
+      const km = charge("extraKmCharge"), hr = charge("extraHourCharge"), charges = [];
+      if (km) charges.push(`<span class="ticker__item">${icon("road")}Extra km <b class="ticker__price">${km}/km</b></span>`);
+      if (hr) charges.push(`<span class="ticker__item">${icon("clock")}Extra hour <b class="ticker__price">${hr}/hour</b></span>`);
+      if (charges.length) groups.splice(kmGroup < 0 ? groups.length : kmGroup + 1, 0, charges);
+    }
+    const cars = t.showPopularCars === false ? [] : visibleFleet().filter((c) => c.featured && !isBooked(c)).map((c) => `<button type="button" class="ticker__item ticker__car" data-open="${esc(c.id)}">${icon("car")}<b>${esc(c.name)}</b>${c.fuel ? `<span>${esc(c.fuel)}</span>` : ""}<span class="ticker__price">${inr(c.pricePerDay)}/day</span></button>`);
+    // A Popular car after every two message groups
+    const items = [];
+    for (let g = 0, k = 0; g < groups.length || k < cars.length;) { for (let n = 0; n < 2 && g < groups.length; n++) items.push(...groups[g++]); if (k < cars.length) items.push(cars[k++]); }
+    el.hidden = !(t.enabled && items.length);
+    if (el.hidden) { vp.innerHTML = ""; return; }
+    const one = items.join("");
+    vp.innerHTML = `<div class="ticker__track"><div class="ticker__group">${one}</div></div>`;
+    // Repeat the items until one group is wider than the bar, then a copy of the group makes the loop seamless
+    const group = $(".ticker__group", vp), w1 = group.scrollWidth || 1, reps = Math.max(1, Math.ceil(vp.clientWidth / w1));
+    group.innerHTML = one.repeat(reps);
+    const copy = group.cloneNode(true); copy.setAttribute("aria-hidden", "true");
+    $$("button", copy).forEach((b) => b.setAttribute("tabindex", "-1"));
+    group.after(copy);
+    $(".ticker__track", vp).style.animationDuration = (w1 * reps) / (TICKER_SPEED[t.speed] || TICKER_SPEED.slow) + "s";
+    hydrateIcons(vp);
+    if (tickerBound) return; tickerBound = true;
+    el.addEventListener("click", (e) => { const b = e.target.closest("[data-open]"); if (b) openCar(b.dataset.open, b); });
+    // Hold to pause on touch screens, so a car can be tapped
+    let resume = null;
+    el.addEventListener("touchstart", () => { clearTimeout(resume); el.classList.add("is-paused"); }, { passive: true });
+    el.addEventListener("touchend", () => { resume = setTimeout(() => el.classList.remove("is-paused"), 1500); });
+    let lastW = innerWidth, rt = null;
+    addEventListener("resize", () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rt); rt = setTimeout(renderTicker, 200); });
   }
 
   /* ============================================================
@@ -470,9 +528,13 @@
     const rows = [["Rental per day", inr(c.pricePerDay), true]];
     if (num(c.priceWeekly, 0)) rows.push(["Weekly (7 days)", inr(c.priceWeekly)]);
     if (num(c.priceMonthly, 0)) rows.push(["Monthly (30 days)", inr(c.priceMonthly)]);
-    rows.push(["Kilometres included", `${num(c.kmPerDay, 300)} km / day`], ["Extra km charge", `${inr(c.extraKmCharge)} / km`]);
-    if (num(c.extraHourCharge, 0)) rows.push(["Extra hour charge", `${inr(c.extraHourCharge)} / hour`]);
-    if (depositText(c)) rows.push(["Refundable deposit", depositText(c)]);
+    rows.push(["Kilometres included", `${num(c.kmPerDay, 300)} km / day`], ["Extra per km charge", `${inr(c.extraKmCharge)} / km`]);
+    rows.push(["Extra per hour charge", num(c.extraHourCharge, 0) ? `${inr(c.extraHourCharge)} / hour` : "On request"]);
+    // Deposit: the cash amount and the bike shown as two separate options
+    const depOpts = [];
+    if (num(c.deposit, 0)) depOpts.push(`<b class="dep-opt">${inr(c.deposit)}</b>`);
+    if (c.depositBike !== false) depOpts.push(`<b class="dep-opt">${icon("bike")}Bike</b>`);
+    if (depOpts.length) rows.push(["Refundable deposit", "", false, `<span>Refundable deposit${depOpts.length > 1 ? `<small class="dep-hint">Choose any one</small>` : ""}</span><span class="dep-opts">${depOpts.join(`<small class="dep-or">or</small>`)}</span>`]);
     $("#detail").innerHTML = `
       <div><p class="detail__cat">${esc(c.category)} · ${esc(c.brand)}</p><h2 class="detail__name" id="detailName">${esc(c.name)}</h2>${c.description ? `<p class="detail__desc">${esc(c.description)}</p>` : ""}</div>
       ${booked ? `<div class="notice notice--warn">${free ? `Booked right now. Available again from ${esc(fmtDate(free, true))}.` : "This car is currently booked. Message us for the next available date."}</div>` : ""}
@@ -482,7 +544,7 @@
         <div class="spec">${icon("fuel")}<div><small>Fuel</small><b>${esc(c.fuel)}</b></div></div>
         <div class="spec">${icon("road")}<div><small>Included</small><b>${esc(num(c.kmPerDay, 300))} km / day</b></div></div>
       </div>
-      <div class="price-table">${rows.map(([l, v, main]) => `<div class="${main ? "is-main" : ""}"><span>${esc(l)}</span><b>${esc(v)}</b></div>`).join("")}</div>
+      <div class="price-table">${rows.map(([l, v, main, inner]) => `<div class="${main ? "is-main" : inner ? "is-rich" : ""}">${inner || `<span>${esc(l)}</span><b>${esc(v)}</b>`}</div>`).join("")}</div>
       ${(c.features || []).length ? `<ul class="feature-pills">${c.features.map((f) => `<li>${icon("check")}${esc(f)}</li>`).join("")}</ul>` : ""}
       <div class="detail__dates"><h4>Booking details</h4><div class="booking__fields">
         <label class="pill-field"><span>Pickup</span><input type="date" id="dtPickup" min="${today()}" value="${esc(pickup)}" /></label>
@@ -492,7 +554,7 @@
       </div><p class="detail__privacy">We use these only to confirm your booking.</p></div>
       ${socialCfg().shareButtons !== false ? shareBar(c) : ""}`;
     $("#sheetFooter").innerHTML = `<div class="sheet__total"><small id="dtSummary"></small><b id="dtTotal"></b></div>
-      <div class="sheet__actions"><a class="btn btn--line btn--icon-sm" href="${telLink()}" aria-label="Call">${icon("phone")}</a><a class="btn btn--wa" id="dtBook" href="#" target="_blank" rel="noopener">${icon("whatsapp")}${booked ? "Ask on WhatsApp" : "Book on WhatsApp"}</a></div>`;
+      <div class="sheet__actions"><a class="btn btn--line btn--icon-sm" href="${telLink()}" aria-label="Call">${icon("phone")}</a><a class="btn btn--wa" id="dtBook" href="#" target="_blank" rel="noopener">${icon("whatsapp")}<span>${booked ? "Ask" : "Book"}<span class="sheet__wa-long"> on WhatsApp</span></span></a></div>`;
     const read = () => ({ p: $("#dtPickup").value, r: $("#dtReturn").value, name: $("#dtName").value.trim(), phone: $("#dtPhone").value.trim() });
     const calc = () => {
       const { p, r } = read();
@@ -772,7 +834,7 @@
     if (!Array.isArray(C.fleet)) C.fleet = [];
     C.fleet.forEach((c) => { if (c && c.fuel === "CNG") c.fuel = "Petrol + CNG"; });
     C.site = C.site || {}; C.hero = C.hero || {};
-    applyBrandTheme(); renderGlobal(); renderHero(); renderStats(); renderPromos(); renderChips(); renderFleet(!firstRender);
+    applyBrandTheme(); renderGlobal(); renderHero(); renderStats(); renderTicker(); renderPromos(); renderChips(); renderFleet(!firstRender);
     renderFeatures(); renderSteps(); renderTestimonials(); renderFollow(); renderFaq(); renderContact();
     hydrateIcons(document); observeReveal(); renderJsonLd();
     firstRender = false;

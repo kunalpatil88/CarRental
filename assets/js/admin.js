@@ -163,6 +163,7 @@
     { id: "analytics", group: "Overview", label: "Analytics", icon: "bar-chart", sub: "Visitors, devices and where they come from", keys: "traffic visitors views stats mobile desktop device phone model brand country city location source google instagram whatsapp clicks" },
     { id: "fleet", group: "Fleet", label: "Cars & availability", icon: "car", sub: "Add cars, set prices, mark booked", count: () => (state.content.fleet || []).length, keys: "car fleet photos price booked available" },
     { id: "promos", group: "Marketing", label: "Offers & posters", icon: "tag", sub: "Rotating posters under the hero", count: () => livePromos().length, keys: "poster banner discount festival" },
+    { id: "ticker", group: "Marketing", label: "Running bar", icon: "bolt", sub: "Highlights and Popular cars scrolling under the stats", keys: "ticker marquee scrolling moving highlights clean sanitised popular strip" },
     { id: "announcement", group: "Marketing", label: "Announcement bar", icon: "megaphone", sub: "Slim notice at the very top of the site", keys: "notice offer banner top" },
     { id: "testimonials", group: "Marketing", label: "Reviews", icon: "message-circle", sub: "Customer testimonials", count: () => (state.content.testimonials.items || []).length, keys: "testimonial rating stars" },
     { id: "social", group: "Marketing", label: "Social media", icon: "share", sub: "Profile links, follow section, share buttons", keys: "instagram facebook youtube google" },
@@ -231,8 +232,10 @@
       <button type="button" class="rep__remove" data-remove="${path}|${i}" aria-label="Remove">${icon("trash")}</button></div>`).join("")}
       <button type="button" class="rep__add" data-add="${esc(path)}">${icon("plus")} ${esc(opts.addLabel || "Add item")}</button></div>`;
   }
+  const ICON_OPTS = ["bike", "shield", "tag", "truck", "clock", "sparkles", "headset", "heart", "check-circle", "star", "map", "key", "calendar", "phone", "users", "fuel", "gear", "road", "bolt", "globe", "lock", "car", "navigation"];
   const REPEAT_DEFAULTS = {
     stats: () => ({ value: "10+", label: "New stat" }),
+    "ticker.items": () => ({ icon: "check-circle", text: "New highlight" }),
     "features.items": () => ({ icon: "check-circle", title: "New feature", text: "Describe the benefit in one or two sentences." }),
     "howItWorks.steps": () => ({ title: "New step", text: "What the customer does at this step." }),
     "testimonials.items": () => ({ name: "Customer name", role: "Trip or occasion", rating: 5, text: "What they said about the experience." }),
@@ -451,8 +454,12 @@
         card("Carousel", "Posters rotate automatically and can be swiped on phones.", `<div class="grid grid--2"><div class="field--full">${F.toggle("promos.enabled", "Show the offers carousel")}</div>${F.text("promos.interval", "Seconds per slide", { type: "number", def: 5, min: 2 })}<div class="switches" style="align-self:end;padding-bottom:6px">${F.toggle("promos.showArrows", "Arrows")}${F.toggle("promos.showDots", "Dots")}${F.toggle("promos.pauseOnHover", "Pause on hover")}</div></div>`) +
         card("Posters", "1600×640 looks best. Schedule with dates and expired posters disappear by themselves.", repeat("promos.items", { addLabel: "Add poster", item: (p, it) => { const [k, l] = status(it); return `<div class="badges" style="margin:0"><span class="badge badge--${k === "green" ? "accent" : "gray"}" style="${k === "green" ? "background:var(--green-soft);color:var(--green)" : ""}">${esc(l)}</span></div><div class="grid grid--2">${F.image(p + ".image", "Poster image")}${F.text(p + ".title", "Poster name", { help: "for screen readers" })}${F.text(p + ".link", "Link", { help: "#fleet, #contact, #car-thar or https://…" })}${F.text(p + ".caption", "Caption headline", { help: "optional, leave empty if the poster has text" })}${F.text(p + ".text", "Caption text", { help: "optional" })}${F.text(p + ".ctaText", "Button text", { help: "optional" })}${F.select(p + ".fit", "Image fit", [{ value: "auto", label: "Automatic" }, { value: "contain", label: "Show whole poster" }, { value: "cover", label: "Fill and crop" }])}${F.text(p + ".startDate", "Show from", { type: "date" })}${F.text(p + ".endDate", "Show until", { type: "date" })}<div class="field--full">${F.toggle(p + ".enabled", "Show this poster")}</div></div>`; } }));
     },
+    ticker(root) {
+      root.innerHTML =
+        card("Running bar", "A slim strip under the stats that scrolls slowly and pauses when touched. Visitors can tap a car in it to open that car.", `<div class="grid grid--2"><div class="field--full">${F.toggle("ticker.enabled", "Show the running bar")}</div>${F.select("ticker.speed", "Speed", [{ value: "slow", label: "Slow" }, { value: "normal", label: "Normal" }, { value: "fast", label: "Fast" }])}<div class="switches field--full">${F.toggle("ticker.showPopularCars", "Include Popular cars with their price")}${F.toggle("ticker.showCharges", "Include extra km and extra hour charges")}</div></div><p class="hint" style="margin-top:12px">Charges are worked out from your cars' prices (Cars → Pricing), shown as “from” the lowest when cars differ.${(state.content.fleet || []).some((c) => +c.extraHourCharge > 0) ? "" : " <b>No car has an extra hour charge yet</b>, so that one stays hidden until you set it."}</p>`) +
+        card("Messages", "Short lines work best. Available Popular cars are added between them automatically.", repeat("ticker.items", { addLabel: "Add message", item: (p, it) => `<div class="grid grid--2"><div class="field"><label>Icon</label><div style="display:flex;gap:10px;align-items:center"><span class="kpi__icon">${icon(it.icon) || icon("check-circle")}</span><select data-path="${p}.icon" data-rerender="1" style="flex:1">${ICON_OPTS.map((o) => `<option ${o === it.icon ? "selected" : ""}>${o}</option>`).join("")}</select></div></div>${F.text(p + ".text", "Text", { max: 70 })}</div>` }));
+    },
     features(root) {
-      const ICON_OPTS = ["shield", "tag", "truck", "clock", "sparkles", "headset", "heart", "check-circle", "star", "map", "key", "calendar", "phone", "users", "fuel", "gear", "road", "bolt", "globe", "lock", "car", "navigation"];
       root.innerHTML = card("Section heading", "", `<div class="grid grid--2">${F.text("features.eyebrow", "Small label")}${F.text("features.title", "Title")}</div>`) +
         card("Feature cards", "Six cards fill the grid perfectly.", repeat("features.items", { addLabel: "Add feature", item: (p, it) => `<div class="grid grid--2"><div class="field"><label>Icon</label><div style="display:flex;gap:10px;align-items:center"><span class="kpi__icon">${icon(it.icon) || icon("check-circle")}</span><select data-path="${p}.icon" data-rerender="1" style="flex:1">${ICON_OPTS.map((o) => `<option ${o === it.icon ? "selected" : ""}>${o}</option>`).join("")}</select></div></div>${F.text(p + ".title", "Title")}${F.area(p + ".text", "Text", { full: true, rows: 2 })}</div>` }));
     },
@@ -1057,6 +1064,18 @@ ${site.name}`;
     ["features", "testimonials", "faq"].forEach((k) => { c[k] = c[k] || {}; c[k].items = c[k].items || []; });
     c.howItWorks = c.howItWorks || {}; c.howItWorks.steps = c.howItWorks.steps || [];
     c.contact = c.contact || {}; c.footer = c.footer || {};
+    // Same defaults as TICKER_DEFAULT in site.js, so the bar shows before it is first published
+    c.ticker = Object.assign({ enabled: true, speed: "slow", showPopularCars: true, showCharges: true, items: [
+      { icon: "sparkles", text: "Every car deep-cleaned & sanitised before each trip" },
+      { icon: "shield", text: "Fully insured, regularly serviced cars" },
+      { icon: "truck", text: "Doorstep delivery across Pune" },
+      { icon: "road", text: "300 km per day included" },
+      { icon: "key", text: "Refundable deposit ₹10,000" },
+      { icon: "bike", text: "Or keep your bike as deposit" },
+      { icon: "headset", text: "24x7 roadside support" },
+      { icon: "tag", text: "No hidden charges" },
+    ] }, c.ticker);
+    c.ticker.items = c.ticker.items || [];
     c.promos = Object.assign({ enabled: true, interval: 5, showArrows: true, showDots: true, pauseOnHover: true, items: [] }, c.promos);
     c.promos.interval = numOr(c.promos.interval, 5); c.promos.items = c.promos.items || [];
     c.social.links = c.social.links || []; c.social.section = c.social.section || {}; c.social.section.posts = c.social.section.posts || [];
